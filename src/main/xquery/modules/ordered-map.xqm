@@ -29,11 +29,14 @@ import module namespace pair = 'http://www.basex.org/modules/pair' at 'pair.xqm'
  :   <li><code>to-xml($root) as element()</code></li>
  : </ul>
  :)
-import module namespace impl2 = 'http://www.basex.org/modules/ordered-map/avltree'
+import module namespace impl = 'http://www.basex.org/modules/ordered-map/avltree'
   at 'ordered_map/avltree.xqm';
+(::)
 
+(:: )
 import module namespace impl = 'http://www.basex.org/modules/ordered-map/rbtree'
   at 'ordered_map/rbtree.xqm';
+( ::)
 
 (:~
  : Creates a new map with the given less-than predicate.

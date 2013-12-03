@@ -35,7 +35,7 @@ declare %public function tree:insert($lt, $tree, $x, $y) {
     function() { tree:branch(tree:empty(), $x, $y, tree:empty()) },
     function($l, $h, $k, $v, $r) {
       if($lt($x, $k))      then tree:re-balance(tree:insert($lt, $l, $x, $y), $k, $v, $r)
-      else if($lt($k, $x)) then tree:re-balance($l, $k, $v, tree:insert($lt, $r, $k, $v))
+      else if($lt($k, $x)) then tree:re-balance($l, $k, $v, tree:insert($lt, $r, $x, $y))
       else tree:branch($l, $x, $y, $r)
     }
   )
@@ -67,11 +67,13 @@ declare %public function tree:delete($lt, $tree, $x) {
 
 declare function tree:to-xml($tree) {
   $tree(
-    function() { <empty/> },
+    function() { <N/> },
     function($l, $h, $k, $v, $r) {
-      <branch height="{$h}" key="{$k}" value="{$v}">{
-        ($l, $r) ! tree:to-xml(.)
-      }</branch>
+      <N height="{$h}">{
+        tree:to-xml($l),
+        <entry key="{$k}" value="{$v}" />,
+        tree:to-xml($r)
+      }</N>
     }
   )
 };
