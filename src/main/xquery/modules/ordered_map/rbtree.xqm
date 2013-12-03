@@ -1,10 +1,13 @@
-
+(:~
+ : @author Leo Woerteler &lt;lw@basex.org&gt;
+ : @version 0.1
+ :)
 module namespace rbtree = 'http://www.basex.org/modules/ordered-map/rbtree';
 
-declare variable $rbtree:DBL_RED as xs:integer := -1;
-declare variable $rbtree:RED as xs:integer := 0;
-declare variable $rbtree:BLACK as xs:integer := 1;
-declare variable $rbtree:DBL_BLACK as xs:integer := 2;
+declare %private variable $rbtree:DBL_RED as xs:integer := -1;
+declare %private variable $rbtree:RED as xs:integer := 0;
+declare %private variable $rbtree:BLACK as xs:integer := 1;
+declare %private variable $rbtree:DBL_BLACK as xs:integer := 2;
 
 declare %public function rbtree:empty() {
   rbtree:leaf($rbtree:BLACK)

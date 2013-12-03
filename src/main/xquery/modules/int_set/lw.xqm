@@ -1,3 +1,7 @@
+(:~
+ : @author Leo Woerteler &lt;lw@basex.org&gt;
+ : @version 0.1
+ :)
 module namespace int-set = 'int-set/lw';
 
 import module namespace rbtree = "http://www.basex.org/modules/ordered-map"

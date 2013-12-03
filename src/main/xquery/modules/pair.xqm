@@ -1,3 +1,9 @@
+(:~
+ : A library for typed pairs of XQuery sequences.
+ :
+ : @author Leo Woerteler &lt;lw@basex.org&gt;
+ : @version 0.1
+ :)
 module namespace pair = "http://www.basex.org/modules/pair";
 
 declare %public function pair:new(

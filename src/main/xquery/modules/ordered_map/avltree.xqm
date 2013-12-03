@@ -1,4 +1,7 @@
-
+(:~
+ : @author Leo Woerteler &lt;lw@basex.org&gt;
+ : @version 0.1
+ :)
 module namespace tree="http://www.basex.org/modules/ordered-map/avltree";
 
 import module namespace pair = 'http://www.basex.org/modules/pair'
