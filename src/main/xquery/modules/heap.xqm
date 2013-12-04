@@ -3,8 +3,12 @@
  :
  : @author Leo Woerteler &lt;lw@basex.org&gt;
  : @version 0.1
+ : @license MIT License
  :)
 module namespace heap = 'http://www.basex.org/modules/heap';
+
+import module namespace pair = 'http://www.basex.org/modules/pair'
+    at 'pair.xqm';
 
 (:~
  : Creates a new empty binary heap with a given comparison function.
@@ -16,9 +20,7 @@ module namespace heap = 'http://www.basex.org/modules/heap';
 declare %public function heap:new(
   $leq as function(item()*, item()*) as xs:boolean
 ) as function(*) {
-  function($f) {
-    $f($leq, heap:empty())
-  }
+  pair:new($leq, heap:empty())
 };
 
 (:~
@@ -32,18 +34,21 @@ declare %public function heap:insert(
   $heap as function(*),
   $x as item()*
 ) as function(*) {
-  $heap(function($leq, $root) {
-    heap:create(
-      $leq,
-      heap:union(
+  pair:deconstruct(
+    $heap,
+    function($leq, $root) {
+      pair:new(
         $leq,
-        function($_, $b) {
-          $b(heap:empty(), $x, heap:empty())
-        },
-        $root
+        heap:union(
+          $leq,
+          function($_, $b) {
+            $b(heap:empty(), $x, heap:empty())
+          },
+          $root
+        )
       )
-    )
-  })
+    }
+  )
 };
 
 (:~
@@ -59,17 +64,18 @@ declare %public function heap:insert(
 declare %public function heap:extract-min(
   $heap as function(*)
 ) as item()* {
-  $heap(function($leq, $root) {
-    $root(
-      function() { () },
-      function($l, $x, $r) {
-        (
-          heap:create($leq, heap:union($leq, $l, $r)),
+  pair:deconstruct(
+    $heap,
+    function($leq, $root) {
+      $root(
+        function() { () },
+        function($l, $x, $r) {
+          pair:new($leq, heap:union($leq, $l, $r)),
           $x
-        )
-      }
-    )
-  })
+        }
+      )
+    }
+  )
 };
 
 declare %public function heap:sort(
@@ -77,12 +83,11 @@ declare %public function heap:sort(
   $seq as item()*
 ) as item()* {
   if(empty($seq)) then ()
-  else
-    let $heap := heap:build(
-          $seq ! heap:branch(heap:empty(), ., heap:empty()),
-          $cmp
-        )
-    return heap:values($cmp, $heap, ())
+  else heap:values(
+    $cmp,
+    heap:build(for-each($seq, heap:singleton#1), $cmp),
+    ()
+  )
 };
 
 (::::::::::::::::::::::::::: private functions :::::::::::::::::::::::::::)
@@ -114,60 +119,21 @@ declare %private function heap:values(
   )
 };
 
-(:~
- : Creates a wrapper for the heap's root and its comparison function.
- :
- : @param $leq comparison function
- : @param $root root of the heap
- : @return wrapped heap
- :)
-declare %private function heap:create(
-  $leq as function(item()*, item()*) as xs:boolean,
-  $root as function(*)
-)as function(*) {
-  function($f) { $f($leq, $root) }
-};
-
-(:~
- : The empty heap.
- :
- : @return an empty heap
- :)
 declare %private function heap:empty() {
   function($empty, $branch) { $empty() }
 };
 
-(:~
- : Creates an inner node of a heap.
- :
- : @param $left left sub-tree
- : @param $x value contained in the root
- : @param $right right sub-tree
- : @return newly created heap
- :)
-declare %private function heap:branch(
-  $left as function(*),
-  $x as item()*,
-  $right as function(*)
-) {
+declare %private function heap:singleton($x) {
+  heap:branch(heap:empty(), $x, heap:empty())
+};
+
+declare %private function heap:branch($left, $x, $right) {
   function($empty, $branch) {
     $branch($left, $x, $right)
   }
 };
 
-(:~
- : Merges two heaps.
- :
- : @param $leq comparison function
- : @param $left left heap
- : @param $right right heap
- : @return the heap resulting from merging $left and $right
- :)
-declare %private function heap:union(
-  $leq as function(item()*, item()*) as xs:boolean,
-  $left as function(*),
-  $right as function(*)
-) as function(*) {
+declare %private function heap:union($leq, $left, $right) {
   $left(
     function() { $right },
     function($ll, $lx, $lr) {

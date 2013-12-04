@@ -3,6 +3,7 @@
  :
  : @author Leo Woerteler &lt;lw@basex.org&gt;
  : @version 0.1
+ : @license MIT License
  :)
 module namespace map2='http://www.basex.org/modules/map-extras';
 

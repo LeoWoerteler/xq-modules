@@ -1,10 +1,14 @@
 (:~
+ : Implementation of a set of integers based on John Snelson's Red-Black Tree.
+ :
  : @author Leo Woerteler &lt;lw@basex.org&gt;
  : @version 0.1
+ : @license MIT License
  :)
 module namespace int-set = 'int-set/jpcs';
 
-import module namespace rbtree = 'http://snelson.org.uk/functions/rbtree' at 'rbtree_jpcs.xqm';
+import module namespace rbtree = 'http://snelson.org.uk/functions/rbtree'
+    at 'rbtree_jpcs.xqm';
 
 declare variable $int-set:LT := function($a, $b) { $a lt $b };
 

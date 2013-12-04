@@ -1,13 +1,13 @@
 
-import module namespace int-set = "int-set" at 'modules/int-set.xqm';
+import module namespace int-set = "int-set"
+    at '../../main/xquery/modules/int-set.xqm';
 
 import module namespace pair = 'http://www.basex.org/modules/pair'
-  at 'modules/pair.xqm';
+    at '../../main/xquery/modules/pair.xqm';
 
 declare variable $OPS := 2;
 
 declare function local:insert($maps, $key, $i) {
-  prof:dump($key, 'insert'),
   let $tree := $maps('tree'),
       $map  := $maps('map')
   return {
@@ -17,7 +17,6 @@ declare function local:insert($maps, $key, $i) {
 };
 
 declare function local:lookup($maps, $key, $i) {
-  prof:dump($key, 'lookup'),
   let $tree := $maps('tree'),
       $map  := $maps('map'),
       $res1 := int-set:contains($tree, $key),

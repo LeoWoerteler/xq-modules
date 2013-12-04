@@ -9,10 +9,16 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
 
-  <!-- Project Information -->
   <name>xq-modules</name>
   <description>Various XQuery Modules</description>
   <inceptionYear>2013</inceptionYear>
+
+  <scm>
+    <connection>scm:git:https://github.com/LeoWoerteler/xq-modules.git</connection>
+    <developerConnection>scm:git:git@github.com:LeoWoerteler/xq-modules.git</developerConnection>
+    <url>https://github.com/LeoWoerteler/xq-modules</url>
+    <tag>HEAD</tag>
+  </scm>
 
   <licenses>
     <license>
@@ -23,7 +29,7 @@
 
   <developers>
     <developer>
-      <name>Leo W&ouml;rteler</name>
+      <name>Leo W&#xF6;rteler</name>
       <email>leo@woerteler.de</email>
     </developer>
   </developers>

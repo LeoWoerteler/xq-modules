@@ -4,6 +4,7 @@
  :
  : @author Leo Woerteler &lt;lw@basex.org&gt;
  : @version 0.1
+ : @license MIT License
  :)
 module namespace utf8 = 'http://www.basex.org/modules/utf8';
 
