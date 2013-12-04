@@ -83,7 +83,7 @@ declare %public function map2:fold(
 declare %public function map2:values(
   $map as map(*)
 ) as item()* {
-  map($map, map:keys($map))
+  for-each(map:keys($map), $map)
 };
 
 (:~

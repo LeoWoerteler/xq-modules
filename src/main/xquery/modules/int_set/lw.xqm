@@ -12,7 +12,7 @@ import module namespace rbtree = "http://www.basex.org/modules/ordered-map/rbtre
 
 declare variable $int-set:LT := function($a, $b) { $a lt $b };
 
-declare function int-set:new() {
+declare function int-set:empty() {
   rbtree:empty()
 };
 
