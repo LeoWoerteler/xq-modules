@@ -1,7 +1,7 @@
 (:~
  : Additional functions for XQuery 3.0 maps.
  :
- : @author Leo Woerteler &lt;lw@basex.org&gt;
+ : @author Leo Woerteler &lt;leo@woerteler.de&gt;
  : @version 0.1
  : @license MIT License
  :)

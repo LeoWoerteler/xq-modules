@@ -1,14 +1,14 @@
 (:~
  : Implementation of a set of integers based on a Red-Black Map.
  :
- : @author Leo Woerteler &lt;lw@basex.org&gt;
+ : @author Leo Woerteler &lt;leo@woerteler.de&gt;
  : @version 0.1
  : @license MIT License
  :)
-module namespace int-set = 'int-set/lw';
+module namespace int-set = 'http://www.basex.org/modules/int-set/lw';
 
 import module namespace rbtree = "http://www.basex.org/modules/ordered-map/rbtree"
-  at '../ordered_map/rbtree.xqm';
+    at '../ordered_map/rbtree.xqm';
 
 declare variable $int-set:LT := function($a, $b) { $a lt $b };
 

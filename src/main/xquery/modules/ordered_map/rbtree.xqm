@@ -1,9 +1,14 @@
 (:~
- : @author Leo Woerteler &lt;lw@basex.org&gt;
+ : Implementation of an ordered map based on a Red-Black Tree.
+ :
+ : @author Leo Woerteler &lt;leo@woerteler.de&gt;
  : @version 0.1
  : @license MIT License
  :)
 module namespace rbtree = 'http://www.basex.org/modules/ordered-map/rbtree';
+
+import module namespace pair = 'http://www.basex.org/modules/pair'
+  at '../pair.xqm';
 
 declare %private variable $rbtree:DBL_RED as xs:integer := -1;
 declare %private variable $rbtree:RED as xs:integer := 0;
@@ -110,11 +115,13 @@ declare %private function rbtree:del($lt, $tree, $x) {
 declare %private function rbtree:split-leftmost($c, $l, $k, $v, $r) {
   $l(
     function($lc) {
-      let $kv := function($f) { $f($k, $v) }
-      return $r(
-        function($rc) { ($kv, rbtree:leaf(rbtree:next($c))) },
+      pair:new($k, $v), 
+      $r(
+        function($rc) {
+          rbtree:leaf(rbtree:next($c))
+        },
         function($rc, $rl, $rk, $rv, $rr) {
-          ($kv, rbtree:branch($rbtree:BLACK, $rl, $rk, $rv, $rr))
+          rbtree:branch($rbtree:BLACK, $rl, $rk, $rv, $rr)
         }
       )
     },

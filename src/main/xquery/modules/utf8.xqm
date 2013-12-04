@@ -2,7 +2,7 @@
  : Module for encoding and decoding <code>xs:string</code>s as <code>xs:byte</code>
  : sequences using the UTF-8 encoding scheme.
  :
- : @author Leo Woerteler &lt;lw@basex.org&gt;
+ : @author Leo Woerteler &lt;leo@woerteler.de&gt;
  : @version 0.1
  : @license MIT License
  :)

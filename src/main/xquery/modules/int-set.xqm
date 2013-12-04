@@ -1,12 +1,19 @@
 (:~
- : @author Leo Woerteler &lt;lw@basex.org&gt;
+ : Abstract interface for a set of integers.
+ :
+ : @author Leo Woerteler &lt;leo@woerteler.de&gt;
  : @version 0.1
  : @license MIT License
  :)
-module namespace int-set = 'int-set';
+module namespace int-set = 'http://www.basex.org/modules/int-set';
 
-(:import module namespace impl = "int-set/jpcs" at 'int_set/jpcs.xqm';:)
-import module namespace impl = "int-set/lw" at 'int_set/lw.xqm';
+(:
+import module namespace impl = "http://www.basex.org/modules/int-set/jpcs"
+    at 'int_set/jpcs.xqm';
+:)
+
+import module namespace impl = "http://www.basex.org/modules/int-set/lw"
+    at 'int_set/lw.xqm';
 
 declare function int-set:new() {
   impl:new()

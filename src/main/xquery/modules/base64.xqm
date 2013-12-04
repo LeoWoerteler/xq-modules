@@ -1,7 +1,7 @@
 (:~
  : A module for converting between byte sequences and xs:base64Binary values.
  :
- : @author Leo Woerteler &lt;lw@basex.org&gt;
+ : @author Leo Woerteler &lt;leo@woerteler.de&gt;
  : @version 0.1
  : @license MIT License
  :)

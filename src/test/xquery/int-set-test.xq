@@ -1,5 +1,5 @@
 
-import module namespace int-set = "int-set"
+import module namespace int-set = "http://www.basex.org/modules/int-set"
     at '../../main/xquery/modules/int-set.xqm';
 
 import module namespace pair = 'http://www.basex.org/modules/pair'

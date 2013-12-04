@@ -1,11 +1,11 @@
 (:~
  : Implementation of a set of integers based on John Snelson's Red-Black Tree.
  :
- : @author Leo Woerteler &lt;lw@basex.org&gt;
+ : @author Leo Woerteler &lt;leo@woerteler.de&gt;
  : @version 0.1
  : @license MIT License
  :)
-module namespace int-set = 'int-set/jpcs';
+module namespace int-set = 'http://www.basex.org/modules/int-set/jpcs';
 
 import module namespace rbtree = 'http://snelson.org.uk/functions/rbtree'
     at 'rbtree_jpcs.xqm';
