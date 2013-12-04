@@ -1,5 +1,5 @@
 (:~
- : A simple heap implementation.
+ : A simple Skew Heap implementation.
  :
  : @author Leo Woerteler &lt;leo@woerteler.de&gt;
  : @version 0.1
@@ -78,6 +78,12 @@ declare %public function heap:extract-min(
   )
 };
 
+(:~
+ : Sorts the given sequence according to the given less-than predicate.
+ : @param $cmp less-than predicate
+ : @param $seq sequence to sort
+ : @return the sorted sequence
+ :)
 declare %public function heap:sort(
   $cmp as function(item(), item()) as item()*,
   $seq as item()*
