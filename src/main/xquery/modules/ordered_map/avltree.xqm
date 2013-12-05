@@ -7,9 +7,9 @@ xquery version "3.0";
  : @version 0.1
  : @license BSD 2-Clause License
  :)
-module namespace avltree = 'http://www.basex.org/modules/ordered-map/avltree';
+module namespace avltree = 'http://www.woerteler.de/xquery/modules/ordered-map/avltree';
 
-import module namespace pair = 'http://www.basex.org/modules/pair'
+import module namespace pair = 'http://www.woerteler.de/xquery/modules/pair'
   at '../pair.xqm';
 
 declare %public function avltree:empty() {

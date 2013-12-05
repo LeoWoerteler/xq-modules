@@ -7,12 +7,12 @@ xquery version "3.0";
  : @version 0.1
  : @license BSD 2-Clause License
  :)
-module namespace queue = 'http://www.basex.org/modules/queue';
+module namespace queue = 'http://www.woerteler.de/xquery/modules/queue';
 
-import module namespace pair = 'http://www.basex.org/modules/pair'
+import module namespace pair = 'http://www.woerteler.de/xquery/modules/pair'
     at 'pair.xqm';
 
-import module namespace list = 'http://www.basex.org/modules/list'
+import module namespace list = 'http://www.woerteler.de/xquery/modules/list'
     at 'list.xqm';
 
 (:~

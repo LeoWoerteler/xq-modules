@@ -7,7 +7,7 @@ xquery version "3.0";
  : @version 0.1
  : @license BSD 2-Clause License
  :)
-module namespace base64 = 'http://www.basex.org/modules/base64';
+module namespace base64 = 'http://www.woerteler.de/xquery/modules/base64';
 
 (:~ Codepoint for the '=' padding character. :)
 declare %private variable $base64:PAD as xs:integer := string-to-codepoints('=');

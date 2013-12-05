@@ -1,8 +1,8 @@
 
-import module namespace pair = 'http://www.basex.org/modules/pair'
+import module namespace pair = 'http://www.woerteler.de/xquery/modules/pair'
     at '../../main/xquery/modules/pair.xqm';
 
-import module namespace heap = 'http://www.basex.org/modules/heap'
+import module namespace heap = 'http://www.woerteler.de/xquery/modules/heap'
     at '../../main/xquery/modules/heap.xqm';
 
 heap:sort(

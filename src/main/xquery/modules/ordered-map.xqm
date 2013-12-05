@@ -7,10 +7,10 @@ xquery version "3.0";
  : @version 0.1
  : @license BSD 2-Clause License
  :)
-module namespace ordered-map = 'http://www.basex.org/modules/ordered-map';
+module namespace ordered-map = 'http://www.woerteler.de/xquery/modules/ordered-map';
 
 (:~ Pairs for grouping root and less-than predicate together. :)
-import module namespace pair = 'http://www.basex.org/modules/pair' at 'pair.xqm';
+import module namespace pair = 'http://www.woerteler.de/xquery/modules/pair' at 'pair.xqm';
 
 (:~
  : The exchangeable implementation of the map.
@@ -32,12 +32,12 @@ import module namespace pair = 'http://www.basex.org/modules/pair' at 'pair.xqm'
  :   <li><code>to-xml($root) as element()</code></li>
  : </ul>
  :)
-import module namespace impl = 'http://www.basex.org/modules/ordered-map/avltree'
+import module namespace impl = 'http://www.woerteler.de/xquery/modules/ordered-map/avltree'
   at 'ordered_map/avltree.xqm';
 (::)
 
 (:: )
-import module namespace impl = 'http://www.basex.org/modules/ordered-map/rbtree'
+import module namespace impl = 'http://www.woerteler.de/xquery/modules/ordered-map/rbtree'
   at 'ordered_map/rbtree.xqm';
 ( ::)
 

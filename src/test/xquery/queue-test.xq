@@ -1,4 +1,4 @@
-import module namespace queue = 'http://www.basex.org/modules/queue'
+import module namespace queue = 'http://www.woerteler.de/xquery/modules/queue'
     at '../../main/xquery/modules/queue.xqm';
 
 queue:match( (: [1, 2] :)

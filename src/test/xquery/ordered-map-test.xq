@@ -1,8 +1,8 @@
 
-import module namespace ordered-map = 'http://www.basex.org/modules/ordered-map'
+import module namespace ordered-map = 'http://www.woerteler.de/xquery/modules/ordered-map'
   at '../../main/xquery/modules/ordered-map.xqm';
 
-import module namespace pair = 'http://www.basex.org/modules/pair'
+import module namespace pair = 'http://www.woerteler.de/xquery/modules/pair'
   at '../../main/xquery/modules/pair.xqm';
 
 declare function local:insert($maps, $key, $i) {

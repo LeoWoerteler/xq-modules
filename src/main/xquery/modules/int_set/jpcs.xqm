@@ -7,7 +7,7 @@ xquery version "3.0";
  : @version 0.1
  : @license BSD 2-Clause License
  :)
-module namespace int-set = 'http://www.basex.org/modules/int-set/jpcs';
+module namespace int-set = 'http://www.woerteler.de/xquery/modules/int-set/jpcs';
 
 import module namespace rbtree = 'http://snelson.org.uk/functions/rbtree'
     at 'rbtree_jpcs.xqm';

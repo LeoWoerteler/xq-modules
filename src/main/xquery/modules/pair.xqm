@@ -7,7 +7,7 @@ xquery version "3.0";
  : @version 0.1
  : @license BSD 2-Clause License
  :)
-module namespace pair = "http://www.basex.org/modules/pair";
+module namespace pair = "http://www.woerteler.de/xquery/modules/pair";
 
 (:~
  : Creates a pair from the given two values.

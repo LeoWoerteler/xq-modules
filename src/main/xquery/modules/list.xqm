@@ -7,7 +7,7 @@ xquery version "3.0";
  : @version 0.1
  : @license BSD 2-Clause License
  :)
-module namespace list = 'http://www.basex.org/modules/list';
+module namespace list = 'http://www.woerteler.de/xquery/modules/list';
 
 (:~
  : Returns the empty list.

@@ -7,14 +7,14 @@ xquery version "3.0";
  : @version 0.1
  : @license BSD 2-Clause License
  :)
-module namespace int-set = 'http://www.basex.org/modules/int-set';
+module namespace int-set = 'http://www.woerteler.de/xquery/modules/int-set';
 
 (:
-import module namespace impl = "http://www.basex.org/modules/int-set/jpcs"
+import module namespace impl = "http://www.woerteler.de/xquery/modules/int-set/jpcs"
     at 'int_set/jpcs.xqm';
 :)
 
-import module namespace impl = "http://www.basex.org/modules/int-set/lw"
+import module namespace impl = "http://www.woerteler.de/xquery/modules/int-set/lw"
     at 'int_set/lw.xqm';
 
 (:~

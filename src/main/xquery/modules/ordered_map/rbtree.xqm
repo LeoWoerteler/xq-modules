@@ -7,9 +7,9 @@ xquery version "3.0";
  : @version 0.1
  : @license BSD 2-Clause License
  :)
-module namespace rbtree = 'http://www.basex.org/modules/ordered-map/rbtree';
+module namespace rbtree = 'http://www.woerteler.de/xquery/modules/ordered-map/rbtree';
 
-import module namespace pair = 'http://www.basex.org/modules/pair'
+import module namespace pair = 'http://www.woerteler.de/xquery/modules/pair'
   at '../pair.xqm';
 
 declare %private variable $rbtree:DBL_RED as xs:integer := -1;

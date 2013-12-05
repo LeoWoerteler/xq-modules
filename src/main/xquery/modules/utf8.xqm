@@ -8,7 +8,7 @@ xquery version "3.0";
  : @version 0.1
  : @license BSD 2-Clause License
  :)
-module namespace utf8 = 'http://www.basex.org/modules/utf8';
+module namespace utf8 = 'http://www.woerteler.de/xquery/modules/utf8';
 
 (:~ Number of states encoded in one block of 6 bits. :)
 declare %private variable $utf8:ONE   := math:pow(2, 6);
@@ -173,6 +173,6 @@ declare %private function utf8:error(
   $cps as xs:integer*
 ) as map(*)? {
   if($strict)
-    then error(QName('http://www.basex.org/modules/utf8', 'utf8:DECB000' || $num), $msg)
+    then error(QName('http://www.woerteler.de/xquery/modules/utf8', 'utf8:DECB000' || $num), $msg)
     else map{ 'more' := 0, 'bits' := 0, 'cps' := ($cps, $utf8:replacement) }
 };

@@ -7,7 +7,7 @@ xquery version "3.0";
  : @version 0.1
  : @license BSD 2-Clause License
  :)
-module namespace map2='http://www.basex.org/modules/map-extras';
+module namespace map2='http://www.woerteler.de/xquery/modules/map-extras';
 
 (:~
  : Insert with a combining function. <code>insert-with($f, $key, $value, $map)</code>

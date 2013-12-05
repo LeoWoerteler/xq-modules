@@ -1,8 +1,8 @@
 
-import module namespace int-set = "http://www.basex.org/modules/int-set"
+import module namespace int-set = "http://www.woerteler.de/xquery/modules/int-set"
     at '../../main/xquery/modules/int-set.xqm';
 
-import module namespace pair = 'http://www.basex.org/modules/pair'
+import module namespace pair = 'http://www.woerteler.de/xquery/modules/pair'
     at '../../main/xquery/modules/pair.xqm';
 
 declare variable $OPS := 2;
@@ -27,13 +27,10 @@ declare function local:lookup($maps, $key, $i) {
 };
 
 fold-left(
-  for-each-pair(
-    random:seeded-integer(42, 100000, 10000 * $OPS),
-    1 to 100000,
-    pair:new#2
-  ),
+  for $r at $i in random:seeded-integer(42, 100000, 10000 * $OPS)
+  return pair:new($r, $i),
   {
-    'tree' : int-set:new(),
+    'tree' : int-set:empty(),
     'map' : { }
   },
   function($maps, $pair) {

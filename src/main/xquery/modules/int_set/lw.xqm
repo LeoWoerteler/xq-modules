@@ -7,9 +7,9 @@ xquery version "3.0";
  : @version 0.1
  : @license BSD 2-Clause License
  :)
-module namespace int-set = 'http://www.basex.org/modules/int-set/lw';
+module namespace int-set = 'http://www.woerteler.de/xquery/modules/int-set/lw';
 
-import module namespace rbtree = "http://www.basex.org/modules/ordered-map/rbtree"
+import module namespace rbtree = "http://www.woerteler.de/xquery/modules/ordered-map/rbtree"
     at '../ordered_map/rbtree.xqm';
 
 declare variable $int-set:LT := function($a, $b) { $a lt $b };
