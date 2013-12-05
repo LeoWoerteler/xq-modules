@@ -1,9 +1,11 @@
+xquery version "3.0";
+
 (:~
  : A module for converting between byte sequences and xs:base64Binary values.
  :
  : @author Leo Woerteler &lt;leo@woerteler.de&gt;
  : @version 0.1
- : @license MIT License
+ : @license BSD 2-Clause License
  :)
 module namespace base64 = 'http://www.basex.org/modules/base64';
 

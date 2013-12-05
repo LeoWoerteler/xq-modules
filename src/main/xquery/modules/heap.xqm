@@ -1,14 +1,19 @@
+xquery version "3.0";
+
 (:~
  : A simple Skew Heap implementation.
  :
  : @author Leo Woerteler &lt;leo@woerteler.de&gt;
  : @version 0.1
- : @license MIT License
+ : @license BSD 2-Clause License
  :)
 module namespace heap = 'http://www.basex.org/modules/heap';
 
 import module namespace pair = 'http://www.basex.org/modules/pair'
     at 'pair.xqm';
+
+import module namespace queue = 'http://www.basex.org/modules/queue'
+    at 'queue.xqm';
 
 (:~
  : Creates a new empty binary heap with a given comparison function.
@@ -80,36 +85,55 @@ declare %public function heap:extract-min(
 
 (:~
  : Sorts the given sequence according to the given less-than predicate.
- : @param $cmp less-than predicate
+ : @param $lt less-than predicate
  : @param $seq sequence to sort
  : @return the sorted sequence
  :)
 declare %public function heap:sort(
-  $cmp as function(item(), item()) as item()*,
+  $lt as function(item(), item()) as item()*,
   $seq as item()*
 ) as item()* {
   if(empty($seq)) then ()
   else heap:values(
-    $cmp,
-    heap:build(for-each($seq, heap:singleton#1), $cmp),
+    $lt,
+    heap:build(
+      fold-left(
+        $seq,
+        queue:empty(),
+        function($q, $it) {
+          queue:enqueue(heap:singleton($it), $q)
+        }
+      ),
+      $lt
+    ),
     ()
   )
 };
 
 (::::::::::::::::::::::::::: private functions :::::::::::::::::::::::::::)
 
-declare %private function heap:build(
-  $heaps as function(*)*,
-  $cmp as function(item(), item()) as item()*
-) as function(*) {
-  if(count($heaps) eq 1) then $heaps
-  else
-    let $a := $heaps[1], $b := $heaps[2],
-        $union := heap:union($cmp, $a, $b)
-    return heap:build(
-      (subsequence($heaps, 3), $union),
-      $cmp
-    )
+declare %private function heap:build($queue, $cmp) {
+  queue:match(
+    $queue,
+    function() {
+      (: empty queue, should not happen :)
+      error(xs:QName('heap:EMPTYQUE'), 'empty queue')
+    },
+    function($h1, $queue2) {
+      queue:match(
+        $queue2,
+        function() {
+          (: only one heap left, we are finished :)
+          $h1
+        },
+        function($h2, $queue3) {
+          (: at least to heaps, union them and put the result back in the queue :)
+          let $h := heap:union($cmp, $h1, $h2)
+          return heap:build(queue:enqueue($h, $queue3), $cmp)
+        }
+      )
+    }
+  )
 };
 
 declare %private function heap:values(

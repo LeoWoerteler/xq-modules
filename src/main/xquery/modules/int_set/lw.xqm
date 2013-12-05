@@ -1,9 +1,11 @@
+xquery version "3.0";
+
 (:~
  : Implementation of a set of integers based on a Red-Black Map.
  :
  : @author Leo Woerteler &lt;leo@woerteler.de&gt;
  : @version 0.1
- : @license MIT License
+ : @license BSD 2-Clause License
  :)
 module namespace int-set = 'http://www.basex.org/modules/int-set/lw';
 

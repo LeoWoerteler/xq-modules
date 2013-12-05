@@ -1,9 +1,11 @@
+xquery version "3.0";
+
 (:~
  : Implementation of an ordered map based on a Red-Black Tree.
  :
  : @author Leo Woerteler &lt;leo@woerteler.de&gt;
  : @version 0.1
- : @license MIT License
+ : @license BSD 2-Clause License
  :)
 module namespace rbtree = 'http://www.basex.org/modules/ordered-map/rbtree';
 

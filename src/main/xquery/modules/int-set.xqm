@@ -1,9 +1,11 @@
+xquery version "3.0";
+
 (:~
  : Abstract interface for a set of integers.
  :
  : @author Leo Woerteler &lt;leo@woerteler.de&gt;
  : @version 0.1
- : @license MIT License
+ : @license BSD 2-Clause License
  :)
 module namespace int-set = 'http://www.basex.org/modules/int-set';
 

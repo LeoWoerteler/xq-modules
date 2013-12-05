@@ -1,9 +1,11 @@
+xquery version "3.0";
+
 (:~
  : Additional functions for XQuery 3.0 maps.
  :
  : @author Leo Woerteler &lt;leo@woerteler.de&gt;
  : @version 0.1
- : @license MIT License
+ : @license BSD 2-Clause License
  :)
 module namespace map2='http://www.basex.org/modules/map-extras';
 
