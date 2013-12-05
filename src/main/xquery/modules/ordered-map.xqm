@@ -32,13 +32,12 @@ import module namespace pair = 'http://www.woerteler.de/xquery/modules/pair' at 
  :   <li><code>to-xml($root) as element()</code></li>
  : </ul>
  :)
-import module namespace impl = 'http://www.woerteler.de/xquery/modules/ordered-map/avltree'
-  at 'ordered_map/avltree.xqm';
-(::)
-
-(:: )
 import module namespace impl = 'http://www.woerteler.de/xquery/modules/ordered-map/rbtree'
   at 'ordered_map/rbtree.xqm';
+
+(:: )
+import module namespace impl = 'http://www.woerteler.de/xquery/modules/ordered-map/avltree'
+  at 'ordered_map/avltree.xqm';
 ( ::)
 
 (:~

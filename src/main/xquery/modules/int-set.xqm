@@ -9,13 +9,15 @@ xquery version "3.0";
  :)
 module namespace int-set = 'http://www.woerteler.de/xquery/modules/int-set';
 
-(:
+(:: )
 import module namespace impl = "http://www.woerteler.de/xquery/modules/int-set/jpcs"
     at 'int_set/jpcs.xqm';
-:)
+( ::)
 
+(::)
 import module namespace impl = "http://www.woerteler.de/xquery/modules/int-set/lw"
     at 'int_set/lw.xqm';
+(::)
 
 (:~
  : Returns the empty set.

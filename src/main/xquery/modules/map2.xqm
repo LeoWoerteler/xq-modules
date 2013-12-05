@@ -9,6 +9,8 @@ xquery version "3.0";
  :)
 module namespace map2='http://www.woerteler.de/xquery/modules/map-extras';
 
+declare namespace map = 'http://www.w3.org/2005/xpath-functions/map';
+
 (:~
  : Insert with a combining function. <code>insert-with($f, $key, $value, $map)</code>
  : will insert <code>map:entry($key, $value)</code> into <code>$map</code> if
@@ -27,11 +29,16 @@ declare function map2:insert-with(
   $value as item()*,
   $map as map(*)
 ) as map(*) {
-  map:new(($map, map:entry($key,
-    if(map:contains($map, $key))
-    then $f($value, $map($key))
-    else $value
-  )))
+  map:new(
+    (
+      $map,
+      map:entry(
+        $key,
+        if(map:contains($map, $key)) then $f($value, $map($key))
+        else $value
+      )
+    )
+  )
 };
 
 (:~
@@ -48,7 +55,12 @@ declare %public function map2:insert(
   $value as item()*,
   $map as map(*)
 ) as map(*) {
-  map:new(($map, map:entry($key, $value)))
+  map:new(
+    (
+      $map,
+      map:entry($key, $value)
+    )
+  )
 };
 
 (:~
