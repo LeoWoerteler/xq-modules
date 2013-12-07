@@ -1,0 +1,87 @@
+<xqdoc:xqdoc xmlns:xqdoc="http://www.xqdoc.org/1.0">
+  <xqdoc:control>
+    <xqdoc:date>2013-12-07T16:36:34.093+01:00</xqdoc:date>
+    <xqdoc:version>1.1</xqdoc:version>
+  </xqdoc:control>
+  <xqdoc:module type="library">
+    <xqdoc:uri>http://www.woerteler.de/xquery/modules/int-set</xqdoc:uri>
+    <xqdoc:name>int-set.xqm</xqdoc:name>
+    <xqdoc:comment>
+      <xqdoc:description>Abstract interface for a set of integers.</xqdoc:description>
+      <xqdoc:author>Leo Woerteler &lt;leo@woerteler.de&gt;</xqdoc:author>
+      <xqdoc:version>0.1</xqdoc:version>
+      <xqdoc:custom tag="license">BSD 2-Clause License</xqdoc:custom>
+    </xqdoc:comment>
+  </xqdoc:module>
+  <xqdoc:namespaces>
+    <xqdoc:namespace prefix="int-set" uri="http://www.woerteler.de/xquery/modules/int-set"/>
+    <xqdoc:namespace prefix="impl" uri="http://www.woerteler.de/xquery/modules/int-set/lw"/>
+  </xqdoc:namespaces>
+  <xqdoc:imports>
+    <xqdoc:import type="library">
+      <xqdoc:uri>http://www.woerteler.de/xquery/modules/int-set/lw</xqdoc:uri>
+    </xqdoc:import>
+  </xqdoc:imports>
+  <xqdoc:variables/>
+  <xqdoc:functions>
+    <xqdoc:function arity="0">
+      <xqdoc:comment>
+        <xqdoc:description>Returns the empty set.</xqdoc:description>
+        <xqdoc:return>the empty set</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>int-set:empty</xqdoc:name>
+      <xqdoc:signature>declare function int-set:empty()</xqdoc:signature>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="2">
+      <xqdoc:comment>
+        <xqdoc:description>Inserts the given integer into the given set and returns the resulting set.</xqdoc:description>
+        <xqdoc:param>$set set to insert into</xqdoc:param>
+        <xqdoc:param>$x element to insert</xqdoc:param>
+        <xqdoc:return>the set that contains <code>$x</code> in addition to
+           all elements of <code>$set</code>
+        </xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>int-set:insert</xqdoc:name>
+      <xqdoc:signature>declare function int-set:insert($set, $x as xs:integer) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>set</xqdoc:name>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>x</xqdoc:name>
+          <xqdoc:type>xs:integer</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="2">
+      <xqdoc:comment>
+        <xqdoc:description>Checks if the given element is contained in the given set.</xqdoc:description>
+        <xqdoc:param>$set set to search in</xqdoc:param>
+        <xqdoc:param>$x element to look for</xqdoc:param>
+        <xqdoc:return>
+          <code>true()</code> if the element is contained in the set,
+           <code>false()</code> otherwise</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>int-set:contains</xqdoc:name>
+      <xqdoc:signature>declare function int-set:contains($set, $x as xs:integer) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>set</xqdoc:name>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>x</xqdoc:name>
+          <xqdoc:type>xs:integer</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+  </xqdoc:functions>
+</xqdoc:xqdoc>

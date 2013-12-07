@@ -74,6 +74,44 @@ declare %public function ordered-map:lookup(
 };
 
 (:~
+ : Checks if the given map contains an entry with the given key.
+ :
+ : @param $m map to look in
+ : @param $k key to look for
+ : @return <code>true()</code> if the key is in the map, <code>false()</code> otherwise
+ :)
+declare %public function ordered-map:contains(
+  $m as function(*),
+  $k as item()*
+) as xs:boolean {
+  ordered-map:lookup(
+    $m,
+    $k,
+    function($_) { true()  },
+    function()   { false() }
+  )
+};
+
+(:~
+ : Gets the value bound to the given key in the given map.
+ :
+ : @param $m the map
+ : @param $k key to look up
+ : @return the bound value if the key exists in the map, <code>()</code> otherwise
+ :)
+declare %public function ordered-map:get(
+  $m as function(*),
+  $k as item()*
+) as item()* {
+  ordered-map:lookup(
+    $m,
+    $k,
+    function($v) { $v },
+    function() { () }
+  )
+};
+
+(:~
  : Determines the number of entries in the given map.
  : @param $m map to determine the number of entries of
  : @return number of entries
@@ -176,4 +214,21 @@ declare %public function ordered-map:fold(
   $f as function(item()*, item()*, item()*) as item()*
 ) as item()* {
   impl:fold(pair:second($m), $z, $f)
+};
+
+(:~
+ : Calls the geiven function for every entry in the map and concatenates the result sequences.
+ : @param $m the map to iterate over
+ : @param $f binary function taking the key and value of the entry
+ : @return concatenated results of the calls to <code>$f</code>
+ :)
+declare %public function ordered-map:for-each-entry(
+  $m as function(*),
+  $f as function(item()*, item()*) as item()*
+) as item()* {
+  ordered-map:fold(
+    $m,
+    (),
+    function($seq, $k, $v) { $seq, $f($k, $v) }
+  )
 };

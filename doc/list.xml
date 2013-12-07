@@ -1,0 +1,175 @@
+<xqdoc:xqdoc xmlns:xqdoc="http://www.xqdoc.org/1.0">
+  <xqdoc:control>
+    <xqdoc:date>2013-12-07T16:36:34.093+01:00</xqdoc:date>
+    <xqdoc:version>1.1</xqdoc:version>
+  </xqdoc:control>
+  <xqdoc:module type="library">
+    <xqdoc:uri>http://www.woerteler.de/xquery/modules/list</xqdoc:uri>
+    <xqdoc:name>list.xqm</xqdoc:name>
+    <xqdoc:comment>
+      <xqdoc:description>A linked list.</xqdoc:description>
+      <xqdoc:author>Leo Woerteler &lt;leo@woerteler.de&gt;</xqdoc:author>
+      <xqdoc:version>0.1</xqdoc:version>
+      <xqdoc:custom tag="license">BSD 2-Clause License</xqdoc:custom>
+    </xqdoc:comment>
+  </xqdoc:module>
+  <xqdoc:namespaces>
+    <xqdoc:namespace prefix="list" uri="http://www.woerteler.de/xquery/modules/list"/>
+  </xqdoc:namespaces>
+  <xqdoc:imports/>
+  <xqdoc:variables/>
+  <xqdoc:functions>
+    <xqdoc:function arity="0">
+      <xqdoc:comment>
+        <xqdoc:description>Returns the empty list.</xqdoc:description>
+        <xqdoc:return>empty list</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>list:nil</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function list:nil()</xqdoc:signature>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="2">
+      <xqdoc:comment>
+        <xqdoc:description>Creates a non-empty list with the given first element and rest of the list.</xqdoc:description>
+        <xqdoc:param>$head the first element</xqdoc:param>
+        <xqdoc:param>$tail rest of the list</xqdoc:param>
+        <xqdoc:return>non-empty list</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>list:cons</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function list:cons($head, $tail as function(*)) as function(*)</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>head</xqdoc:name>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>tail</xqdoc:name>
+          <xqdoc:type>function(*)</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type>function(*)</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="3">
+      <xqdoc:comment>
+        <xqdoc:description>Performs case analysis on the given list and calls the corresponding
+callback for an empty and non-empty list.</xqdoc:description>
+        <xqdoc:param>$list list to match</xqdoc:param>
+        <xqdoc:param>$nil callback for the empty list</xqdoc:param>
+        <xqdoc:param>$cons case for the non-empty list</xqdoc:param>
+        <xqdoc:return>result of the callback</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>list:match</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function list:match($list as function(*), $nil as function(*), $cons as function(*)) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>list</xqdoc:name>
+          <xqdoc:type>function(*)</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>nil</xqdoc:name>
+          <xqdoc:type>function(*)</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>cons</xqdoc:name>
+          <xqdoc:type>function(*)</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="3">
+      <xqdoc:comment>
+        <xqdoc:description>Performs a left fold on the given list.</xqdoc:description>
+        <xqdoc:param>$f combining function</xqdoc:param>
+        <xqdoc:param>$z starting value</xqdoc:param>
+        <xqdoc:param>$list list to fold over</xqdoc:param>
+        <xqdoc:return>the folding result</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>list:fold-left</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function list:fold-left($f as function(item()*, item()*) as item()*, $z, $list as function(*)) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>f</xqdoc:name>
+          <xqdoc:type>function(item()*, item()*) as item()*</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>z</xqdoc:name>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>list</xqdoc:name>
+          <xqdoc:type>function(*)</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="3">
+      <xqdoc:comment>
+        <xqdoc:description>Performs a right fold on the given list.</xqdoc:description>
+        <xqdoc:param>$f combining function</xqdoc:param>
+        <xqdoc:param>$z starting value</xqdoc:param>
+        <xqdoc:param>$list list to fold over</xqdoc:param>
+        <xqdoc:return>the folding result</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>list:fold-right</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function list:fold-right($f as function(item()*, item()*) as item()*, $z, $list as function(*)) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>f</xqdoc:name>
+          <xqdoc:type>function(item()*, item()*) as item()*</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>z</xqdoc:name>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>list</xqdoc:name>
+          <xqdoc:type>function(*)</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="1">
+      <xqdoc:comment>
+        <xqdoc:description>Reverses the given list.</xqdoc:description>
+        <xqdoc:param>$list the list to reverse</xqdoc:param>
+        <xqdoc:return>the reversed list</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>list:reverse</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function list:reverse($list as function(*)) as function(*)</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>list</xqdoc:name>
+          <xqdoc:type>function(*)</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type>function(*)</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+  </xqdoc:functions>
+</xqdoc:xqdoc>

@@ -42,7 +42,7 @@ declare function int-set:insert(
 };
 
 (:~
- : Checks if the given element is contained in the given check.
+ : Checks if the given element is contained in the given set.
  : @param $set set to search in
  : @param $x element to look for
  : @return <code>true()</code> if the element is contained in the set,

@@ -1,0 +1,115 @@
+<xqdoc:xqdoc xmlns:xqdoc="http://www.xqdoc.org/1.0">
+  <xqdoc:control>
+    <xqdoc:date>2013-12-07T16:36:34.093+01:00</xqdoc:date>
+    <xqdoc:version>1.1</xqdoc:version>
+  </xqdoc:control>
+  <xqdoc:module type="library">
+    <xqdoc:uri>http://www.woerteler.de/xquery/modules/pair</xqdoc:uri>
+    <xqdoc:name>pair.xqm</xqdoc:name>
+    <xqdoc:comment>
+      <xqdoc:description>A library for typed pairs of XQuery sequences.</xqdoc:description>
+      <xqdoc:author>Leo Woerteler &lt;leo@woerteler.de&gt;</xqdoc:author>
+      <xqdoc:version>0.1</xqdoc:version>
+      <xqdoc:custom tag="license">BSD 2-Clause License</xqdoc:custom>
+    </xqdoc:comment>
+  </xqdoc:module>
+  <xqdoc:namespaces>
+    <xqdoc:namespace prefix="pair" uri="http://www.woerteler.de/xquery/modules/pair"/>
+  </xqdoc:namespaces>
+  <xqdoc:imports/>
+  <xqdoc:variables/>
+  <xqdoc:functions>
+    <xqdoc:function arity="2">
+      <xqdoc:comment>
+        <xqdoc:description>Creates a pair from the given two values.</xqdoc:description>
+        <xqdoc:param>$fst first partner</xqdoc:param>
+        <xqdoc:param>$snd second partner</xqdoc:param>
+        <xqdoc:return>the pair</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>pair:new</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function pair:new($fst, $snd) as function(*)</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>fst</xqdoc:name>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>snd</xqdoc:name>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type>function(*)</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="1">
+      <xqdoc:comment>
+        <xqdoc:description>Gets the first partner of the given pair.</xqdoc:description>
+        <xqdoc:param>$p the pair</xqdoc:param>
+        <xqdoc:return>the first partner</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>pair:first</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function pair:first($p as function(*)) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>p</xqdoc:name>
+          <xqdoc:type>function(*)</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="1">
+      <xqdoc:comment>
+        <xqdoc:description>Gets the second partner of the given pair.</xqdoc:description>
+        <xqdoc:param>$p the pair</xqdoc:param>
+        <xqdoc:return>the second partner</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>pair:second</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function pair:second($p as function(*)) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>p</xqdoc:name>
+          <xqdoc:type>function(*)</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="2">
+      <xqdoc:comment>
+        <xqdoc:description>Deconstructs the given pair and calls the callback with the first and second partner.</xqdoc:description>
+        <xqdoc:param>$p the pair</xqdoc:param>
+        <xqdoc:param>$receiver the callback</xqdoc:param>
+        <xqdoc:return>the result of the callback</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>pair:deconstruct</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function pair:deconstruct($p as function(*), $receiver as function(item()*, item()*) as item()*) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>p</xqdoc:name>
+          <xqdoc:type>function(*)</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>receiver</xqdoc:name>
+          <xqdoc:type>function(item()*, item()*) as item()*</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+  </xqdoc:functions>
+</xqdoc:xqdoc>

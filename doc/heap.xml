@@ -1,0 +1,137 @@
+<xqdoc:xqdoc xmlns:xqdoc="http://www.xqdoc.org/1.0">
+  <xqdoc:control>
+    <xqdoc:date>2013-12-07T16:36:34.093+01:00</xqdoc:date>
+    <xqdoc:version>1.1</xqdoc:version>
+  </xqdoc:control>
+  <xqdoc:module type="library">
+    <xqdoc:uri>http://www.woerteler.de/xquery/modules/heap</xqdoc:uri>
+    <xqdoc:name>heap.xqm</xqdoc:name>
+    <xqdoc:comment>
+      <xqdoc:description>A simple Skew Heap implementation.</xqdoc:description>
+      <xqdoc:author>Leo Woerteler &lt;leo@woerteler.de&gt;</xqdoc:author>
+      <xqdoc:version>0.1</xqdoc:version>
+      <xqdoc:custom tag="license">BSD 2-Clause License</xqdoc:custom>
+    </xqdoc:comment>
+  </xqdoc:module>
+  <xqdoc:namespaces>
+    <xqdoc:namespace prefix="heap" uri="http://www.woerteler.de/xquery/modules/heap"/>
+    <xqdoc:namespace prefix="pair" uri="http://www.woerteler.de/xquery/modules/pair"/>
+    <xqdoc:namespace prefix="queue" uri="http://www.woerteler.de/xquery/modules/queue"/>
+  </xqdoc:namespaces>
+  <xqdoc:imports>
+    <xqdoc:import type="library">
+      <xqdoc:uri>http://www.woerteler.de/xquery/modules/pair</xqdoc:uri>
+    </xqdoc:import>
+    <xqdoc:import type="library">
+      <xqdoc:uri>http://www.woerteler.de/xquery/modules/queue</xqdoc:uri>
+    </xqdoc:import>
+  </xqdoc:imports>
+  <xqdoc:variables/>
+  <xqdoc:functions>
+    <xqdoc:function arity="1">
+      <xqdoc:comment>
+        <xqdoc:description>Creates a new empty binary heap with a given comparison function.</xqdoc:description>
+        <xqdoc:param>$leq comparison function, returns true() if
+  the first argument is less-than-or-equal to the second one</xqdoc:param>
+        <xqdoc:return>a new empty binary heap</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>heap:new</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function heap:new($leq as function(item()*, item()*) as xs:boolean) as function(*)</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>leq</xqdoc:name>
+          <xqdoc:type>function(item()*, item()*) as xs:boolean</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type>function(*)</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="2">
+      <xqdoc:comment>
+        <xqdoc:description>Inserts a value into a heap.</xqdoc:description>
+        <xqdoc:param>$heap heap to insert the value into</xqdoc:param>
+        <xqdoc:param>$x value to insert</xqdoc:param>
+        <xqdoc:return>the heap where $x is inserted</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>heap:insert</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function heap:insert($heap as function(*), $x) as function(*)</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>heap</xqdoc:name>
+          <xqdoc:type>function(*)</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>x</xqdoc:name>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type>function(*)</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="3">
+      <xqdoc:comment>
+        <xqdoc:description>Tries to extract the minimum element from this heap and either calls the
+callback for the non-empty heap with the minimal element and the rest of the heap
+or the one for the empty heap.</xqdoc:description>
+        <xqdoc:param>$heap the heap to extract the minimum from</xqdoc:param>
+        <xqdoc:param>$empty callback for the empty heap</xqdoc:param>
+        <xqdoc:param>$non-empty callback for the non-empty heap</xqdoc:param>
+        <xqdoc:return>result of the callback</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>heap:extract-min</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function heap:extract-min($heap as function(*), $empty as function() as item()*, $non-empty as function(item()*, function(*)) as item()*) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>heap</xqdoc:name>
+          <xqdoc:type>function(*)</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>empty</xqdoc:name>
+          <xqdoc:type>function() as item()*</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>non-empty</xqdoc:name>
+          <xqdoc:type>function(item()*, function(*)) as item()*</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="2">
+      <xqdoc:comment>
+        <xqdoc:description>Sorts the given sequence according to the given less-than predicate.</xqdoc:description>
+        <xqdoc:param>$lt less-than predicate</xqdoc:param>
+        <xqdoc:param>$seq sequence to sort</xqdoc:param>
+        <xqdoc:return>the sorted sequence</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>heap:sort</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function heap:sort($lt as function(item(), item()) as item()*, $seq) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>lt</xqdoc:name>
+          <xqdoc:type>function(item(), item()) as item()*</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>seq</xqdoc:name>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+  </xqdoc:functions>
+</xqdoc:xqdoc>

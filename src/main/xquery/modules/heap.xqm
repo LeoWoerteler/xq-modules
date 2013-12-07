@@ -57,26 +57,27 @@ declare %public function heap:insert(
 };
 
 (:~
- : tries to extract the minimum value from the given heap.
- : If the heap is empty, the empty sequence is returned.
- : Otherwise the result is a sequence of which the first element
- : is the heap where the minimum was deleted and the rest of
- : the sequence is the extracted minimum.
+ : Tries to extract the minimum element from this heap and either calls the
+ : callback for the non-empty heap with the minimal element and the rest of the heap
+ : or the one for the empty heap.
  :
- : @param $heap heap from which the minimum should be extracted
- : @return sequence of new heap and extracted minimum
+ : @param $heap the heap to extract the minimum from
+ : @param $empty callback for the empty heap
+ : @param $non-empty callback for the non-empty heap
+ : @return result of the callback
  :)
 declare %public function heap:extract-min(
-  $heap as function(*)
+  $heap as function(*),
+  $empty as function() as item()*,
+  $non-empty as function(item()*, function(*)) as item()*
 ) as item()* {
   pair:deconstruct(
     $heap,
     function($leq, $root) {
       $root(
-        function() { () },
+        $empty,
         function($l, $x, $r) {
-          pair:new($leq, heap:union($leq, $l, $r)),
-          $x
+          $non-empty($x, pair:new($leq, heap:union($leq, $l, $r)))
         }
       )
     }

@@ -64,26 +64,25 @@ declare %public function map2:insert(
 };
 
 (:~
- : Fold the keys and values in the map using the given with the given
- : combining function <code>$f($)</code>.
- : Let <code>(($k1,$v1), ..., ($kn, $vn))</code> be the key-value pairs in the
+ : Fold the keys and values in the map using the give combining function <code>$f</code>.
+ : Let <code>{ $k1:$v1, ..., $kn:$vn }</code> be the key-value pairs in the
  : given map <code>$map</code>, then the result is calculated by:
  : <code>$f(... $f($f($start, $k1, $v1), $k2, $v2), ...), $kn, $vn)</code>
  :
- : @param $f left-associative combining function
- : @param $start start value
  : @param $map map to be folded
+ : @param $start start value
+ : @param $f left-associative combining function
  : @return resulting value
  :)
 declare %public function map2:fold(
-  $f as function(item()*, item(), item()*) as item()*,
+  $map as map(*),
   $start as item()*,
-  $map as map(*)
+  $f as function(item()*, item(), item()*) as item()*
 ) as item()* {
   fold-left(
-    function($val, $key) { $f($val, $key, $map($key)) },
+    map:keys($map),
     $start,
-    map:keys($map)
+    function($val, $key) { $f($val, $key, $map($key)) }
   )
 };
 
@@ -137,4 +136,20 @@ declare %public function map2:map-with-key(
     for $key in map:keys($map)
     return map:entry($key, $f($key, $map($key)))
   )
+};
+
+(:~
+ : Iterates over the entries of the given map and calls the given function
+ : with their key and bound value.
+ :
+ : @param $map the map to iterate over
+ : @param $f the two-argument function to call with the key and value
+ : @return the results of all calls to <code>$f</code> concatenated
+ :)
+declare %public function map2:for-each-entry(
+  $map as map(*),
+  $f as function(item(), item()*) as item()*
+) as item()* {
+  for $k in map:keys($map)
+  return $f($k, $map($k))
 };

@@ -294,16 +294,14 @@ declare %private function rbtree:prev($c) {
   switch($c)
     case $rbtree:DBL_BLACK return $rbtree:BLACK
     case $rbtree:BLACK     return $rbtree:RED
-    case $rbtree:RED       return $rbtree:DBL_RED
-    default return error()
+    default                return $rbtree:DBL_RED
 };
 
 declare %private function rbtree:next($c) {
   switch($c)
     case $rbtree:DBL_RED return $rbtree:RED
     case $rbtree:RED     return $rbtree:BLACK
-    case $rbtree:BLACK   return $rbtree:DBL_BLACK
-    default return error()
+    default              return $rbtree:DBL_BLACK
 };
 
 declare %private function rbtree:recolor($tree, $col) {

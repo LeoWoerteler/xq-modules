@@ -1,0 +1,86 @@
+<xqdoc:xqdoc xmlns:xqdoc="http://www.xqdoc.org/1.0">
+  <xqdoc:control>
+    <xqdoc:date>2013-12-07T16:36:34.093+01:00</xqdoc:date>
+    <xqdoc:version>1.1</xqdoc:version>
+  </xqdoc:control>
+  <xqdoc:module type="library">
+    <xqdoc:uri>http://www.woerteler.de/xquery/modules/rng</xqdoc:uri>
+    <xqdoc:name>rng.xqm</xqdoc:name>
+    <xqdoc:comment>
+      <xqdoc:description>A simple random number generator implemented as a Linear Congruential Generator.</xqdoc:description>
+      <xqdoc:author>Leo Woerteler &lt;leo@woerteler.de&gt;</xqdoc:author>
+      <xqdoc:version>0.1</xqdoc:version>
+      <xqdoc:custom tag="license">BSD 2-Clause License</xqdoc:custom>
+    </xqdoc:comment>
+  </xqdoc:module>
+  <xqdoc:namespaces>
+    <xqdoc:namespace prefix="rng" uri="http://www.woerteler.de/xquery/modules/rng"/>
+  </xqdoc:namespaces>
+  <xqdoc:imports/>
+  <xqdoc:variables/>
+  <xqdoc:functions>
+    <xqdoc:function arity="2">
+      <xqdoc:comment>
+        <xqdoc:description>Generates <code>$n</code> random <code>xs:int</code>s, starting with the given seed.</xqdoc:description>
+        <xqdoc:param>$seed the seed to start from</xqdoc:param>
+        <xqdoc:param>$n number of random ints to produce</xqdoc:param>
+        <xqdoc:return>sequence</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>rng:random-ints</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function rng:random-ints($seed as xs:integer, $n as xs:integer) as xs:int*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>seed</xqdoc:name>
+          <xqdoc:type>xs:integer</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>n</xqdoc:name>
+          <xqdoc:type>xs:integer</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">xs:int</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="4">
+      <xqdoc:comment>
+        <xqdoc:description>Folds over a sequence of <code>$n</code> randomly generated <code>xs:int</code>s,
+starting with the value <code>$start</code> and successively adding random ints
+by calling <code>$f</code> with the current value and the next int.</xqdoc:description>
+        <xqdoc:param>$seed seed for the random number generator</xqdoc:param>
+        <xqdoc:param>$n number of random numbers to generate</xqdoc:param>
+        <xqdoc:param>$start initial value for the fold</xqdoc:param>
+        <xqdoc:param>$f combining function</xqdoc:param>
+        <xqdoc:return>result of the fold</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>rng:with-random-ints</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function rng:with-random-ints($seed as xs:integer, $n as xs:integer, $start, $f as function(item()*, item()*) as item()*) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>seed</xqdoc:name>
+          <xqdoc:type>xs:integer</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>n</xqdoc:name>
+          <xqdoc:type>xs:integer</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>start</xqdoc:name>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>f</xqdoc:name>
+          <xqdoc:type>function(item()*, item()*) as item()*</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+  </xqdoc:functions>
+</xqdoc:xqdoc>

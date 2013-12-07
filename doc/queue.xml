@@ -1,0 +1,144 @@
+<xqdoc:xqdoc xmlns:xqdoc="http://www.xqdoc.org/1.0">
+  <xqdoc:control>
+    <xqdoc:date>2013-12-07T16:36:34.093+01:00</xqdoc:date>
+    <xqdoc:version>1.1</xqdoc:version>
+  </xqdoc:control>
+  <xqdoc:module type="library">
+    <xqdoc:uri>http://www.woerteler.de/xquery/modules/queue</xqdoc:uri>
+    <xqdoc:name>queue.xqm</xqdoc:name>
+    <xqdoc:comment>
+      <xqdoc:description>A simple queue implementation.</xqdoc:description>
+      <xqdoc:author>Leo Woerteler &lt;leo@woerteler.de&gt;</xqdoc:author>
+      <xqdoc:version>0.1</xqdoc:version>
+      <xqdoc:custom tag="license">BSD 2-Clause License</xqdoc:custom>
+    </xqdoc:comment>
+  </xqdoc:module>
+  <xqdoc:namespaces>
+    <xqdoc:namespace prefix="queue" uri="http://www.woerteler.de/xquery/modules/queue"/>
+    <xqdoc:namespace prefix="pair" uri="http://www.woerteler.de/xquery/modules/pair"/>
+    <xqdoc:namespace prefix="list" uri="http://www.woerteler.de/xquery/modules/list"/>
+  </xqdoc:namespaces>
+  <xqdoc:imports>
+    <xqdoc:import type="library">
+      <xqdoc:uri>http://www.woerteler.de/xquery/modules/pair</xqdoc:uri>
+    </xqdoc:import>
+    <xqdoc:import type="library">
+      <xqdoc:uri>http://www.woerteler.de/xquery/modules/list</xqdoc:uri>
+    </xqdoc:import>
+  </xqdoc:imports>
+  <xqdoc:variables/>
+  <xqdoc:functions>
+    <xqdoc:function arity="0">
+      <xqdoc:comment>
+        <xqdoc:description>The empty queue.</xqdoc:description>
+        <xqdoc:return>the empty queue</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>queue:empty</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function queue:empty()</xqdoc:signature>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="2">
+      <xqdoc:comment>
+        <xqdoc:description>Enqueues the given value into the given queue.</xqdoc:description>
+        <xqdoc:param>$x the value to enqueue</xqdoc:param>
+        <xqdoc:param>$queue the queue</xqdoc:param>
+        <xqdoc:return>the queue with <code>$x</code> added at the back</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>queue:enqueue</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function queue:enqueue($x, $queue) as function(*)</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>x</xqdoc:name>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>queue</xqdoc:name>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type>function(*)</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="3">
+      <xqdoc:comment>
+        <xqdoc:description>Matches the given queue and calls the corresponding callback for the empty
+or non-empty queue.</xqdoc:description>
+        <xqdoc:param>$queue queue to match on</xqdoc:param>
+        <xqdoc:param>$empty no-argument callback for the empty queue</xqdoc:param>
+        <xqdoc:param>$nonEmpty callback for the non-empty queue that takes the first element
+                    and the tai of the queue</xqdoc:param>
+      </xqdoc:comment>
+      <xqdoc:name>queue:match</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function queue:match($queue as function(*), $empty as function() as item()*, $nonEmpty as function(item()*, function(*)) as item()*) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>queue</xqdoc:name>
+          <xqdoc:type>function(*)</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>empty</xqdoc:name>
+          <xqdoc:type>function() as item()*</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>nonEmpty</xqdoc:name>
+          <xqdoc:type>function(item()*, function(*)) as item()*</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="1">
+      <xqdoc:comment>
+        <xqdoc:description>Returns the tail of the queue.</xqdoc:description>
+        <xqdoc:return>tail of the queue</xqdoc:return>
+        <xqdoc:custom tag="throws">queue:EMPTYQUE when the queue is empty</xqdoc:custom>
+      </xqdoc:comment>
+      <xqdoc:name>queue:tail</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function queue:tail($queue as function(*)) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>queue</xqdoc:name>
+          <xqdoc:type>function(*)</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="1">
+      <xqdoc:comment>
+        <xqdoc:description>Returns the head of the queue.</xqdoc:description>
+        <xqdoc:return>value at the head of the queue</xqdoc:return>
+        <xqdoc:custom tag="throws">queue:EMPTYQUE when the queue is empty</xqdoc:custom>
+      </xqdoc:comment>
+      <xqdoc:name>queue:peek</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function queue:peek($queue as function(*)) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>queue</xqdoc:name>
+          <xqdoc:type>function(*)</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+  </xqdoc:functions>
+</xqdoc:xqdoc>

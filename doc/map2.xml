@@ -1,0 +1,232 @@
+<xqdoc:xqdoc xmlns:xqdoc="http://www.xqdoc.org/1.0">
+  <xqdoc:control>
+    <xqdoc:date>2013-12-07T16:36:34.093+01:00</xqdoc:date>
+    <xqdoc:version>1.1</xqdoc:version>
+  </xqdoc:control>
+  <xqdoc:module type="library">
+    <xqdoc:uri>http://www.woerteler.de/xquery/modules/map-extras</xqdoc:uri>
+    <xqdoc:name>map2.xqm</xqdoc:name>
+    <xqdoc:comment>
+      <xqdoc:description>Additional functions for XQuery 3.0 maps.</xqdoc:description>
+      <xqdoc:author>Leo Woerteler &lt;leo@woerteler.de&gt;</xqdoc:author>
+      <xqdoc:version>0.1</xqdoc:version>
+      <xqdoc:custom tag="license">BSD 2-Clause License</xqdoc:custom>
+    </xqdoc:comment>
+  </xqdoc:module>
+  <xqdoc:namespaces>
+    <xqdoc:namespace prefix="map2" uri="http://www.woerteler.de/xquery/modules/map-extras"/>
+    <xqdoc:namespace prefix="map" uri="http://www.w3.org/2005/xpath-functions/map"/>
+  </xqdoc:namespaces>
+  <xqdoc:imports/>
+  <xqdoc:variables/>
+  <xqdoc:functions>
+    <xqdoc:function arity="4">
+      <xqdoc:comment>
+        <xqdoc:description>Insert with a combining function. <code>insert-with($f, $key, $value, $map)</code>
+will insert <code>map:entry($key, $value)</code> into <code>$map</code> if
+<code>$key</code> does not exist in the map. If the key does exist, the function
+will insert <code>$f($new-value, $old-value)</code>.</xqdoc:description>
+        <xqdoc:param>$f combining function</xqdoc:param>
+        <xqdoc:param>$key key to insert</xqdoc:param>
+        <xqdoc:param>$value value to insert</xqdoc:param>
+        <xqdoc:param>$map map to insert into</xqdoc:param>
+        <xqdoc:return>new map where the entry is inserted</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>map2:insert-with</xqdoc:name>
+      <xqdoc:signature>declare function map2:insert-with($f as function(item()*, item()*) as item()*, $key as item(), $value, $map as map(*)) as map(*)</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>f</xqdoc:name>
+          <xqdoc:type>function(item()*, item()*) as item()*</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>key</xqdoc:name>
+          <xqdoc:type>item()</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>value</xqdoc:name>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>map</xqdoc:name>
+          <xqdoc:type>map(*)</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type>map(*)</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="3">
+      <xqdoc:comment>
+        <xqdoc:description>Inserts a key-value pair into a map. If an entry with the key <code>$key</code>
+already exists in the map, it is replaced by the new one.</xqdoc:description>
+        <xqdoc:param>$key key to insert</xqdoc:param>
+        <xqdoc:param>$value value to insert</xqdoc:param>
+        <xqdoc:param>$map map to insert into</xqdoc:param>
+        <xqdoc:return>map where the key-value pair was inserted</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>map2:insert</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function map2:insert($key as item(), $value, $map as map(*)) as map(*)</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>key</xqdoc:name>
+          <xqdoc:type>item()</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>value</xqdoc:name>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>map</xqdoc:name>
+          <xqdoc:type>map(*)</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type>map(*)</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="3">
+      <xqdoc:comment>
+        <xqdoc:description>Fold the keys and values in the map using the give combining function <code>$f</code>.
+Let <code>{ $k1:$v1, ..., $kn:$vn }</code> be the key-value pairs in the
+given map <code>$map</code>, then the result is calculated by:
+<code>$f(... $f($f($start, $k1, $v1), $k2, $v2), ...), $kn, $vn)</code>
+        </xqdoc:description>
+        <xqdoc:param>$map map to be folded</xqdoc:param>
+        <xqdoc:param>$start start value</xqdoc:param>
+        <xqdoc:param>$f left-associative combining function</xqdoc:param>
+        <xqdoc:return>resulting value</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>map2:fold</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function map2:fold($map as map(*), $start, $f as function(item()*, item(), item()*) as item()*) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>map</xqdoc:name>
+          <xqdoc:type>map(*)</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>start</xqdoc:name>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>f</xqdoc:name>
+          <xqdoc:type>function(item()*, item(), item()*) as item()*</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="1">
+      <xqdoc:comment>
+        <xqdoc:description>Extracts all values from the map <code>$map</code>, returning
+them in a sequence in arbitrary order.</xqdoc:description>
+        <xqdoc:param>$map map to extract the values from</xqdoc:param>
+        <xqdoc:return>sequence of values</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>map2:values</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function map2:values($map as map(*)) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>map</xqdoc:name>
+          <xqdoc:type>map(*)</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="2">
+      <xqdoc:comment>
+        <xqdoc:description>Applies the function <code>$f</code> to all values in the map.
+The keys are not touched.</xqdoc:description>
+        <xqdoc:param>$f function to be applies to all values</xqdoc:param>
+        <xqdoc:param>$map input map</xqdoc:param>
+        <xqdoc:return>copy of <code>$map</code> where all values <code>$value</code>
+        are replaced by <code>$f($value)</code>
+        </xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>map2:map</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function map2:map($f as function(item()*) as item()*, $map as map(*)) as map(*)</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>f</xqdoc:name>
+          <xqdoc:type>function(item()*) as item()*</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>map</xqdoc:name>
+          <xqdoc:type>map(*)</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type>map(*)</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="2">
+      <xqdoc:comment>
+        <xqdoc:description>Maps a function over all entries of the map <code>$map</code>.
+Each entry <code>($key, $value)</code> in the map is replaced by a new
+entry <code>($key, $f($key, $value))</code>, the keys are not touched.</xqdoc:description>
+        <xqdoc:param>$f function to be applies to all entries</xqdoc:param>
+        <xqdoc:param>$map input map</xqdoc:param>
+        <xqdoc:return>copy of <code>$map</code> where all values <code>$value</code>
+        are replaced by <code>$f($key, $value)</code>
+        </xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>map2:map-with-key</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function map2:map-with-key($f as function(item(), item()*) as item()*, $map as map(*)) as map(*)</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>f</xqdoc:name>
+          <xqdoc:type>function(item(), item()*) as item()*</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>map</xqdoc:name>
+          <xqdoc:type>map(*)</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type>map(*)</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="2">
+      <xqdoc:comment>
+        <xqdoc:description>Iterates over the entries of the given map and calls the given function
+with their key and bound value.</xqdoc:description>
+        <xqdoc:param>$map the map to iterate over</xqdoc:param>
+        <xqdoc:param>$f the two-argument function to call with the key and value</xqdoc:param>
+        <xqdoc:return>the results of all calls to <code>$f</code> concatenated</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>map2:for-each-entry</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function map2:for-each-entry($map_21 as map(*), $f_22 as function(item(), item()*) as item()*) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>map</xqdoc:name>
+          <xqdoc:type>map(*)</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>f</xqdoc:name>
+          <xqdoc:type>function(item(), item()*) as item()*</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+  </xqdoc:functions>
+</xqdoc:xqdoc>

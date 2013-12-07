@@ -1,0 +1,331 @@
+<xqdoc:xqdoc xmlns:xqdoc="http://www.xqdoc.org/1.0">
+  <xqdoc:control>
+    <xqdoc:date>2013-12-07T16:36:34.093+01:00</xqdoc:date>
+    <xqdoc:version>1.1</xqdoc:version>
+  </xqdoc:control>
+  <xqdoc:module type="library">
+    <xqdoc:uri>http://www.woerteler.de/xquery/modules/ordered-map</xqdoc:uri>
+    <xqdoc:name>ordered-map.xqm</xqdoc:name>
+    <xqdoc:comment>
+      <xqdoc:description>Abstract interface for an ordered map.</xqdoc:description>
+      <xqdoc:author>Leo Woerteler &lt;leo@woerteler.de&gt;</xqdoc:author>
+      <xqdoc:version>0.1</xqdoc:version>
+      <xqdoc:custom tag="license">BSD 2-Clause License</xqdoc:custom>
+    </xqdoc:comment>
+  </xqdoc:module>
+  <xqdoc:namespaces>
+    <xqdoc:namespace prefix="ordered-map" uri="http://www.woerteler.de/xquery/modules/ordered-map"/>
+    <xqdoc:namespace prefix="pair" uri="http://www.woerteler.de/xquery/modules/pair"/>
+    <xqdoc:namespace prefix="impl" uri="http://www.woerteler.de/xquery/modules/ordered-map/rbtree"/>
+  </xqdoc:namespaces>
+  <xqdoc:imports>
+    <xqdoc:import type="library">
+      <xqdoc:uri>http://www.woerteler.de/xquery/modules/pair</xqdoc:uri>
+    </xqdoc:import>
+    <xqdoc:import type="library">
+      <xqdoc:uri>http://www.woerteler.de/xquery/modules/ordered-map/rbtree</xqdoc:uri>
+    </xqdoc:import>
+  </xqdoc:imports>
+  <xqdoc:variables/>
+  <xqdoc:functions>
+    <xqdoc:function arity="1">
+      <xqdoc:comment>
+        <xqdoc:description>Creates a new map with the given less-than predicate.</xqdoc:description>
+        <xqdoc:param>$lt less-than predicate</xqdoc:param>
+        <xqdoc:return>the empty map</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>ordered-map:new</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function ordered-map:new($lt as function(item()*, item()*) as xs:boolean) as function(*)</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>lt</xqdoc:name>
+          <xqdoc:type>function(item()*, item()*) as xs:boolean</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type>function(*)</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="4">
+      <xqdoc:comment>
+        <xqdoc:description>Looks up the given key in the given map and calls the corresponding callback.</xqdoc:description>
+        <xqdoc:param>$m the map to search in</xqdoc:param>
+        <xqdoc:param>$k key to look up</xqdoc:param>
+        <xqdoc:param>$found callback for when the key was found</xqdoc:param>
+        <xqdoc:param>$notFound callback for when the key was not found</xqdoc:param>
+        <xqdoc:return>result from the callback</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>ordered-map:lookup</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function ordered-map:lookup($m as function(*), $k, $found as function(item()*) as item()*, $notFound as function() as item()*) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>m</xqdoc:name>
+          <xqdoc:type>function(*)</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>k</xqdoc:name>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>found</xqdoc:name>
+          <xqdoc:type>function(item()*) as item()*</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>notFound</xqdoc:name>
+          <xqdoc:type>function() as item()*</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="2">
+      <xqdoc:comment>
+        <xqdoc:description>Checks if the given map contains an entry with the given key.</xqdoc:description>
+        <xqdoc:param>$m map to look in</xqdoc:param>
+        <xqdoc:param>$k key to look for</xqdoc:param>
+        <xqdoc:return>
+          <code>true()</code> if the key is in the map, <code>false()</code> otherwise</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>ordered-map:contains</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function ordered-map:contains($m as function(*), $k) as xs:boolean</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>m</xqdoc:name>
+          <xqdoc:type>function(*)</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>k</xqdoc:name>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type>xs:boolean</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="2">
+      <xqdoc:comment>
+        <xqdoc:description>Gets the value bound to the given key in the given map.</xqdoc:description>
+        <xqdoc:param>$m the map</xqdoc:param>
+        <xqdoc:param>$k key to look up</xqdoc:param>
+        <xqdoc:return>the bound value if the key exists in the map, <code>()</code> otherwise</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>ordered-map:get</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function ordered-map:get($m as function(*), $k) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>m</xqdoc:name>
+          <xqdoc:type>function(*)</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>k</xqdoc:name>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="1">
+      <xqdoc:comment>
+        <xqdoc:description>Determines the number of entries in the given map.</xqdoc:description>
+        <xqdoc:param>$m map to determine the number of entries of</xqdoc:param>
+        <xqdoc:return>number of entries</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>ordered-map:size</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function ordered-map:size($m as function(*)) as xs:integer</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>m</xqdoc:name>
+          <xqdoc:type>function(*)</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type>xs:integer</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="3">
+      <xqdoc:comment>
+        <xqdoc:description>Inserts the given key and value into the given map and returns the new map.</xqdoc:description>
+        <xqdoc:param>$m map to insert into</xqdoc:param>
+        <xqdoc:param>$k key to insert</xqdoc:param>
+        <xqdoc:param>$v value to insert</xqdoc:param>
+        <xqdoc:return>the new map</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>ordered-map:insert</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function ordered-map:insert($m as function(*), $k, $v) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>m</xqdoc:name>
+          <xqdoc:type>function(*)</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>k</xqdoc:name>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>v</xqdoc:name>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="2">
+      <xqdoc:comment>
+        <xqdoc:description>Deletes the given key from the map if it exists.</xqdoc:description>
+        <xqdoc:param>$m map to delete from</xqdoc:param>
+        <xqdoc:param>$k key to delete</xqdoc:param>
+        <xqdoc:return>map that does not contain the deleted key</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>ordered-map:delete</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function ordered-map:delete($m as function(*), $k) as function(*)</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>m</xqdoc:name>
+          <xqdoc:type>function(*)</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>k</xqdoc:name>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type>function(*)</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="4">
+      <xqdoc:comment>
+        <xqdoc:description>Checks the structural consistency of the given map.</xqdoc:description>
+        <xqdoc:param>$m the map to check</xqdoc:param>
+        <xqdoc:param>$minExcl a key that is smaller than all keys in the map</xqdoc:param>
+        <xqdoc:param>$maxExcl a key that is greater than all keys in the map</xqdoc:param>
+        <xqdoc:param>message to display when the check fails</xqdoc:param>
+        <xqdoc:return>the map</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>ordered-map:check</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function ordered-map:check($m as function(*), $min, $max, $msg as xs:string) as function(*)</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>m</xqdoc:name>
+          <xqdoc:type>function(*)</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>min</xqdoc:name>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>max</xqdoc:name>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>msg</xqdoc:name>
+          <xqdoc:type>xs:string</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type>function(*)</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="1">
+      <xqdoc:comment>
+        <xqdoc:description>Returns an XML document showing the inner structure of the given map.</xqdoc:description>
+        <xqdoc:param>$m the map</xqdoc:param>
+        <xqdoc:return>structure of <code>$m</code> as XML document</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>ordered-map:to-xml</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function ordered-map:to-xml($m as function(*)) as document-node()</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>m</xqdoc:name>
+          <xqdoc:type>function(*)</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type>document-node()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="3">
+      <xqdoc:comment>
+        <xqdoc:description>Combines all entries in the given map in ascending order using
+the user-supplied function &lt;code&gt;$f&lt;/code&gt;.
+For a map &lt;code&gt;$m&lt;/code&gt; containing the entries
+&lt;code&gt;{($k1, $v1), ($k2, $v2), ($k3, $v3)}&lt;/code&gt;
+with &lt;code&gt;$k1 &lt; $k2 &lt; $k3&lt;/code&gt;, the call &lt;code&gt;fold($m, $z, $f)&lt;/code&gt;
+would return &lt;code&gt;$f($f($f($z, $k1, $v1), $k2, $v2), $k3, $v3)&lt;/code&gt;.</xqdoc:description>
+        <xqdoc:param>$m the map to fold</xqdoc:param>
+        <xqdoc:param>$z starting value</xqdoc:param>
+        <xqdoc:param>$f combining function</xqdoc:param>
+        <xqdoc:return>the folded value</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>ordered-map:fold</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function ordered-map:fold($m as function(*), $z, $f as function(item()*, item()*, item()*) as item()*) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>m</xqdoc:name>
+          <xqdoc:type>function(*)</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>z</xqdoc:name>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>f</xqdoc:name>
+          <xqdoc:type>function(item()*, item()*, item()*) as item()*</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="2">
+      <xqdoc:comment>
+        <xqdoc:description>Calls the geiven function for every entry in the map and concatenates the result sequences.</xqdoc:description>
+        <xqdoc:param>$m the map to iterate over</xqdoc:param>
+        <xqdoc:param>$f binary function taking the key and value of the entry</xqdoc:param>
+        <xqdoc:return>concatenated results of the calls to <code>$f</code>
+        </xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>ordered-map:for-each-entry</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function ordered-map:for-each-entry($m as function(*), $f as function(item()*, item()*) as item()*) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>m</xqdoc:name>
+          <xqdoc:type>function(*)</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>f</xqdoc:name>
+          <xqdoc:type>function(item()*, item()*) as item()*</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+  </xqdoc:functions>
+</xqdoc:xqdoc>

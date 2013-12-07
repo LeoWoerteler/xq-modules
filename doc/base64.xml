@@ -1,0 +1,96 @@
+<xqdoc:xqdoc xmlns:xqdoc="http://www.xqdoc.org/1.0">
+  <xqdoc:control>
+    <xqdoc:date>2013-12-07T16:36:34.093+01:00</xqdoc:date>
+    <xqdoc:version>1.1</xqdoc:version>
+  </xqdoc:control>
+  <xqdoc:module type="library">
+    <xqdoc:uri>http://www.woerteler.de/xquery/modules/base64</xqdoc:uri>
+    <xqdoc:name>base64.xqm</xqdoc:name>
+    <xqdoc:comment>
+      <xqdoc:description>A module for converting between byte sequences and xs:base64Binary values.</xqdoc:description>
+      <xqdoc:author>Leo Woerteler &lt;leo@woerteler.de&gt;</xqdoc:author>
+      <xqdoc:version>0.1</xqdoc:version>
+      <xqdoc:custom tag="license">BSD 2-Clause License</xqdoc:custom>
+    </xqdoc:comment>
+  </xqdoc:module>
+  <xqdoc:namespaces>
+    <xqdoc:namespace prefix="base64" uri="http://www.woerteler.de/xquery/modules/base64"/>
+  </xqdoc:namespaces>
+  <xqdoc:imports/>
+  <xqdoc:variables>
+    <xqdoc:variable>
+      <xqdoc:name>base64:PAD</xqdoc:name>
+      <xqdoc:comment>
+        <xqdoc:description>Codepoint for the '=' padding character.</xqdoc:description>
+      </xqdoc:comment>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="private"/>
+      </xqdoc:annotations>
+      <xqdoc:type>xs:integer</xqdoc:type>
+    </xqdoc:variable>
+    <xqdoc:variable>
+      <xqdoc:name>base64:chars</xqdoc:name>
+      <xqdoc:comment>
+        <xqdoc:description>Encoding characters.</xqdoc:description>
+      </xqdoc:comment>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="private"/>
+      </xqdoc:annotations>
+      <xqdoc:type occurrence="*">xs:integer</xqdoc:type>
+    </xqdoc:variable>
+    <xqdoc:variable>
+      <xqdoc:name>base64:decode-table</xqdoc:name>
+      <xqdoc:comment>
+        <xqdoc:description>Decoding table.</xqdoc:description>
+      </xqdoc:comment>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="private"/>
+      </xqdoc:annotations>
+      <xqdoc:type>map(*)</xqdoc:type>
+    </xqdoc:variable>
+  </xqdoc:variables>
+  <xqdoc:functions>
+    <xqdoc:function arity="1">
+      <xqdoc:comment>
+        <xqdoc:description>Encodes a sequence of <code>xs:byte</code>s into an <code>xs:base64Binary</code> value.</xqdoc:description>
+        <xqdoc:param>$bytes byte sequence to be converted</xqdoc:param>
+        <xqdoc:return>the <code>xs:base64Binary</code> value encoding the bytes</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>base64:encode</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function base64:encode($bytes as xs:byte*) as xs:base64Binary</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>bytes</xqdoc:name>
+          <xqdoc:type occurrence="*">xs:byte</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type>xs:base64Binary</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="1">
+      <xqdoc:comment>
+        <xqdoc:description>Decodes a sequence of bytes from a <code>xs:base64Binary</code> value.</xqdoc:description>
+        <xqdoc:param>$b64 value to be decoded</xqdoc:param>
+        <xqdoc:return>decoded bytes</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>base64:decode</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function base64:decode($b64 as xs:base64Binary) as xs:byte*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>b64</xqdoc:name>
+          <xqdoc:type>xs:base64Binary</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">xs:byte</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+  </xqdoc:functions>
+</xqdoc:xqdoc>

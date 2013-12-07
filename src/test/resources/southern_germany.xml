@@ -1,0 +1,35 @@
+<!--
+  Cities of southern Germany and distances between them.
+  http://commons.wikimedia.org/wiki/File:MapGermanyGraph.svg
+ -->
+<graph>
+  <vertex id="0" name="Frankfurt">
+    <edge weight="85">1</edge>
+    <edge weight="217">2</edge>
+    <edge weight="173">4</edge>
+  </vertex>
+  <vertex id="1" name="Mannheim">
+    <edge weight="80">5</edge>
+  </vertex>
+  <vertex id="2" name="Würzburg">
+    <edge weight="186">6</edge>
+    <edge weight="103">7</edge>
+  </vertex>
+  <vertex id="3" name="Stuttgart">
+    <edge weight="183">7</edge>
+  </vertex>
+  <vertex id="4" name="Kassel">
+    <edge weight="502">9</edge>
+  </vertex>
+  <vertex id="5" name="Karlsruhe">
+    <edge weight="250">8</edge>
+  </vertex>
+  <vertex id="6" name="Erfurt"/>
+  <vertex id="7" name="Nürnberg">
+    <edge weight="167">9</edge>
+  </vertex>
+  <vertex id="8" name="Augsburg">
+    <edge weight="84">9</edge>
+  </vertex>
+  <vertex id="9" name="München"/>
+</graph>
