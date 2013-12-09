@@ -9,7 +9,7 @@ declare variable $doc := doc('../resources/southern_germany.xml');
 
 declare variable $empty-map := map:new(function($a, $b) { $a < $b });
 
-declare variable $cities2 :=
+declare %basex:lazy variable $cities as function(*) :=
   fold-left(
     $doc//vertex,
     $empty-map,
@@ -18,7 +18,7 @@ declare variable $cities2 :=
     }
   );
 
-declare variable $names2 :=
+declare %basex:lazy variable $names as function(*) :=
   fold-left(
     $doc//vertex,
     $empty-map,
@@ -27,7 +27,7 @@ declare variable $names2 :=
     }
   );
 
-declare variable $dists :=
+declare %basex:lazy variable $dists :=
   fold-left(
     $doc//vertex,
     $empty-map,
@@ -113,15 +113,15 @@ declare function local:path($visited, $pos) {
   if(empty($pos)) then ()
   else (
     local:path($visited, map:get($visited, $pos)),
-    <step>{ map:get($names2, $pos) }</step>
+    <step>{ map:get($names, $pos) }</step>
   )
 };
 
 map:for-each-entry(
-  $cities2,
+  $cities,
   function($from, $fid) {
     map:for-each-entry(
-      $cities2,
+      $cities,
       function($to, $tid) {
         <path from="{$from}" to="{$to}">{
           local:dijkstra($fid, $tid)

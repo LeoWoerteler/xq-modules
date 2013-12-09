@@ -1,6 +1,6 @@
 <xqdoc:xqdoc xmlns:xqdoc="http://www.xqdoc.org/1.0">
   <xqdoc:control>
-    <xqdoc:date>2013-12-07T16:36:34.093+01:00</xqdoc:date>
+    <xqdoc:date>2013-12-08T17:09:32.867+01:00</xqdoc:date>
     <xqdoc:version>1.1</xqdoc:version>
   </xqdoc:control>
   <xqdoc:module type="library">
@@ -28,7 +28,7 @@
       <xqdoc:annotations>
         <xqdoc:annotation name="public"/>
       </xqdoc:annotations>
-      <xqdoc:signature>declare %public function list:nil()</xqdoc:signature>
+      <xqdoc:signature>declare %public function list:nil() as item()*</xqdoc:signature>
       <xqdoc:return>
         <xqdoc:type occurrence="*">item()</xqdoc:type>
       </xqdoc:return>
@@ -44,10 +44,11 @@
       <xqdoc:annotations>
         <xqdoc:annotation name="public"/>
       </xqdoc:annotations>
-      <xqdoc:signature>declare %public function list:cons($head, $tail as function(*)) as function(*)</xqdoc:signature>
+      <xqdoc:signature>declare %public function list:cons($head as item()*, $tail as function(*)) as function(*)</xqdoc:signature>
       <xqdoc:parameters>
         <xqdoc:parameter>
           <xqdoc:name>head</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
         <xqdoc:parameter>
           <xqdoc:name>tail</xqdoc:name>
@@ -102,7 +103,7 @@ callback for an empty and non-empty list.</xqdoc:description>
       <xqdoc:annotations>
         <xqdoc:annotation name="public"/>
       </xqdoc:annotations>
-      <xqdoc:signature>declare %public function list:fold-left($f as function(item()*, item()*) as item()*, $z, $list as function(*)) as item()*</xqdoc:signature>
+      <xqdoc:signature>declare %public function list:fold-left($f as function(item()*, item()*) as item()*, $z as item()*, $list as function(*)) as item()*</xqdoc:signature>
       <xqdoc:parameters>
         <xqdoc:parameter>
           <xqdoc:name>f</xqdoc:name>
@@ -110,6 +111,7 @@ callback for an empty and non-empty list.</xqdoc:description>
         </xqdoc:parameter>
         <xqdoc:parameter>
           <xqdoc:name>z</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
         <xqdoc:parameter>
           <xqdoc:name>list</xqdoc:name>
@@ -132,7 +134,7 @@ callback for an empty and non-empty list.</xqdoc:description>
       <xqdoc:annotations>
         <xqdoc:annotation name="public"/>
       </xqdoc:annotations>
-      <xqdoc:signature>declare %public function list:fold-right($f as function(item()*, item()*) as item()*, $z, $list as function(*)) as item()*</xqdoc:signature>
+      <xqdoc:signature>declare %public function list:fold-right($f as function(item()*, item()*) as item()*, $z as item()*, $list as function(*)) as item()*</xqdoc:signature>
       <xqdoc:parameters>
         <xqdoc:parameter>
           <xqdoc:name>f</xqdoc:name>
@@ -140,6 +142,7 @@ callback for an empty and non-empty list.</xqdoc:description>
         </xqdoc:parameter>
         <xqdoc:parameter>
           <xqdoc:name>z</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
         <xqdoc:parameter>
           <xqdoc:name>list</xqdoc:name>

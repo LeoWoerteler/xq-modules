@@ -29,6 +29,21 @@ declare %public function heap:new(
 };
 
 (:~
+ : Check if the given heap is empty.
+ : @param $heap the heap to check
+ : @return <code>true()</code> if the heap is empty, <code>false()</code> otherwise
+ :)
+declare %public function heap:is-empty(
+  $heap as function(*)
+) as xs:boolean {
+  heap:extract-min(
+    $heap,
+    function() { true() },
+    function($h, $t) { false() }
+  )
+};
+
+(:~
  : Inserts a value into a heap.
  :
  : @param $heap heap to insert the value into

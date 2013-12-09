@@ -1,6 +1,6 @@
 <xqdoc:xqdoc xmlns:xqdoc="http://www.xqdoc.org/1.0">
   <xqdoc:control>
-    <xqdoc:date>2013-12-07T16:36:34.093+01:00</xqdoc:date>
+    <xqdoc:date>2013-12-08T17:09:32.867+01:00</xqdoc:date>
     <xqdoc:version>1.1</xqdoc:version>
   </xqdoc:control>
   <xqdoc:module type="library">
@@ -37,7 +37,7 @@
       <xqdoc:annotations>
         <xqdoc:annotation name="public"/>
       </xqdoc:annotations>
-      <xqdoc:signature>declare %public function queue:empty()</xqdoc:signature>
+      <xqdoc:signature>declare %public function queue:empty() as item()*</xqdoc:signature>
       <xqdoc:return>
         <xqdoc:type occurrence="*">item()</xqdoc:type>
       </xqdoc:return>
@@ -53,13 +53,15 @@
       <xqdoc:annotations>
         <xqdoc:annotation name="public"/>
       </xqdoc:annotations>
-      <xqdoc:signature>declare %public function queue:enqueue($x, $queue) as function(*)</xqdoc:signature>
+      <xqdoc:signature>declare %public function queue:enqueue($x as item()*, $queue as item()*) as function(*)</xqdoc:signature>
       <xqdoc:parameters>
         <xqdoc:parameter>
           <xqdoc:name>x</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
         <xqdoc:parameter>
           <xqdoc:name>queue</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
       </xqdoc:parameters>
       <xqdoc:return>
@@ -108,7 +110,7 @@ or non-empty queue.</xqdoc:description>
       <xqdoc:annotations>
         <xqdoc:annotation name="public"/>
       </xqdoc:annotations>
-      <xqdoc:signature>declare %public function queue:tail($queue as function(*)) as item()*</xqdoc:signature>
+      <xqdoc:signature>declare %public function queue:tail($queue as function(*)) as function(*)</xqdoc:signature>
       <xqdoc:parameters>
         <xqdoc:parameter>
           <xqdoc:name>queue</xqdoc:name>
@@ -116,7 +118,7 @@ or non-empty queue.</xqdoc:description>
         </xqdoc:parameter>
       </xqdoc:parameters>
       <xqdoc:return>
-        <xqdoc:type occurrence="*">item()</xqdoc:type>
+        <xqdoc:type>function(*)</xqdoc:type>
       </xqdoc:return>
     </xqdoc:function>
     <xqdoc:function arity="1">

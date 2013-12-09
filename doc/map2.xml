@@ -1,6 +1,6 @@
 <xqdoc:xqdoc xmlns:xqdoc="http://www.xqdoc.org/1.0">
   <xqdoc:control>
-    <xqdoc:date>2013-12-07T16:36:34.093+01:00</xqdoc:date>
+    <xqdoc:date>2013-12-08T17:09:32.867+01:00</xqdoc:date>
     <xqdoc:version>1.1</xqdoc:version>
   </xqdoc:control>
   <xqdoc:module type="library">
@@ -22,7 +22,7 @@
   <xqdoc:functions>
     <xqdoc:function arity="4">
       <xqdoc:comment>
-        <xqdoc:description>Insert with a combining function. <code>insert-with($f, $key, $value, $map)</code>
+        <xqdoc:description>Inserts with a combining function. <code>insert-with($f, $key, $value, $map)</code>
 will insert <code>map:entry($key, $value)</code> into <code>$map</code> if
 <code>$key</code> does not exist in the map. If the key does exist, the function
 will insert <code>$f($new-value, $old-value)</code>.</xqdoc:description>
@@ -33,7 +33,7 @@ will insert <code>$f($new-value, $old-value)</code>.</xqdoc:description>
         <xqdoc:return>new map where the entry is inserted</xqdoc:return>
       </xqdoc:comment>
       <xqdoc:name>map2:insert-with</xqdoc:name>
-      <xqdoc:signature>declare function map2:insert-with($f as function(item()*, item()*) as item()*, $key as item(), $value, $map as map(*)) as map(*)</xqdoc:signature>
+      <xqdoc:signature>declare function map2:insert-with($f as function(item()*, item()*) as item()*, $key as item(), $value as item()*, $map as map(*)) as map(*)</xqdoc:signature>
       <xqdoc:parameters>
         <xqdoc:parameter>
           <xqdoc:name>f</xqdoc:name>
@@ -45,6 +45,7 @@ will insert <code>$f($new-value, $old-value)</code>.</xqdoc:description>
         </xqdoc:parameter>
         <xqdoc:parameter>
           <xqdoc:name>value</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
         <xqdoc:parameter>
           <xqdoc:name>map</xqdoc:name>
@@ -68,7 +69,7 @@ already exists in the map, it is replaced by the new one.</xqdoc:description>
       <xqdoc:annotations>
         <xqdoc:annotation name="public"/>
       </xqdoc:annotations>
-      <xqdoc:signature>declare %public function map2:insert($key as item(), $value, $map as map(*)) as map(*)</xqdoc:signature>
+      <xqdoc:signature>declare %public function map2:insert($key as item(), $value as item()*, $map as map(*)) as map(*)</xqdoc:signature>
       <xqdoc:parameters>
         <xqdoc:parameter>
           <xqdoc:name>key</xqdoc:name>
@@ -76,6 +77,7 @@ already exists in the map, it is replaced by the new one.</xqdoc:description>
         </xqdoc:parameter>
         <xqdoc:parameter>
           <xqdoc:name>value</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
         <xqdoc:parameter>
           <xqdoc:name>map</xqdoc:name>
@@ -88,7 +90,7 @@ already exists in the map, it is replaced by the new one.</xqdoc:description>
     </xqdoc:function>
     <xqdoc:function arity="3">
       <xqdoc:comment>
-        <xqdoc:description>Fold the keys and values in the map using the give combining function <code>$f</code>.
+        <xqdoc:description>Folds the keys and values in the map using the given combining function <code>$f</code>.
 Let <code>{ $k1:$v1, ..., $kn:$vn }</code> be the key-value pairs in the
 given map <code>$map</code>, then the result is calculated by:
 <code>$f(... $f($f($start, $k1, $v1), $k2, $v2), ...), $kn, $vn)</code>
@@ -102,7 +104,7 @@ given map <code>$map</code>, then the result is calculated by:
       <xqdoc:annotations>
         <xqdoc:annotation name="public"/>
       </xqdoc:annotations>
-      <xqdoc:signature>declare %public function map2:fold($map as map(*), $start, $f as function(item()*, item(), item()*) as item()*) as item()*</xqdoc:signature>
+      <xqdoc:signature>declare %public function map2:fold($map as map(*), $start as item()*, $f as function(item()*, item(), item()*) as item()*) as item()*</xqdoc:signature>
       <xqdoc:parameters>
         <xqdoc:parameter>
           <xqdoc:name>map</xqdoc:name>
@@ -110,6 +112,7 @@ given map <code>$map</code>, then the result is calculated by:
         </xqdoc:parameter>
         <xqdoc:parameter>
           <xqdoc:name>start</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
         <xqdoc:parameter>
           <xqdoc:name>f</xqdoc:name>
@@ -213,7 +216,7 @@ with their key and bound value.</xqdoc:description>
       <xqdoc:annotations>
         <xqdoc:annotation name="public"/>
       </xqdoc:annotations>
-      <xqdoc:signature>declare %public function map2:for-each-entry($map_21 as map(*), $f_22 as function(item(), item()*) as item()*) as item()*</xqdoc:signature>
+      <xqdoc:signature>declare %public function map2:for-each-entry($map as map(*), $f as function(item(), item()*) as item()*) as item()*</xqdoc:signature>
       <xqdoc:parameters>
         <xqdoc:parameter>
           <xqdoc:name>map</xqdoc:name>

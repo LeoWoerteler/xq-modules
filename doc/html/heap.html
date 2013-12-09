@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Higher-Order XQuery Libraries</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+    <h2>Library Module: heap.xqm</h2>
+    <table>
+      <tr>
+        <td>
+          <b>URI:</b>
+        </td>
+        <td>
+          <code>http://www.woerteler.de/xquery/modules/heap</code>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Description:</b>
+        </td>
+        <td>A simple Skew Heap implementation.</td>
+      </tr>
+      <tr>
+        <td>
+          <b>Author:</b>
+        </td>
+        <td>Leo Woerteler &lt;leo@woerteler.de&gt;</td>
+      </tr>
+      <tr>
+        <td>
+          <b>Version:</b>
+        </td>
+        <td>0.1</td>
+      </tr>
+    </table>
+    <h2>Functions</h2>
+    <h3>extract-min($heap, $empty, $non-empty)</h3>
+    <table>
+      <tr>
+        <td>
+          <b>Arguments:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>$heap</code>
+              </td>
+              <td>
+                <code>function(*)</code>
+              </td>
+              <td>the heap to extract the minimum from</td>
+            </tr>
+            <tr>
+              <td>
+                <code>$empty</code>
+              </td>
+              <td>
+                <code>function() as item()*</code>
+              </td>
+              <td>callback for the empty heap</td>
+            </tr>
+            <tr>
+              <td>
+                <code>$non-empty</code>
+              </td>
+              <td>
+                <code>function(item()*, function(*)) as item()*</code>
+              </td>
+              <td>callback for the non-empty heap</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Returns:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>item()*</code>
+              </td>
+              <td>result of the callback</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Annotations:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>%public</code>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Description:</b>
+        </td>
+        <td>Tries to extract the minimum element from this heap and either calls the
+callback for the non-empty heap with the minimal element and the rest of the heap
+or the one for the empty heap.</td>
+      </tr>
+    </table>
+    <h3>insert($heap, $x)</h3>
+    <table>
+      <tr>
+        <td>
+          <b>Arguments:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>$heap</code>
+              </td>
+              <td>
+                <code>function(*)</code>
+              </td>
+              <td>heap to insert the value into</td>
+            </tr>
+            <tr>
+              <td>
+                <code>$x</code>
+              </td>
+              <td>
+                <code>item()*</code>
+              </td>
+              <td>value to insert</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Returns:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>function(*)</code>
+              </td>
+              <td>the heap where $x is inserted</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Annotations:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>%public</code>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Description:</b>
+        </td>
+        <td>Inserts a value into a heap.</td>
+      </tr>
+    </table>
+    <h3>new($leq)</h3>
+    <table>
+      <tr>
+        <td>
+          <b>Arguments:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>$leq</code>
+              </td>
+              <td>
+                <code>function(item()*, item()*) as xs:boolean</code>
+              </td>
+              <td>comparison function, returns true() if
+  the first argument is less-than-or-equal to the second one</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Returns:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>function(*)</code>
+              </td>
+              <td>a new empty binary heap</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Annotations:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>%public</code>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Description:</b>
+        </td>
+        <td>Creates a new empty binary heap with a given comparison function.</td>
+      </tr>
+    </table>
+    <h3>sort($lt, $seq)</h3>
+    <table>
+      <tr>
+        <td>
+          <b>Arguments:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>$lt</code>
+              </td>
+              <td>
+                <code>function(item(), item()) as item()*</code>
+              </td>
+              <td>less-than predicate</td>
+            </tr>
+            <tr>
+              <td>
+                <code>$seq</code>
+              </td>
+              <td>
+                <code>item()*</code>
+              </td>
+              <td>sequence to sort</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Returns:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>item()*</code>
+              </td>
+              <td>the sorted sequence</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Annotations:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>%public</code>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Description:</b>
+        </td>
+        <td>Sorts the given sequence according to the given less-than predicate.</td>
+      </tr>
+    </table>
+  </body>
+</html>

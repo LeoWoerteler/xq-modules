@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Higher-Order XQuery Libraries</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+    <h2>Library Module: utf8.xqm</h2>
+    <table>
+      <tr>
+        <td>
+          <b>URI:</b>
+        </td>
+        <td>
+          <code>http://www.woerteler.de/xquery/modules/utf8</code>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Description:</b>
+        </td>
+        <td>Module for encoding and decoding <code>xs:string</code>s as <code>xs:byte</code>
+sequences using the UTF-8 encoding scheme.</td>
+      </tr>
+      <tr>
+        <td>
+          <b>Author:</b>
+        </td>
+        <td>Leo Woerteler &lt;leo@woerteler.de&gt;</td>
+      </tr>
+      <tr>
+        <td>
+          <b>Version:</b>
+        </td>
+        <td>0.1</td>
+      </tr>
+    </table>
+    <h2>Functions</h2>
+    <h3>decode($utf8)</h3>
+    <table>
+      <tr>
+        <td>
+          <b>Arguments:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>$utf8</code>
+              </td>
+              <td>
+                <code>xs:byte*</code>
+              </td>
+              <td>input byte sequence</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Returns:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>xs:string</code>
+              </td>
+              <td>the string decoded from the input sequence</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Annotations:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>%public</code>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Description:</b>
+        </td>
+        <td>Decodes a string from a sequence of bytes, assuming correct UTF-8 as input.
+The string is decoded in lenient mode, non-parseable bytes are replaced.</td>
+      </tr>
+    </table>
+    <h3>decode($utf8, $strict)</h3>
+    <table>
+      <tr>
+        <td>
+          <b>Arguments:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>$utf8</code>
+              </td>
+              <td>
+                <code>xs:byte*</code>
+              </td>
+              <td>input byte sequence</td>
+            </tr>
+            <tr>
+              <td>
+                <code>$strict</code>
+              </td>
+              <td>
+                <code>xs:boolean</code>
+              </td>
+              <td>strict parsing mode, <code>false</code>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Returns:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>xs:string</code>
+              </td>
+              <td>the string decoded from the input sequence</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Annotations:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>%public</code>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Description:</b>
+        </td>
+        <td>Decodes a string from a sequence of bytes, assuming correct UTF-8 as input.</td>
+      </tr>
+      <tr>
+        <td>
+          <b>Error:</b>
+        </td>
+        <td>utf8:DECB0001 if a non-start byte occurs out of order</td>
+      </tr>
+      <tr>
+        <td>
+          <b>Error:</b>
+        </td>
+        <td>utf8:DECB0002 if an invalid start byte was found</td>
+      </tr>
+      <tr>
+        <td>
+          <b>Error:</b>
+        </td>
+        <td>utf8:DECB0003 if a start byte was found where it wasn't expected</td>
+      </tr>
+      <tr>
+        <td>
+          <b>Error:</b>
+        </td>
+        <td>utf8:DECB0004 if the byte sequence ended unexpectedly</td>
+      </tr>
+    </table>
+    <h3>encode($str)</h3>
+    <table>
+      <tr>
+        <td>
+          <b>Arguments:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>$str</code>
+              </td>
+              <td>
+                <code>xs:string</code>
+              </td>
+              <td>the input string</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Returns:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>xs:byte*</code>
+              </td>
+              <td>sequence of bytes encoding the given string</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Annotations:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>%public</code>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Description:</b>
+        </td>
+        <td>Encodes a string as a sequence of bytes, using the UTF-8 encoding scheme.</td>
+      </tr>
+    </table>
+  </body>
+</html>

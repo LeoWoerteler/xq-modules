@@ -1,6 +1,6 @@
 <xqdoc:xqdoc xmlns:xqdoc="http://www.xqdoc.org/1.0">
   <xqdoc:control>
-    <xqdoc:date>2013-12-07T16:36:34.093+01:00</xqdoc:date>
+    <xqdoc:date>2013-12-08T17:09:32.867+01:00</xqdoc:date>
     <xqdoc:version>1.1</xqdoc:version>
   </xqdoc:control>
   <xqdoc:module type="library">
@@ -30,7 +30,7 @@
         <xqdoc:return>the empty set</xqdoc:return>
       </xqdoc:comment>
       <xqdoc:name>int-set:empty</xqdoc:name>
-      <xqdoc:signature>declare function int-set:empty()</xqdoc:signature>
+      <xqdoc:signature>declare function int-set:empty() as item()*</xqdoc:signature>
       <xqdoc:return>
         <xqdoc:type occurrence="*">item()</xqdoc:type>
       </xqdoc:return>
@@ -45,10 +45,11 @@
         </xqdoc:return>
       </xqdoc:comment>
       <xqdoc:name>int-set:insert</xqdoc:name>
-      <xqdoc:signature>declare function int-set:insert($set, $x as xs:integer) as item()*</xqdoc:signature>
+      <xqdoc:signature>declare function int-set:insert($set as item()*, $x as xs:integer) as item()*</xqdoc:signature>
       <xqdoc:parameters>
         <xqdoc:parameter>
           <xqdoc:name>set</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
         <xqdoc:parameter>
           <xqdoc:name>x</xqdoc:name>
@@ -69,10 +70,11 @@
            <code>false()</code> otherwise</xqdoc:return>
       </xqdoc:comment>
       <xqdoc:name>int-set:contains</xqdoc:name>
-      <xqdoc:signature>declare function int-set:contains($set, $x as xs:integer) as item()*</xqdoc:signature>
+      <xqdoc:signature>declare function int-set:contains($set as item()*, $x as xs:integer) as item()*</xqdoc:signature>
       <xqdoc:parameters>
         <xqdoc:parameter>
           <xqdoc:name>set</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
         <xqdoc:parameter>
           <xqdoc:name>x</xqdoc:name>

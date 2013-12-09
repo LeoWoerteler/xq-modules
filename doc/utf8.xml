@@ -1,6 +1,6 @@
 <xqdoc:xqdoc xmlns:xqdoc="http://www.xqdoc.org/1.0">
   <xqdoc:control>
-    <xqdoc:date>2013-12-07T16:36:34.093+01:00</xqdoc:date>
+    <xqdoc:date>2013-12-08T17:09:32.867+01:00</xqdoc:date>
     <xqdoc:version>1.1</xqdoc:version>
   </xqdoc:control>
   <xqdoc:module type="library">
@@ -18,7 +18,48 @@ sequences using the UTF-8 encoding scheme.</xqdoc:description>
     <xqdoc:namespace prefix="utf8" uri="http://www.woerteler.de/xquery/modules/utf8"/>
   </xqdoc:namespaces>
   <xqdoc:imports/>
-  <xqdoc:variables/>
+  <xqdoc:variables>
+    <xqdoc:variable>
+      <xqdoc:name>utf8:ONE</xqdoc:name>
+      <xqdoc:comment>
+        <xqdoc:description>Number of states encoded in one block of 6 bits.</xqdoc:description>
+      </xqdoc:comment>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="private"/>
+      </xqdoc:annotations>
+      <xqdoc:type occurrence="?">xs:double</xqdoc:type>
+    </xqdoc:variable>
+    <xqdoc:variable>
+      <xqdoc:name>utf8:TWO</xqdoc:name>
+      <xqdoc:comment>
+        <xqdoc:description>Number of states encoded in two blocks of 6 bits.</xqdoc:description>
+      </xqdoc:comment>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="private"/>
+      </xqdoc:annotations>
+      <xqdoc:type occurrence="?">item()</xqdoc:type>
+    </xqdoc:variable>
+    <xqdoc:variable>
+      <xqdoc:name>utf8:THREE</xqdoc:name>
+      <xqdoc:comment>
+        <xqdoc:description>Number of states encoded in three blocks of 6 bits.</xqdoc:description>
+      </xqdoc:comment>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="private"/>
+      </xqdoc:annotations>
+      <xqdoc:type occurrence="?">item()</xqdoc:type>
+    </xqdoc:variable>
+    <xqdoc:variable>
+      <xqdoc:name>utf8:replacement</xqdoc:name>
+      <xqdoc:comment>
+        <xqdoc:description>Codepoint of the Unicode Character 'REPLACEMENT CHARACTER' (U+FFFD).</xqdoc:description>
+      </xqdoc:comment>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="private"/>
+      </xqdoc:annotations>
+      <xqdoc:type>xs:integer</xqdoc:type>
+    </xqdoc:variable>
+  </xqdoc:variables>
   <xqdoc:functions>
     <xqdoc:function arity="1">
       <xqdoc:comment>
@@ -70,10 +111,10 @@ The string is decoded in lenient mode, non-parseable bytes are replaced.</xqdoc:
         <xqdoc:param>$strict strict parsing mode, <code>false</code>
         </xqdoc:param>
         <xqdoc:return>the string decoded from the input sequence</xqdoc:return>
-        <xqdoc:custom tag="throws">utf8:DECB0001 if a non-start byte occurs out of order</xqdoc:custom>
-        <xqdoc:custom tag="throws">utf8:DECB0002 if an invalid start byte was found</xqdoc:custom>
-        <xqdoc:custom tag="throws">utf8:DECB0003 if a start byte was found where it wasn't expected</xqdoc:custom>
-        <xqdoc:custom tag="throws">utf8:DECB0004 if the byte sequence ended unexpectedly</xqdoc:custom>
+        <xqdoc:error>utf8:DECB0001 if a non-start byte occurs out of order</xqdoc:error>
+        <xqdoc:error>utf8:DECB0002 if an invalid start byte was found</xqdoc:error>
+        <xqdoc:error>utf8:DECB0003 if a start byte was found where it wasn't expected</xqdoc:error>
+        <xqdoc:error>utf8:DECB0004 if the byte sequence ended unexpectedly</xqdoc:error>
       </xqdoc:comment>
       <xqdoc:name>utf8:decode</xqdoc:name>
       <xqdoc:annotations>
@@ -92,6 +133,76 @@ The string is decoded in lenient mode, non-parseable bytes are replaced.</xqdoc:
       </xqdoc:parameters>
       <xqdoc:return>
         <xqdoc:type>xs:string</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="3">
+      <xqdoc:comment>
+        <xqdoc:description>Reads the next byte.</xqdoc:description>
+        <xqdoc:param>$state state of the decoding process</xqdoc:param>
+        <xqdoc:param>$byte next byte to read</xqdoc:param>
+        <xqdoc:param>$strict strictness flag</xqdoc:param>
+        <xqdoc:return>new state</xqdoc:return>
+        <xqdoc:error>utf8:DECB0001 if a non-start byte occurs out of order</xqdoc:error>
+        <xqdoc:error>utf8:DECB0002 if an invalid start byte was found</xqdoc:error>
+        <xqdoc:error>utf8:DECB0003 if a start byte was found where it wasn't expected</xqdoc:error>
+      </xqdoc:comment>
+      <xqdoc:name>utf8:decode-step</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="private"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %private function utf8:decode-step($state as map(*), $byte as xs:byte, $strict as xs:boolean) as map(*)</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>state</xqdoc:name>
+          <xqdoc:type>map(*)</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>byte</xqdoc:name>
+          <xqdoc:type>xs:byte</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>strict</xqdoc:name>
+          <xqdoc:type>xs:boolean</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type>map(*)</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="4">
+      <xqdoc:comment>
+        <xqdoc:description>Handles an error while decoding a UTF-8 byte sequence.</xqdoc:description>
+        <xqdoc:param>$strict strict parsing flag</xqdoc:param>
+        <xqdoc:param>$num error number</xqdoc:param>
+        <xqdoc:param>$msg error message</xqdoc:param>
+        <xqdoc:return>new state</xqdoc:return>
+        <xqdoc:error>utf8:* error</xqdoc:error>
+      </xqdoc:comment>
+      <xqdoc:name>utf8:error</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="private"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %private function utf8:error($strict as xs:boolean, $num as xs:integer, $msg as xs:string, $cps as xs:integer*) as (map(*))?</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>strict</xqdoc:name>
+          <xqdoc:type>xs:boolean</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>num</xqdoc:name>
+          <xqdoc:type>xs:integer</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>msg</xqdoc:name>
+          <xqdoc:type>xs:string</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>cps</xqdoc:name>
+          <xqdoc:type occurrence="*">xs:integer</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="?">map(*)</xqdoc:type>
       </xqdoc:return>
     </xqdoc:function>
   </xqdoc:functions>

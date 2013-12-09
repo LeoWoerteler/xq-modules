@@ -12,7 +12,7 @@ module namespace map2='http://www.woerteler.de/xquery/modules/map-extras';
 declare namespace map = 'http://www.w3.org/2005/xpath-functions/map';
 
 (:~
- : Insert with a combining function. <code>insert-with($f, $key, $value, $map)</code>
+ : Inserts with a combining function. <code>insert-with($f, $key, $value, $map)</code>
  : will insert <code>map:entry($key, $value)</code> into <code>$map</code> if
  : <code>$key</code> does not exist in the map. If the key does exist, the function
  : will insert <code>$f($new-value, $old-value)</code>.
@@ -64,7 +64,7 @@ declare %public function map2:insert(
 };
 
 (:~
- : Fold the keys and values in the map using the give combining function <code>$f</code>.
+ : Folds the keys and values in the map using the given combining function <code>$f</code>.
  : Let <code>{ $k1:$v1, ..., $kn:$vn }</code> be the key-value pairs in the
  : given map <code>$map</code>, then the result is calculated by:
  : <code>$f(... $f($f($start, $k1, $v1), $k2, $v2), ...), $kn, $vn)</code>

@@ -1,6 +1,6 @@
 <xqdoc:xqdoc xmlns:xqdoc="http://www.xqdoc.org/1.0">
   <xqdoc:control>
-    <xqdoc:date>2013-12-07T16:36:34.093+01:00</xqdoc:date>
+    <xqdoc:date>2013-12-08T17:09:32.867+01:00</xqdoc:date>
     <xqdoc:version>1.1</xqdoc:version>
   </xqdoc:control>
   <xqdoc:module type="library">
@@ -62,7 +62,7 @@
       <xqdoc:annotations>
         <xqdoc:annotation name="public"/>
       </xqdoc:annotations>
-      <xqdoc:signature>declare %public function ordered-map:lookup($m as function(*), $k, $found as function(item()*) as item()*, $notFound as function() as item()*) as item()*</xqdoc:signature>
+      <xqdoc:signature>declare %public function ordered-map:lookup($m as function(*), $k as item()*, $found as function(item()*) as item()*, $notFound as function() as item()*) as item()*</xqdoc:signature>
       <xqdoc:parameters>
         <xqdoc:parameter>
           <xqdoc:name>m</xqdoc:name>
@@ -70,6 +70,7 @@
         </xqdoc:parameter>
         <xqdoc:parameter>
           <xqdoc:name>k</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
         <xqdoc:parameter>
           <xqdoc:name>found</xqdoc:name>
@@ -96,7 +97,7 @@
       <xqdoc:annotations>
         <xqdoc:annotation name="public"/>
       </xqdoc:annotations>
-      <xqdoc:signature>declare %public function ordered-map:contains($m as function(*), $k) as xs:boolean</xqdoc:signature>
+      <xqdoc:signature>declare %public function ordered-map:contains($m as function(*), $k as item()*) as xs:boolean</xqdoc:signature>
       <xqdoc:parameters>
         <xqdoc:parameter>
           <xqdoc:name>m</xqdoc:name>
@@ -104,6 +105,7 @@
         </xqdoc:parameter>
         <xqdoc:parameter>
           <xqdoc:name>k</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
       </xqdoc:parameters>
       <xqdoc:return>
@@ -121,7 +123,7 @@
       <xqdoc:annotations>
         <xqdoc:annotation name="public"/>
       </xqdoc:annotations>
-      <xqdoc:signature>declare %public function ordered-map:get($m as function(*), $k) as item()*</xqdoc:signature>
+      <xqdoc:signature>declare %public function ordered-map:get($m as function(*), $k as item()*) as item()*</xqdoc:signature>
       <xqdoc:parameters>
         <xqdoc:parameter>
           <xqdoc:name>m</xqdoc:name>
@@ -129,6 +131,7 @@
         </xqdoc:parameter>
         <xqdoc:parameter>
           <xqdoc:name>k</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
       </xqdoc:parameters>
       <xqdoc:return>
@@ -168,7 +171,7 @@
       <xqdoc:annotations>
         <xqdoc:annotation name="public"/>
       </xqdoc:annotations>
-      <xqdoc:signature>declare %public function ordered-map:insert($m as function(*), $k, $v) as item()*</xqdoc:signature>
+      <xqdoc:signature>declare %public function ordered-map:insert($m as function(*), $k as item()*, $v as item()*) as item()*</xqdoc:signature>
       <xqdoc:parameters>
         <xqdoc:parameter>
           <xqdoc:name>m</xqdoc:name>
@@ -176,9 +179,11 @@
         </xqdoc:parameter>
         <xqdoc:parameter>
           <xqdoc:name>k</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
         <xqdoc:parameter>
           <xqdoc:name>v</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
       </xqdoc:parameters>
       <xqdoc:return>
@@ -196,7 +201,7 @@
       <xqdoc:annotations>
         <xqdoc:annotation name="public"/>
       </xqdoc:annotations>
-      <xqdoc:signature>declare %public function ordered-map:delete($m as function(*), $k) as function(*)</xqdoc:signature>
+      <xqdoc:signature>declare %public function ordered-map:delete($m as function(*), $k as item()*) as function(*)</xqdoc:signature>
       <xqdoc:parameters>
         <xqdoc:parameter>
           <xqdoc:name>m</xqdoc:name>
@@ -204,6 +209,7 @@
         </xqdoc:parameter>
         <xqdoc:parameter>
           <xqdoc:name>k</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
       </xqdoc:parameters>
       <xqdoc:return>
@@ -223,7 +229,7 @@
       <xqdoc:annotations>
         <xqdoc:annotation name="public"/>
       </xqdoc:annotations>
-      <xqdoc:signature>declare %public function ordered-map:check($m as function(*), $min, $max, $msg as xs:string) as function(*)</xqdoc:signature>
+      <xqdoc:signature>declare %public function ordered-map:check($m as function(*), $min as item()*, $max as item()*, $msg as xs:string) as function(*)</xqdoc:signature>
       <xqdoc:parameters>
         <xqdoc:parameter>
           <xqdoc:name>m</xqdoc:name>
@@ -231,9 +237,11 @@
         </xqdoc:parameter>
         <xqdoc:parameter>
           <xqdoc:name>min</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
         <xqdoc:parameter>
           <xqdoc:name>max</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
         <xqdoc:parameter>
           <xqdoc:name>msg</xqdoc:name>
@@ -268,11 +276,11 @@
     <xqdoc:function arity="3">
       <xqdoc:comment>
         <xqdoc:description>Combines all entries in the given map in ascending order using
-the user-supplied function &lt;code&gt;$f&lt;/code&gt;.
-For a map &lt;code&gt;$m&lt;/code&gt; containing the entries
-&lt;code&gt;{($k1, $v1), ($k2, $v2), ($k3, $v3)}&lt;/code&gt;
-with &lt;code&gt;$k1 &lt; $k2 &lt; $k3&lt;/code&gt;, the call &lt;code&gt;fold($m, $z, $f)&lt;/code&gt;
-would return &lt;code&gt;$f($f($f($z, $k1, $v1), $k2, $v2), $k3, $v3)&lt;/code&gt;.</xqdoc:description>
+the user-supplied function <code>$f</code>.
+For a map <code>$m</code> containing the entries
+<code>{($k1, $v1), ($k2, $v2), ($k3, $v3)}</code>
+with <code>$k1 &lt; $k2 &lt; $k3</code>, the call <code>fold($m, $z, $f)</code>
+would return <code>$f($f($f($z, $k1, $v1), $k2, $v2), $k3, $v3)</code>.</xqdoc:description>
         <xqdoc:param>$m the map to fold</xqdoc:param>
         <xqdoc:param>$z starting value</xqdoc:param>
         <xqdoc:param>$f combining function</xqdoc:param>
@@ -282,7 +290,7 @@ would return &lt;code&gt;$f($f($f($z, $k1, $v1), $k2, $v2), $k3, $v3)&lt;/code&g
       <xqdoc:annotations>
         <xqdoc:annotation name="public"/>
       </xqdoc:annotations>
-      <xqdoc:signature>declare %public function ordered-map:fold($m as function(*), $z, $f as function(item()*, item()*, item()*) as item()*) as item()*</xqdoc:signature>
+      <xqdoc:signature>declare %public function ordered-map:fold($m as function(*), $z as item()*, $f as function(item()*, item()*, item()*) as item()*) as item()*</xqdoc:signature>
       <xqdoc:parameters>
         <xqdoc:parameter>
           <xqdoc:name>m</xqdoc:name>
@@ -290,6 +298,7 @@ would return &lt;code&gt;$f($f($f($z, $k1, $v1), $k2, $v2), $k3, $v3)&lt;/code&g
         </xqdoc:parameter>
         <xqdoc:parameter>
           <xqdoc:name>z</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
         <xqdoc:parameter>
           <xqdoc:name>f</xqdoc:name>
@@ -302,7 +311,7 @@ would return &lt;code&gt;$f($f($f($z, $k1, $v1), $k2, $v2), $k3, $v3)&lt;/code&g
     </xqdoc:function>
     <xqdoc:function arity="2">
       <xqdoc:comment>
-        <xqdoc:description>Calls the geiven function for every entry in the map and concatenates the result sequences.</xqdoc:description>
+        <xqdoc:description>Calls the given function for every entry in the map and concatenates the result sequences.</xqdoc:description>
         <xqdoc:param>$m the map to iterate over</xqdoc:param>
         <xqdoc:param>$f binary function taking the key and value of the entry</xqdoc:param>
         <xqdoc:return>concatenated results of the calls to <code>$f</code>

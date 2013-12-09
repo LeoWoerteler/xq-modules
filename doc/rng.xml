@@ -1,6 +1,6 @@
 <xqdoc:xqdoc xmlns:xqdoc="http://www.xqdoc.org/1.0">
   <xqdoc:control>
-    <xqdoc:date>2013-12-07T16:36:34.093+01:00</xqdoc:date>
+    <xqdoc:date>2013-12-08T17:09:32.867+01:00</xqdoc:date>
     <xqdoc:version>1.1</xqdoc:version>
   </xqdoc:control>
   <xqdoc:module type="library">
@@ -17,7 +17,18 @@
     <xqdoc:namespace prefix="rng" uri="http://www.woerteler.de/xquery/modules/rng"/>
   </xqdoc:namespaces>
   <xqdoc:imports/>
-  <xqdoc:variables/>
+  <xqdoc:variables>
+    <xqdoc:variable>
+      <xqdoc:name>rng:e32</xqdoc:name>
+      <xqdoc:comment>
+        <xqdoc:description>The number 2<sup>32</sup>.</xqdoc:description>
+      </xqdoc:comment>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="private"/>
+      </xqdoc:annotations>
+      <xqdoc:type>xs:integer</xqdoc:type>
+    </xqdoc:variable>
+  </xqdoc:variables>
   <xqdoc:functions>
     <xqdoc:function arity="2">
       <xqdoc:comment>
@@ -60,7 +71,7 @@ by calling <code>$f</code> with the current value and the next int.</xqdoc:descr
       <xqdoc:annotations>
         <xqdoc:annotation name="public"/>
       </xqdoc:annotations>
-      <xqdoc:signature>declare %public function rng:with-random-ints($seed as xs:integer, $n as xs:integer, $start, $f as function(item()*, item()*) as item()*) as item()*</xqdoc:signature>
+      <xqdoc:signature>declare %public function rng:with-random-ints($seed as xs:integer, $n as xs:integer, $start as item()*, $f as function(item()*, item()*) as item()*) as item()*</xqdoc:signature>
       <xqdoc:parameters>
         <xqdoc:parameter>
           <xqdoc:name>seed</xqdoc:name>
@@ -72,6 +83,7 @@ by calling <code>$f</code> with the current value and the next int.</xqdoc:descr
         </xqdoc:parameter>
         <xqdoc:parameter>
           <xqdoc:name>start</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
         <xqdoc:parameter>
           <xqdoc:name>f</xqdoc:name>
@@ -80,6 +92,22 @@ by calling <code>$f</code> with the current value and the next int.</xqdoc:descr
       </xqdoc:parameters>
       <xqdoc:return>
         <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="1">
+      <xqdoc:name>rng:next</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="private"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %private function rng:next($seed as item()*) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>seed</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="?">item()</xqdoc:type>
       </xqdoc:return>
     </xqdoc:function>
   </xqdoc:functions>

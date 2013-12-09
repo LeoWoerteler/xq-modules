@@ -90,7 +90,7 @@ declare %public function queue:match(
  :)
 declare %public function queue:tail(
   $queue as function(*)
-) as item()* {
+) as function(*) {
   queue:match(
     $queue,
     function() { error(xs:QName('queue:EMPTYQUE'), 'empty queue') },

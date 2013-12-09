@@ -65,10 +65,10 @@ declare %public function utf8:decode(
  : @param $utf8 input byte sequence
  : @param $strict strict parsing mode, <code>false</code>
  : @return the string decoded from the input sequence
- : @throws utf8:DECB0001 if a non-start byte occurs out of order
- : @throws utf8:DECB0002 if an invalid start byte was found
- : @throws utf8:DECB0003 if a start byte was found where it wasn't expected
- : @throws utf8:DECB0004 if the byte sequence ended unexpectedly
+ : @error utf8:DECB0001 if a non-start byte occurs out of order
+ : @error utf8:DECB0002 if an invalid start byte was found
+ : @error utf8:DECB0003 if a start byte was found where it wasn't expected
+ : @error utf8:DECB0004 if the byte sequence ended unexpectedly
  :)
 declare %public function utf8:decode(
   $utf8 as xs:byte*,
@@ -99,9 +99,9 @@ declare %public function utf8:decode(
  : @param $byte next byte to read
  : @param $strict strictness flag
  : @return new state
- : @throws utf8:DECB0001 if a non-start byte occurs out of order
- : @throws utf8:DECB0002 if an invalid start byte was found
- : @throws utf8:DECB0003 if a start byte was found where it wasn't expected
+ : @error utf8:DECB0001 if a non-start byte occurs out of order
+ : @error utf8:DECB0002 if an invalid start byte was found
+ : @error utf8:DECB0003 if a start byte was found where it wasn't expected
  :)
 declare %private function utf8:decode-step(
   $state as map(*),
@@ -164,7 +164,7 @@ declare %private function utf8:decode-step(
  : @param $num error number
  : @param $msg error message
  : @return new state
- : @throws utf8:* error
+ : @error utf8:* error
  :)
 declare %private function utf8:error(
   $strict as xs:boolean,

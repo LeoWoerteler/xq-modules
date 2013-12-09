@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Higher-Order XQuery Libraries</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+    <h2>Library Module: map2.xqm</h2>
+    <table>
+      <tr>
+        <td>
+          <b>URI:</b>
+        </td>
+        <td>
+          <code>http://www.woerteler.de/xquery/modules/map-extras</code>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Description:</b>
+        </td>
+        <td>Additional functions for XQuery 3.0 maps.</td>
+      </tr>
+      <tr>
+        <td>
+          <b>Author:</b>
+        </td>
+        <td>Leo Woerteler &lt;leo@woerteler.de&gt;</td>
+      </tr>
+      <tr>
+        <td>
+          <b>Version:</b>
+        </td>
+        <td>0.1</td>
+      </tr>
+    </table>
+    <h2>Functions</h2>
+    <h3>fold($map, $start, $f)</h3>
+    <table>
+      <tr>
+        <td>
+          <b>Arguments:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>$map</code>
+              </td>
+              <td>
+                <code>map(*)</code>
+              </td>
+              <td>map to be folded</td>
+            </tr>
+            <tr>
+              <td>
+                <code>$start</code>
+              </td>
+              <td>
+                <code>item()*</code>
+              </td>
+              <td>start value</td>
+            </tr>
+            <tr>
+              <td>
+                <code>$f</code>
+              </td>
+              <td>
+                <code>function(item()*, item(), item()*) as item()*</code>
+              </td>
+              <td>left-associative combining function</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Returns:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>item()*</code>
+              </td>
+              <td>resulting value</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Annotations:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>%public</code>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Description:</b>
+        </td>
+        <td>Folds the keys and values in the map using the given combining function <code>$f</code>.
+Let <code>{ $k1:$v1, ..., $kn:$vn }</code> be the key-value pairs in the
+given map <code>$map</code>, then the result is calculated by:
+<code>$f(... $f($f($start, $k1, $v1), $k2, $v2), ...), $kn, $vn)</code>
+        </td>
+      </tr>
+    </table>
+    <h3>for-each-entry($map, $f)</h3>
+    <table>
+      <tr>
+        <td>
+          <b>Arguments:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>$map</code>
+              </td>
+              <td>
+                <code>map(*)</code>
+              </td>
+              <td>the map to iterate over</td>
+            </tr>
+            <tr>
+              <td>
+                <code>$f</code>
+              </td>
+              <td>
+                <code>function(item(), item()*) as item()*</code>
+              </td>
+              <td>the two-argument function to call with the key and value</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Returns:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>item()*</code>
+              </td>
+              <td>the results of all calls to <code>$f</code> concatenated</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Annotations:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>%public</code>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Description:</b>
+        </td>
+        <td>Iterates over the entries of the given map and calls the given function
+with their key and bound value.</td>
+      </tr>
+    </table>
+    <h3>insert($key, $value, $map)</h3>
+    <table>
+      <tr>
+        <td>
+          <b>Arguments:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>$key</code>
+              </td>
+              <td>
+                <code>item()</code>
+              </td>
+              <td>key to insert</td>
+            </tr>
+            <tr>
+              <td>
+                <code>$value</code>
+              </td>
+              <td>
+                <code>item()*</code>
+              </td>
+              <td>value to insert</td>
+            </tr>
+            <tr>
+              <td>
+                <code>$map</code>
+              </td>
+              <td>
+                <code>map(*)</code>
+              </td>
+              <td>map to insert into</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Returns:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>map(*)</code>
+              </td>
+              <td>map where the key-value pair was inserted</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Annotations:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>%public</code>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Description:</b>
+        </td>
+        <td>Inserts a key-value pair into a map. If an entry with the key <code>$key</code>
+already exists in the map, it is replaced by the new one.</td>
+      </tr>
+    </table>
+    <h3>insert-with($f, $key, $value, $map)</h3>
+    <table>
+      <tr>
+        <td>
+          <b>Arguments:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>$f</code>
+              </td>
+              <td>
+                <code>function(item()*, item()*) as item()*</code>
+              </td>
+              <td>combining function</td>
+            </tr>
+            <tr>
+              <td>
+                <code>$key</code>
+              </td>
+              <td>
+                <code>item()</code>
+              </td>
+              <td>key to insert</td>
+            </tr>
+            <tr>
+              <td>
+                <code>$value</code>
+              </td>
+              <td>
+                <code>item()*</code>
+              </td>
+              <td>value to insert</td>
+            </tr>
+            <tr>
+              <td>
+                <code>$map</code>
+              </td>
+              <td>
+                <code>map(*)</code>
+              </td>
+              <td>map to insert into</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Returns:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>map(*)</code>
+              </td>
+              <td>new map where the entry is inserted</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Description:</b>
+        </td>
+        <td>Inserts with a combining function. <code>insert-with($f, $key, $value, $map)</code>
+will insert <code>map:entry($key, $value)</code> into <code>$map</code> if
+<code>$key</code> does not exist in the map. If the key does exist, the function
+will insert <code>$f($new-value, $old-value)</code>.</td>
+      </tr>
+    </table>
+    <h3>map($f, $map)</h3>
+    <table>
+      <tr>
+        <td>
+          <b>Arguments:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>$f</code>
+              </td>
+              <td>
+                <code>function(item()*) as item()*</code>
+              </td>
+              <td>function to be applies to all values</td>
+            </tr>
+            <tr>
+              <td>
+                <code>$map</code>
+              </td>
+              <td>
+                <code>map(*)</code>
+              </td>
+              <td>input map</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Returns:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>map(*)</code>
+              </td>
+              <td>copy of <code>$map</code> where all values <code>$value</code>
+        are replaced by <code>$f($value)</code>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Annotations:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>%public</code>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Description:</b>
+        </td>
+        <td>Applies the function <code>$f</code> to all values in the map.
+The keys are not touched.</td>
+      </tr>
+    </table>
+    <h3>map-with-key($f, $map)</h3>
+    <table>
+      <tr>
+        <td>
+          <b>Arguments:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>$f</code>
+              </td>
+              <td>
+                <code>function(item(), item()*) as item()*</code>
+              </td>
+              <td>function to be applies to all entries</td>
+            </tr>
+            <tr>
+              <td>
+                <code>$map</code>
+              </td>
+              <td>
+                <code>map(*)</code>
+              </td>
+              <td>input map</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Returns:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>map(*)</code>
+              </td>
+              <td>copy of <code>$map</code> where all values <code>$value</code>
+        are replaced by <code>$f($key, $value)</code>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Annotations:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>%public</code>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Description:</b>
+        </td>
+        <td>Maps a function over all entries of the map <code>$map</code>.
+Each entry <code>($key, $value)</code> in the map is replaced by a new
+entry <code>($key, $f($key, $value))</code>, the keys are not touched.</td>
+      </tr>
+    </table>
+    <h3>values($map)</h3>
+    <table>
+      <tr>
+        <td>
+          <b>Arguments:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>$map</code>
+              </td>
+              <td>
+                <code>map(*)</code>
+              </td>
+              <td>map to extract the values from</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Returns:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>item()*</code>
+              </td>
+              <td>sequence of values</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Annotations:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>%public</code>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Description:</b>
+        </td>
+        <td>Extracts all values from the map <code>$map</code>, returning
+them in a sequence in arbitrary order.</td>
+      </tr>
+    </table>
+  </body>
+</html>

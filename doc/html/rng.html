@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Higher-Order XQuery Libraries</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+    <h2>Library Module: rng.xqm</h2>
+    <table>
+      <tr>
+        <td>
+          <b>URI:</b>
+        </td>
+        <td>
+          <code>http://www.woerteler.de/xquery/modules/rng</code>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Description:</b>
+        </td>
+        <td>A simple random number generator implemented as a Linear Congruential Generator.</td>
+      </tr>
+      <tr>
+        <td>
+          <b>Author:</b>
+        </td>
+        <td>Leo Woerteler &lt;leo@woerteler.de&gt;</td>
+      </tr>
+      <tr>
+        <td>
+          <b>Version:</b>
+        </td>
+        <td>0.1</td>
+      </tr>
+    </table>
+    <h2>Functions</h2>
+    <h3>random-ints($seed, $n)</h3>
+    <table>
+      <tr>
+        <td>
+          <b>Arguments:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>$seed</code>
+              </td>
+              <td>
+                <code>xs:integer</code>
+              </td>
+              <td>the seed to start from</td>
+            </tr>
+            <tr>
+              <td>
+                <code>$n</code>
+              </td>
+              <td>
+                <code>xs:integer</code>
+              </td>
+              <td>number of random ints to produce</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Returns:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>xs:int*</code>
+              </td>
+              <td>sequence</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Annotations:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>%public</code>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Description:</b>
+        </td>
+        <td>Generates <code>$n</code> random <code>xs:int</code>s, starting with the given seed.</td>
+      </tr>
+    </table>
+    <h3>with-random-ints($seed, $n, $start, $f)</h3>
+    <table>
+      <tr>
+        <td>
+          <b>Arguments:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>$seed</code>
+              </td>
+              <td>
+                <code>xs:integer</code>
+              </td>
+              <td>seed for the random number generator</td>
+            </tr>
+            <tr>
+              <td>
+                <code>$n</code>
+              </td>
+              <td>
+                <code>xs:integer</code>
+              </td>
+              <td>number of random numbers to generate</td>
+            </tr>
+            <tr>
+              <td>
+                <code>$start</code>
+              </td>
+              <td>
+                <code>item()*</code>
+              </td>
+              <td>initial value for the fold</td>
+            </tr>
+            <tr>
+              <td>
+                <code>$f</code>
+              </td>
+              <td>
+                <code>function(item()*, item()*) as item()*</code>
+              </td>
+              <td>combining function</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Returns:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>item()*</code>
+              </td>
+              <td>result of the fold</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Annotations:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>%public</code>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Description:</b>
+        </td>
+        <td>Folds over a sequence of <code>$n</code> randomly generated <code>xs:int</code>s,
+starting with the value <code>$start</code> and successively adding random ints
+by calling <code>$f</code> with the current value and the next int.</td>
+      </tr>
+    </table>
+  </body>
+</html>

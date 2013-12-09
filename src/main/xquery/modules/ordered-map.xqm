@@ -35,11 +35,6 @@ import module namespace pair = 'http://www.woerteler.de/xquery/modules/pair' at 
 import module namespace impl = 'http://www.woerteler.de/xquery/modules/ordered-map/rbtree'
   at 'ordered_map/rbtree.xqm';
 
-(:: )
-import module namespace impl = 'http://www.woerteler.de/xquery/modules/ordered-map/avltree'
-  at 'ordered_map/avltree.xqm';
-( ::)
-
 (:~
  : Creates a new map with the given less-than predicate.
  : @param $lt less-than predicate
@@ -200,7 +195,7 @@ declare %public function ordered-map:to-xml(
  : the user-supplied function <code>$f</code>.
  : For a map <code>$m</code> containing the entries
  : <code>{($k1, $v1), ($k2, $v2), ($k3, $v3)}</code>
- : with <code>$k1 < $k2 < $k3</code>, the call <code>fold($m, $z, $f)</code>
+ : with <code>$k1 &lt; $k2 &lt; $k3</code>, the call <code>fold($m, $z, $f)</code>
  : would return <code>$f($f($f($z, $k1, $v1), $k2, $v2), $k3, $v3)</code>.
  :
  : @param $m the map to fold
@@ -217,7 +212,7 @@ declare %public function ordered-map:fold(
 };
 
 (:~
- : Calls the geiven function for every entry in the map and concatenates the result sequences.
+ : Calls the given function for every entry in the map and concatenates the result sequences.
  : @param $m the map to iterate over
  : @param $f binary function taking the key and value of the entry
  : @return concatenated results of the calls to <code>$f</code>
