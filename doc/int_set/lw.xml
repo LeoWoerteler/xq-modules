@@ -4,30 +4,35 @@
     <xqdoc:version>1.1</xqdoc:version>
   </xqdoc:control>
   <xqdoc:module type="library">
-    <xqdoc:uri>http://www.woerteler.de/xquery/modules/int-set</xqdoc:uri>
-    <xqdoc:name>int-set.xqm</xqdoc:name>
+    <xqdoc:uri>http://www.woerteler.de/xquery/modules/int-set/lw</xqdoc:uri>
+    <xqdoc:name>lw.xqm</xqdoc:name>
     <xqdoc:comment>
-      <xqdoc:description>Abstract interface for a set of integers.</xqdoc:description>
+      <xqdoc:description>Implementation of a set of integers based on a Red-Black Map.</xqdoc:description>
       <xqdoc:author>Leo Woerteler &lt;leo@woerteler.de&gt;</xqdoc:author>
       <xqdoc:version>0.1</xqdoc:version>
       <xqdoc:custom tag="license">BSD 2-Clause License</xqdoc:custom>
     </xqdoc:comment>
   </xqdoc:module>
   <xqdoc:namespaces>
-    <xqdoc:namespace prefix="int-set" uri="http://www.woerteler.de/xquery/modules/int-set"/>
-    <xqdoc:namespace prefix="impl" uri="http://www.woerteler.de/xquery/modules/int-set/lw"/>
+    <xqdoc:namespace prefix="int-set" uri="http://www.woerteler.de/xquery/modules/int-set/lw"/>
+    <xqdoc:namespace prefix="tree" uri="http://www.woerteler.de/xquery/modules/ordered-map/rbtree"/>
   </xqdoc:namespaces>
   <xqdoc:imports>
     <xqdoc:import type="library">
-      <xqdoc:uri>http://www.woerteler.de/xquery/modules/int-set/lw</xqdoc:uri>
+      <xqdoc:uri>http://www.woerteler.de/xquery/modules/ordered-map/rbtree</xqdoc:uri>
     </xqdoc:import>
   </xqdoc:imports>
-  <xqdoc:variables/>
+  <xqdoc:variables>
+    <xqdoc:variable>
+      <xqdoc:name>int-set:LT</xqdoc:name>
+      <xqdoc:type occurrence="*">item()</xqdoc:type>
+    </xqdoc:variable>
+  </xqdoc:variables>
   <xqdoc:functions>
     <xqdoc:function arity="0">
       <xqdoc:comment>
-        <xqdoc:description>Returns the empty set.</xqdoc:description>
-        <xqdoc:return>the empty set</xqdoc:return>
+        <xqdoc:description>Empty set, which is the empty Red-Black Tree.</xqdoc:description>
+        <xqdoc:return>empty set</xqdoc:return>
       </xqdoc:comment>
       <xqdoc:name>int-set:empty</xqdoc:name>
       <xqdoc:signature>declare function int-set:empty() as item()*</xqdoc:signature>
@@ -37,12 +42,10 @@
     </xqdoc:function>
     <xqdoc:function arity="2">
       <xqdoc:comment>
-        <xqdoc:description>Inserts the given integer into the given set and returns the resulting set.</xqdoc:description>
-        <xqdoc:param>$set set to insert into</xqdoc:param>
-        <xqdoc:param>$x element to insert</xqdoc:param>
-        <xqdoc:return>the set that contains <code>$x</code> in addition to
-           all elements of <code>$set</code>
-        </xqdoc:return>
+        <xqdoc:description>Inserts the given integer into the given set.</xqdoc:description>
+        <xqdoc:param>$set the Red-Black Tree</xqdoc:param>
+        <xqdoc:param>$x the integer</xqdoc:param>
+        <xqdoc:return>tree where <code>$x</code> was inserted</xqdoc:return>
       </xqdoc:comment>
       <xqdoc:name>int-set:insert</xqdoc:name>
       <xqdoc:signature>declare function int-set:insert($set as item()*, $x as xs:integer) as item()*</xqdoc:signature>
@@ -62,11 +65,11 @@
     </xqdoc:function>
     <xqdoc:function arity="2">
       <xqdoc:comment>
-        <xqdoc:description>Checks if the given element is contained in the given set.</xqdoc:description>
-        <xqdoc:param>$set set to search in</xqdoc:param>
-        <xqdoc:param>$x element to look for</xqdoc:param>
+        <xqdoc:description>Checks if the given integer is contained in the given Red-Black Tree.</xqdoc:description>
+        <xqdoc:param>$set the Red-Black Tree</xqdoc:param>
+        <xqdoc:param>$x the integer</xqdoc:param>
         <xqdoc:return>
-          <code>true()</code> if the element is contained in the set,
+          <code>true()</code> if the integer is contained in the tree,
            <code>false()</code> otherwise</xqdoc:return>
       </xqdoc:comment>
       <xqdoc:name>int-set:contains</xqdoc:name>

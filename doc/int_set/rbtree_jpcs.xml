@@ -1,0 +1,298 @@
+<xqdoc:xqdoc xmlns:xqdoc="http://www.xqdoc.org/1.0">
+  <xqdoc:control>
+    <xqdoc:date>2013-12-12T20:57:37.817+01:00</xqdoc:date>
+    <xqdoc:version>1.1</xqdoc:version>
+  </xqdoc:control>
+  <xqdoc:module type="library">
+    <xqdoc:uri>http://snelson.org.uk/functions/rbtree</xqdoc:uri>
+    <xqdoc:name>rbtree_jpcs.xqm</xqdoc:name>
+  </xqdoc:module>
+  <xqdoc:namespaces>
+    <xqdoc:namespace prefix="rbtree" uri="http://snelson.org.uk/functions/rbtree"/>
+  </xqdoc:namespaces>
+  <xqdoc:imports/>
+  <xqdoc:variables/>
+  <xqdoc:functions>
+    <xqdoc:function arity="0">
+      <xqdoc:name>create</xqdoc:name>
+      <xqdoc:signature>declare function create() as function() as item()*</xqdoc:signature>
+      <xqdoc:return>
+        <xqdoc:type>function() as item()*</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="4">
+      <xqdoc:name>create</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="private"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %private function create($x as item(), $a as function() as item()*, $b as function() as item()*, $isred as xs:boolean) as function() as item()+</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>x</xqdoc:name>
+          <xqdoc:type>item()</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>a</xqdoc:name>
+          <xqdoc:type>function() as item()*</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>b</xqdoc:name>
+          <xqdoc:type>function() as item()*</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>isred</xqdoc:name>
+          <xqdoc:type>xs:boolean</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type>function() as item()+</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="1">
+      <xqdoc:name>empty</xqdoc:name>
+      <xqdoc:signature>declare function empty($tree as function() as item()*) as xs:boolean</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>tree</xqdoc:name>
+          <xqdoc:type>function() as item()*</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type>xs:boolean</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="1">
+      <xqdoc:name>value</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="private"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %private function value($tree as function() as item()*) as item()</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>tree</xqdoc:name>
+          <xqdoc:type>function() as item()*</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type>item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="1">
+      <xqdoc:name>left</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="private"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %private function left($tree as function() as item()*) as function() as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>tree</xqdoc:name>
+          <xqdoc:type>function() as item()*</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type>function() as item()*</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="1">
+      <xqdoc:name>right</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="private"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %private function right($tree as function() as item()*) as function() as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>tree</xqdoc:name>
+          <xqdoc:type>function() as item()*</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type>function() as item()*</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="1">
+      <xqdoc:name>isred</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="private"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %private function isred($tree as function() as item()*) as xs:boolean</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>tree</xqdoc:name>
+          <xqdoc:type>function() as item()*</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type>xs:boolean</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="3">
+      <xqdoc:name>contains</xqdoc:name>
+      <xqdoc:signature>declare function contains($lessthan as function(item(), item()) as xs:boolean, $tree as function() as item()*, $x as item()) as xs:boolean</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>lessthan</xqdoc:name>
+          <xqdoc:type>function(item(), item()) as xs:boolean</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>tree</xqdoc:name>
+          <xqdoc:type>function() as item()*</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>x</xqdoc:name>
+          <xqdoc:type>item()</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type>xs:boolean</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="3">
+      <xqdoc:name>get</xqdoc:name>
+      <xqdoc:signature>declare function get($lessthan as function(item(), item()) as xs:boolean, $tree as function() as item()*, $x as item()) as item()?</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>lessthan</xqdoc:name>
+          <xqdoc:type>function(item(), item()) as xs:boolean</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>tree</xqdoc:name>
+          <xqdoc:type>function() as item()*</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>x</xqdoc:name>
+          <xqdoc:type>item()</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="?">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="3">
+      <xqdoc:name>find_gte</xqdoc:name>
+      <xqdoc:signature>declare function find_gte($lessthan as function(item(), item()) as xs:boolean, $tree as function() as item()*, $x as item()) as item()?</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>lessthan</xqdoc:name>
+          <xqdoc:type>function(item(), item()) as xs:boolean</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>tree</xqdoc:name>
+          <xqdoc:type>function() as item()*</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>x</xqdoc:name>
+          <xqdoc:type>item()</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="?">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="3">
+      <xqdoc:name>fold</xqdoc:name>
+      <xqdoc:signature>declare function fold($f as function(item()*, item()) as item()*, $z as item()*, $tree as function() as item()*) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>f</xqdoc:name>
+          <xqdoc:type>function(item()*, item()) as item()*</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>z</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>tree</xqdoc:name>
+          <xqdoc:type>function() as item()*</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="3">
+      <xqdoc:name>insert</xqdoc:name>
+      <xqdoc:signature>declare function insert($lessthan as function(item(), item()) as xs:boolean, $tree as function() as item()*, $x as item()) as function() as item()+</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>lessthan</xqdoc:name>
+          <xqdoc:type>function(item(), item()) as xs:boolean</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>tree</xqdoc:name>
+          <xqdoc:type>function() as item()*</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>x</xqdoc:name>
+          <xqdoc:type>item()</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type>function() as item()+</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="3">
+      <xqdoc:name>insert_helper</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="private"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %private function insert_helper($lessthan as function(item(), item()) as xs:boolean, $tree as function() as item()*, $x as item()) as item()+</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>lessthan</xqdoc:name>
+          <xqdoc:type>function(item(), item()) as xs:boolean</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>tree</xqdoc:name>
+          <xqdoc:type>function() as item()*</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>x</xqdoc:name>
+          <xqdoc:type>item()</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="+">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="7">
+      <xqdoc:name>balance</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="private"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %private function balance($x as item(), $y as item(), $z as item(), $a as function() as item()*, $b as function() as item()*, $c as function() as item()*, $d as function() as item()*) as function() as item()+</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>x</xqdoc:name>
+          <xqdoc:type>item()</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>y</xqdoc:name>
+          <xqdoc:type>item()</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>z</xqdoc:name>
+          <xqdoc:type>item()</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>a</xqdoc:name>
+          <xqdoc:type>function() as item()*</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>b</xqdoc:name>
+          <xqdoc:type>function() as item()*</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>c</xqdoc:name>
+          <xqdoc:type>function() as item()*</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>d</xqdoc:name>
+          <xqdoc:type>function() as item()*</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type>function() as item()+</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+  </xqdoc:functions>
+</xqdoc:xqdoc>

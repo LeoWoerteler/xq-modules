@@ -12,12 +12,27 @@ module namespace avltree = 'http://www.woerteler.de/xquery/modules/ordered-map/a
 import module namespace pair = 'http://www.woerteler.de/xquery/modules/pair'
   at '../pair.xqm';
 
+(:~
+ : Returns the empty AVL Tree.
+ :
+ : @return empty tree
+ :)
 declare %public function avltree:empty() {
   function($empty, $branch) {
     $empty()
   }
 };
 
+(:~
+ : Finds the given key in the given AVL Tree.
+ :
+ : @param $lt less-than predicate
+ : @param $tree AVL Tree
+ : @param $x key to look for
+ : @param $found callback taking the bound value when the key was found
+ : @param $notFound zero-argument callback for when the key was not found
+ : @return result of the callback
+ :)
 declare %public function avltree:lookup($lt, $tree, $x, $found, $notFound) {
   $tree(
     function() { $notFound() },
@@ -29,6 +44,12 @@ declare %public function avltree:lookup($lt, $tree, $x, $found, $notFound) {
   )
 };
 
+(:~
+ : Calculates the number of entries in the given AVL Tree.
+ :
+ : @param $tree AVL Tree
+ : @return number of entries in the tree
+ :)
 declare %public function avltree:size($tree) {
   $tree(
     function() { 0 },
@@ -38,6 +59,15 @@ declare %public function avltree:size($tree) {
   )
 };
 
+(:~
+ : Inserts the given entry into the given AVL Tree.
+ :
+ : @param $lt less-than predicate
+ : @param $tree AVL Tree
+ : @param $k key of the entry to insert
+ : @param $v value of the entry to insert
+ : @return tree where the entry was inserted
+ :)
 declare %public function avltree:insert($lt, $tree, $x, $y) {
   $tree(
     function() { avltree:branch(avltree:empty(), $x, $y, avltree:empty()) },
@@ -52,6 +82,14 @@ declare %public function avltree:insert($lt, $tree, $x, $y) {
   )
 };
 
+(:~
+ : Deletes the given key from the given AVL Tree.
+ :
+ : @param $lt less-than predicate
+ : @param $tree AVL Tree
+ : @param $k key to delete
+ : @return tree where the entry of <code>$x</code> was deleted
+ :)
 declare %public function avltree:delete($lt, $tree, $x) {
   $tree(
     function() { $tree },
@@ -78,6 +116,12 @@ declare %public function avltree:delete($lt, $tree, $x) {
   )
 };
 
+(:~
+ : Returns an XML representation of the given tree's inner structure.
+ :
+ : @param $tree tree to show the structure of
+ : @return the tree's structure
+ :)
 declare function avltree:to-xml($tree) {
   $tree(
     function() { <N/> },
@@ -91,6 +135,19 @@ declare function avltree:to-xml($tree) {
   )
 };
 
+(:~
+ : Checks the given tree node for invariant violations.
+ :
+ : @param $lt less-than predicate
+ : @param $tree current node
+ : @param $min key that is smaller than all keys in <code>$tree</code>
+ : @param $max key that is greater than all keys in <code>$tree</code>
+ : @param $msg error message to show when an invariant is violated
+ : @return empty sequence
+ : @error rbtree:AVLT0001 if a key is smaller than <code>$min</code>
+ : @error rbtree:AVLT0002 if a key is greater than <code>$max</code>
+ : @error rbtree:AVLT0003 if the AVL Tree is unbalanced
+ :)
 declare %public function avltree:check($lt, $tree, $min, $max, $msg) {
   $tree(
     function() { () },
@@ -109,6 +166,14 @@ declare %public function avltree:check($lt, $tree, $min, $max, $msg) {
   )
 };
 
+(:~
+ : Folds all entries of the given tree into one value in ascending order.
+ :
+ : @param $node current tree node
+ : @param $acc1 accumulator
+ : @param $f combining function
+ : @return folded value
+ :)
 declare %public function avltree:fold($tree, $acc1, $f) {
   $tree(
     function() { $acc1 },
@@ -123,6 +188,15 @@ declare %public function avltree:fold($tree, $acc1, $f) {
 
 (:::::::::::::::::::::::::::: private functions ::::::::::::::::::::::::::::)
 
+(:~
+ : Creates a branch node.
+ :
+ : @param $left left sub-tree
+ : @param $k key of the branch node
+ : @param $v value of the branch node
+ : @param $right right sub-tree
+ : @return branch node
+ :)
 declare %private function avltree:branch($left, $k, $v, $right) {
   let $h := max((avltree:height($left), avltree:height($right))) + 1
   return function($empty, $branch) {
@@ -130,6 +204,12 @@ declare %private function avltree:branch($left, $k, $v, $right) {
   }
 };
 
+(:~
+ : Returns the height of the given node.
+ :
+ : @param $tree node
+ : @return the node's height
+ :)
 declare %private function avltree:height($tree) {
   $tree(
     function() { 0 },
@@ -137,6 +217,17 @@ declare %private function avltree:height($tree) {
   )
 };
 
+(:~
+ : Finds the leftmost (smallest) entry in the given tree and returns it
+ : and the tree where the entry was deleted.
+ :
+ : @param $l left sub-tree
+ : @param $k key of the root node
+ : @param $v value of the root node
+ : @param $r right sub-tree
+ : @return two-element sequence containing the removed entry as a pair
+ :         and the tree with the entry deleted
+ :)
 declare %private function avltree:split-leftmost($l, $k, $v, $r) {
   $l(
     function() { (pair:new($k, $v), $r) },
@@ -147,10 +238,26 @@ declare %private function avltree:split-leftmost($l, $k, $v, $r) {
   )
 };
 
+(:~
+ : Returns the balance (between -2 and 2) between the two given sub-trees.
+ :
+ : @param $left left sub-tree
+ : @param $right right sub-tree
+ : @return the balance, i.e. the difference between the left and right height
+ :)
 declare %private function avltree:balance($left, $right) {
   avltree:height($right) - avltree:height($left)
 };
 
+(:~
+ : Rebalances the given branch node.
+ :
+ : @param $l left sub-tree
+ : @param $k key of the branch node
+ : @param $v value of the branch node
+ : @param $r right sub-tree
+ : @return balanced branch node
+ :)
 declare %private function avltree:re-balance($l, $k, $v, $r) {
   switch(avltree:balance($l, $r))
     case  2 return avltree:rotate-left($l, $k, $v, $r)
@@ -158,6 +265,15 @@ declare %private function avltree:re-balance($l, $k, $v, $r) {
     default return avltree:branch($l, $k, $v, $r)
 };
 
+(:~
+ : Rotates the given branch node to the left.
+ :
+ : @param $l left sub-tree
+ : @param $k key of the branch node
+ : @param $v value of the branch node
+ : @param $r right sub-tree
+ : @return rotated branch node
+ :)
 declare %private function avltree:rotate-left($l, $k, $v, $r) {
   $r(
     error#0,
@@ -178,6 +294,15 @@ declare %private function avltree:rotate-left($l, $k, $v, $r) {
   )
 };
 
+(:~
+ : Rotates the given branch node to the right.
+ :
+ : @param $l left sub-tree
+ : @param $k key of the branch node
+ : @param $v value of the branch node
+ : @param $r right sub-tree
+ : @return rotated branch node
+ :)
 declare %private function avltree:rotate-right($l, $k, $v, $r) {
   $l(
     error#0,

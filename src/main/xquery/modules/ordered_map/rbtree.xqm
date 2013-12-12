@@ -12,26 +12,54 @@ module namespace rbtree = 'http://www.woerteler.de/xquery/modules/ordered-map/rb
 import module namespace pair = 'http://www.woerteler.de/xquery/modules/pair'
   at '../pair.xqm';
 
-declare %private variable $rbtree:DBL_RED as xs:integer := -1;
-declare %private variable $rbtree:RED as xs:integer := 0;
-declare %private variable $rbtree:BLACK as xs:integer := 1;
-declare %private variable $rbtree:DBL_BLACK as xs:integer := 2;
+(:~ Negative-black node color, only occurs while relabancing. :)
+declare %private variable $rbtree:NEG_BLACK as xs:integer := -1;
+(:~ Red node color. :)
+declare %private variable $rbtree:RED       as xs:integer :=  0;
+(:~ Black node color. :)
+declare %private variable $rbtree:BLACK     as xs:integer :=  1;
+(:~ Doble-black node color, only occurs while relabancing. :)
+declare %private variable $rbtree:DBL_BLACK as xs:integer :=  2;
 
+(:~
+ : The empty Red-Black Tree, which is a black leaf.
+ : @return the empty tree
+ :)
 declare %public function rbtree:empty() {
   rbtree:leaf($rbtree:BLACK)
 };
 
+(:~
+ : Searches for the given key in the given Red-Black Tree.
+ :
+ : @param $lt less-than predicate
+ : @param $tree Red-Black Tree
+ : @param $x key to look for
+ : @param $found callback taking the bound value when the key was found
+ : @param zero-argument callback that is called when the key was not found
+ : @return result of the callback
+ :)
 declare %public function rbtree:lookup($lt, $tree, $x, $found, $notFound) {
-  $tree(
-    function($c) { $notFound() },
-    function($c, $l, $k, $v, $r) {
-      if($lt($x, $k)) then rbtree:lookup($lt, $l, $x, $found, $notFound)
-      else if($lt($k, $x)) then rbtree:lookup($lt, $r, $x, $found, $notFound)
-      else $found($v)
+  let $go :=
+    function($go, $tree) {
+      $tree(
+        function($c) { $notFound() },
+        function($c, $l, $k, $v, $r) {
+          if($lt($x, $k)) then $go($go, $l)
+          else if($lt($k, $x)) then $go($go, $r)
+          else $found($v)
+        }
+      )
     }
-  )
+  return $go($go, $tree)
 };
 
+(:~
+ : Calculates the number of entries in the given Red-Black Tree.
+ :
+ : @param $tree Red-Black Tree
+ : @return number of entries in the tree
+ :)
 declare %public function rbtree:size($tree) {
   $tree(
     function($c) { 0 },
@@ -41,13 +69,39 @@ declare %public function rbtree:size($tree) {
   )
 };
 
+(:~
+ : Inserts the given entry into the given Read-Black Tree.
+ :
+ : @param $lt less-than predicate
+ : @param $root root node of the tree
+ : @param $k key of the entry to insert
+ : @param $v value of the entry to insert
+ : @return tree where the entry was inserted
+ :)
 declare %public function rbtree:insert($lt, $root, $k, $v) as item()* {
+  (: the root node is always black :)
   rbtree:recolor(rbtree:ins($lt, $root, $k, $v), $rbtree:BLACK)
 };
 
+(:~
+ : Recursively inserts the given entry into the given tree node.
+ :
+ : @param $lt less-than predicate
+ : @param $tree tree node
+ : @param $x key of the entry to insert
+ : @param $y value of the entry to insert
+ : @return node where the entry was inserted
+ :)
 declare %private function rbtree:ins($lt, $tree, $x, $y) {
   $tree(
-    function($c) { rbtree:branch($rbtree:RED, rbtree:leaf(), $x, $y, rbtree:leaf()) },
+    function($c) {
+      rbtree:branch(
+        $rbtree:RED,
+        rbtree:leaf($rbtree:BLACK),
+        $x, $y,
+        rbtree:leaf($rbtree:BLACK)
+      )
+    },
     function($c, $l, $k, $v, $r) {
       if($lt($x, $k)) then (
         rbtree:balance-l($c, rbtree:ins($lt, $l, $x, $y), $k, $v, $r)
@@ -60,10 +114,26 @@ declare %private function rbtree:ins($lt, $tree, $x, $y) {
   )
 };
 
+(:~
+ : Deletes the given key from the given Red-Black Tree.
+ :
+ : @param $lt less-than predicate
+ : @param $root root node of the tree
+ : @param $k key to delete
+ : @return tree where the entry of <code>$k</code> was deleted
+ :)
 declare %public function rbtree:delete($lt, $root, $k) {
   rbtree:recolor(rbtree:del($lt, $root, $k), $rbtree:BLACK)
 };
 
+(:~
+ : Recursively deletes the given key from the given tree node.
+ :
+ : @param $lt less-than predicate
+ : @param $tree tree node
+ : @param $x key to delete
+ : @return node where the key was deleted
+ :)
 declare %private function rbtree:del($lt, $tree, $x) {
   $tree(
     function($c) { $tree },
@@ -114,6 +184,18 @@ declare %private function rbtree:del($lt, $tree, $x) {
   )
 };
 
+(:~
+ : Finds the leftmost (smallest) entry in the given tree and returns it
+ : and the tree where the entry was deleted.
+ :
+ : @param $c color of the root node
+ : @param $l left sub-tree
+ : @param $k key of the root node
+ : @param $v value of the root node
+ : @param $r right sub-tree
+ : @return two-element sequence containing the removed entry as a pair
+ :         and the tree with the entry deleted
+ :)
 declare %private function rbtree:split-leftmost($c, $l, $k, $v, $r) {
   $l(
     function($lc) {
@@ -135,6 +217,16 @@ declare %private function rbtree:split-leftmost($c, $l, $k, $v, $r) {
   )
 };
 
+(:~
+ : Propagates a double-black node upwards in the tree.
+ :
+ : @param $c color of the root node
+ : @param $l left sub-tree
+ : @param $k key of the root node
+ : @param $v value of the root node
+ : @param $r right sub-tree
+ : @return tree where none of the sub-trees is double-black
+ :)
 declare %private function rbtree:bubble($c, $l, $k, $v, $r) {
   if(rbtree:color($l) eq $rbtree:DBL_BLACK) then (
     rbtree:balance-r(
@@ -155,9 +247,19 @@ declare %private function rbtree:bubble($c, $l, $k, $v, $r) {
   )
 };
 
+(:~
+ : Rebalances the given node after a modification in the left sub-tree.
+ :
+ : @param $c color of the root node
+ : @param $l left sub-tree
+ : @param $k key of the root node
+ : @param $v value of the root node
+ : @param $r right sub-tree
+ : @return rebalanced tree
+ :)
 declare %private function rbtree:balance-l($c, $l, $k, $v, $r) {
   if($c = ($rbtree:BLACK, $rbtree:DBL_BLACK)) then (
-    if($c eq $rbtree:DBL_BLACK and rbtree:color($l) eq $rbtree:DBL_RED) then (
+    if($c eq $rbtree:DBL_BLACK and rbtree:color($l) eq $rbtree:NEG_BLACK) then (
       $l(
         function($lc) { error() },
         function($lc, $ll, $lk, $lv, $lr) {
@@ -210,9 +312,19 @@ declare %private function rbtree:balance-l($c, $l, $k, $v, $r) {
   )
 };
 
+(:~
+ : Rebalances the given node after a modification in the right sub-tree.
+ :
+ : @param $c color of the root node
+ : @param $l left sub-tree
+ : @param $k key of the root node
+ : @param $v value of the root node
+ : @param $r right sub-tree
+ : @return rebalanced tree
+ :)
 declare %private function rbtree:balance-r($c, $l, $k, $v, $r) {
   if($c = ($rbtree:BLACK, $rbtree:DBL_BLACK)) then (
-    if($c eq $rbtree:DBL_BLACK and rbtree:color($r) eq $rbtree:DBL_RED) then (
+    if($c eq $rbtree:DBL_BLACK and rbtree:color($r) eq $rbtree:NEG_BLACK) then (
       $r(
         function($rc) { error() },
         function($rc, $rl, $rk, $rv, $rr) {
@@ -265,24 +377,40 @@ declare %private function rbtree:balance-r($c, $l, $k, $v, $r) {
   )
 };
 
-declare %private function rbtree:leaf() {
-  function($leaf, $branch) {
-    $leaf($rbtree:BLACK)
-  }
-};
-
+(:~
+ : Creates a leaf node with the given color.
+ :
+ : @param $c color of the leaf node
+ : @return leaf node with the given color
+ :)
 declare %private function rbtree:leaf($c) {
   function($leaf, $branch) {
     $leaf($c)
   }
 };
 
+(:~
+ : Creates a branch node.
+ :
+ : @param $c color of the branch node
+ : @param $l left sub-tree
+ : @param $k key of the branch node
+ : @param $v value of the branch node
+ : @param $r right sub-tree
+ : @return branch node
+ :)
 declare %private function rbtree:branch($c, $l, $k, $v, $r) {
   function($leaf, $branch) {
     $branch($c, $l, $k, $v, $r)
   }
 };
 
+(:~
+ : Returns the color of the given node.
+ :
+ : @param $tree node to find the color of
+ : @return the node's color
+ :)
 declare %private function rbtree:color($tree) {
   $tree(
     function($c) { $c },
@@ -290,20 +418,39 @@ declare %private function rbtree:color($tree) {
   )
 };
 
+(:~
+ : Subtracts one black unit from the given node color.
+ :
+ : @param $c initial color
+ : @return previous color
+ :)
 declare %private function rbtree:prev($c) {
   switch($c)
     case $rbtree:DBL_BLACK return $rbtree:BLACK
     case $rbtree:BLACK     return $rbtree:RED
-    default                return $rbtree:DBL_RED
+    default                return $rbtree:NEG_BLACK
 };
 
+(:~
+ : Adds one black unit to the given node color.
+ :
+ : @param $c initial color
+ : @return next color
+ :)
 declare %private function rbtree:next($c) {
   switch($c)
-    case $rbtree:DBL_RED return $rbtree:RED
-    case $rbtree:RED     return $rbtree:BLACK
-    default              return $rbtree:DBL_BLACK
+    case $rbtree:NEG_BLACK return $rbtree:RED
+    case $rbtree:RED       return $rbtree:BLACK
+    default                return $rbtree:DBL_BLACK
 };
 
+(:~
+ : Returns a recolored version of the given node.
+ :
+ : @param $tree node to recolor
+ : @param $col new color of the node
+ : @return recolored node
+ :)
 declare %private function rbtree:recolor($tree, $col) {
   $tree(
     function($c) {
@@ -317,6 +464,21 @@ declare %private function rbtree:recolor($tree, $col) {
   )
 };
 
+(:~
+ : Checks the given tree node for invariant violations.
+ :
+ : @param $lt less-than predicate
+ : @param $tree current node
+ : @param $min key that is smaller than all keys in <code>$tree</code>
+ : @param $max key that is greater than all keys in <code>$tree</code>
+ : @param $msg error message to show when an invariant is violated
+ : @return black height of the tree
+ : @error rbtree:CHCK0001 if a key is smaller than <code>$min</code>
+ : @error rbtree:CHCK0002 if a key is greater than <code>$max</code>
+ : @error rbtree:CHCK0003 if a red node has a red child
+ : @error rbtree:CHCK0004 if a node is double-black or negative black
+ : @error rbtree:CHCK0005 if the two sub-trees have different black heights
+ :)
 declare %public function rbtree:check($lt, $tree, $min, $max, $msg) {
   $tree(
     function($c) { 0 },
@@ -328,25 +490,31 @@ declare %public function rbtree:check($lt, $tree, $min, $max, $msg) {
       ) else if($c eq $rbtree:RED and rbtree:color($l) eq $rbtree:RED) then (
         error(xs:QName('rbtree:CHCK0003'), $msg)
       ) else if($c eq $rbtree:RED and rbtree:color($r) eq $rbtree:RED) then (
+        error(xs:QName('rbtree:CHCK0003'), $msg)
+      ) else if($c = ($rbtree:NEG_BLACK, $rbtree:DBL_BLACK)) then (
         error(xs:QName('rbtree:CHCK0004'), $msg)
-      ) else if($c = ($rbtree:DBL_RED, $rbtree:DBL_BLACK)) then (
-        error(xs:QName('rbtree:CHCK0005'), $msg)
       ) else (
         let $h1 := rbtree:check($lt, $l, $min, $k, $msg),
             $h2 := rbtree:check($lt, $r, $k, $max, $msg)
         return if($h1 ne $h2) then (
-          error(xs:QName('rbtree:CHCK0006'), $msg)
+          error(xs:QName('rbtree:CHCK0005'), $msg)
         ) else if($c eq $rbtree:RED) then $h1 else $h1 + 1
       )
     }
   )
 };
 
+(:~
+ : Returns an XML representation of the given tree's inner structure.
+ :
+ : @param $tree tree to show the structure of
+ : @return the tree's structure
+ :)
 declare %public function rbtree:to-xml($tree) {
   $tree(
     function($c) {
       element {
-        if($c eq $rbtree:DBL_RED) then 'RR'
+        if($c eq $rbtree:NEG_BLACK) then 'RR'
         else if($c eq $rbtree:RED) then 'R'
         else if($c eq $rbtree:BLACK) then 'B'
         else 'BB'
@@ -354,7 +522,7 @@ declare %public function rbtree:to-xml($tree) {
     },
     function($c, $l, $k, $v, $r) {
       element {
-        if($c eq $rbtree:DBL_RED) then 'RR'
+        if($c eq $rbtree:NEG_BLACK) then 'RR'
         else if($c eq $rbtree:RED) then 'R'
         else if($c eq $rbtree:BLACK) then 'B'
         else 'BB'
@@ -367,6 +535,14 @@ declare %public function rbtree:to-xml($tree) {
   )
 };
 
+(:~
+ : Folds all entries of the given tree into one value in ascending order.
+ :
+ : @param $node current tree node
+ : @param $acc1 accumulator
+ : @param $f combining function
+ : @return folded value
+ :)
 declare %public function rbtree:fold($node, $acc1, $f) {
   $node(
     function($_) { $acc1 },

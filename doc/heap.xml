@@ -1,6 +1,6 @@
 <xqdoc:xqdoc xmlns:xqdoc="http://www.xqdoc.org/1.0">
   <xqdoc:control>
-    <xqdoc:date>2013-12-08T17:09:32.867+01:00</xqdoc:date>
+    <xqdoc:date>2013-12-12T20:57:37.817+01:00</xqdoc:date>
     <xqdoc:version>1.1</xqdoc:version>
   </xqdoc:control>
   <xqdoc:module type="library">
@@ -48,6 +48,28 @@
       </xqdoc:parameters>
       <xqdoc:return>
         <xqdoc:type>function(*)</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="1">
+      <xqdoc:comment>
+        <xqdoc:description>Check if the given heap is empty.</xqdoc:description>
+        <xqdoc:param>$heap the heap to check</xqdoc:param>
+        <xqdoc:return>
+          <code>true()</code> if the heap is empty, <code>false()</code> otherwise</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>heap:is-empty</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="public"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %public function heap:is-empty($heap as function(*)) as xs:boolean</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>heap</xqdoc:name>
+          <xqdoc:type>function(*)</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type>xs:boolean</xqdoc:type>
       </xqdoc:return>
     </xqdoc:function>
     <xqdoc:function arity="2">

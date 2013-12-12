@@ -14,10 +14,22 @@ import module namespace tree = "http://www.woerteler.de/xquery/modules/ordered-m
 
 declare variable $int-set:LT := function($a, $b) { $a lt $b };
 
+(:~
+ : Empty set, which is the empty Red-Black Tree.
+ :
+ : @return empty set
+ :)
 declare function int-set:empty() {
   tree:empty()
 };
 
+(:~
+ : Inserts the given integer into the given set.
+ :
+ : @param $set the Red-Black Tree
+ : @param $x the integer
+ : @return tree where <code>$x</code> was inserted
+ :)
 declare function int-set:insert(
   $set as item()*,
   $x as xs:integer
@@ -25,6 +37,14 @@ declare function int-set:insert(
   tree:insert($int-set:LT, $set, $x, ())
 };
 
+(:~
+ : Checks if the given integer is contained in the given Red-Black Tree.
+ :
+ : @param $set the Red-Black Tree
+ : @param $x the integer
+ : @return <code>true()</code> if the integer is contained in the tree,
+           <code>false()</code> otherwise
+ :)
 declare function int-set:contains(
   $set as item()*,
   $x as xs:integer

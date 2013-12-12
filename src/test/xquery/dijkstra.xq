@@ -9,7 +9,7 @@ declare variable $doc := doc('../resources/southern_germany.xml');
 
 declare variable $empty-map := map:new(function($a, $b) { $a < $b });
 
-declare %basex:lazy variable $cities as function(*) :=
+declare variable $cities as function(*) :=
   fold-left(
     $doc//vertex,
     $empty-map,
@@ -18,7 +18,7 @@ declare %basex:lazy variable $cities as function(*) :=
     }
   );
 
-declare %basex:lazy variable $names as function(*) :=
+declare variable $names as function(*) :=
   fold-left(
     $doc//vertex,
     $empty-map,
@@ -27,7 +27,7 @@ declare %basex:lazy variable $names as function(*) :=
     }
   );
 
-declare %basex:lazy variable $dists :=
+declare variable $dists :=
   fold-left(
     $doc//vertex,
     $empty-map,

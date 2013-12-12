@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Higher-Order XQuery Libraries</title>
+    <link rel="stylesheet" type="text/css" href="../style.css" />
+  </head>
+  <body>
+    <h2>Library Module: int_set/lw.xqm</h2>
+    <table>
+      <tr>
+        <td>
+          <b>URI:</b>
+        </td>
+        <td>
+          <code>http://www.woerteler.de/xquery/modules/int-set/lw</code>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Description:</b>
+        </td>
+        <td>Implementation of a set of integers based on a Red-Black Map.</td>
+      </tr>
+      <tr>
+        <td>
+          <b>Author:</b>
+        </td>
+        <td>Leo Woerteler &lt;leo@woerteler.de&gt;</td>
+      </tr>
+      <tr>
+        <td>
+          <b>Version:</b>
+        </td>
+        <td>0.1</td>
+      </tr>
+    </table>
+    <h2>Variables</h2>
+    <h3>$LT</h3>
+    <table>
+      <tr>
+        <td>
+          <b>Type:</b>
+        </td>
+        <td>
+          <code>item()</code>
+        </td>
+      </tr>
+    </table>
+    <h2>Functions</h2>
+    <h3>contains($set, $x)</h3>
+    <table>
+      <tr>
+        <td>
+          <b>Arguments:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>$set</code>
+              </td>
+              <td>
+                <code>item()*</code>
+              </td>
+              <td>the Red-Black Tree</td>
+            </tr>
+            <tr>
+              <td>
+                <code>$x</code>
+              </td>
+              <td>
+                <code>xs:integer</code>
+              </td>
+              <td>the integer</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Returns:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>item()*</code>
+              </td>
+              <td>
+                <code>true()</code> if the integer is contained in the tree,
+           <code>false()</code> otherwise</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Description:</b>
+        </td>
+        <td>Checks if the given integer is contained in the given Red-Black Tree.</td>
+      </tr>
+    </table>
+    <h3>empty()</h3>
+    <table>
+      <tr>
+        <td>
+          <b>Returns:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>item()*</code>
+              </td>
+              <td>empty set</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Description:</b>
+        </td>
+        <td>Empty set, which is the empty Red-Black Tree.</td>
+      </tr>
+    </table>
+    <h3>insert($set, $x)</h3>
+    <table>
+      <tr>
+        <td>
+          <b>Arguments:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>$set</code>
+              </td>
+              <td>
+                <code>item()*</code>
+              </td>
+              <td>the Red-Black Tree</td>
+            </tr>
+            <tr>
+              <td>
+                <code>$x</code>
+              </td>
+              <td>
+                <code>xs:integer</code>
+              </td>
+              <td>the integer</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Returns:</b>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>
+                <code>item()*</code>
+              </td>
+              <td>tree where <code>$x</code> was inserted</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Description:</b>
+        </td>
+        <td>Inserts the given integer into the given set.</td>
+      </tr>
+    </table>
+  </body>
+</html>
