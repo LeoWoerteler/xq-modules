@@ -12,3 +12,8 @@ Documentation
 -------------
 
 All functions and variables are annotated with [xqDoc](http://xqdoc.org/) comments. Generated documentation is available [here](http://www.woerteler.de/xquery/modules/) under each module's namespace URI.
+
+License
+-------
+
+All code is made available under the [BSD 2-Clause License](http://opensource.org/licenses/BSD-2-Clause) except where explicitly marked otherwise.

@@ -1,10 +1,10 @@
 xquery version "3.0";
 
 import module namespace ordered-map = 'http://www.woerteler.de/xquery/modules/ordered-map'
-  at '../../main/xquery/modules/ordered-map.xqm';
+  at '../../../main/xquery/modules/ordered-map.xqm';
 
 import module namespace pair = 'http://www.woerteler.de/xquery/modules/pair'
-  at '../../main/xquery/modules/pair.xqm';
+  at '../../../main/xquery/modules/pair.xqm';
 
 declare namespace map = 'http://www.w3.org/2005/xpath-functions/map';
 
