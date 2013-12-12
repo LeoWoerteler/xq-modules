@@ -1,19 +1,23 @@
+xquery version "3.0";
 
 import module namespace ordered-map = 'http://www.woerteler.de/xquery/modules/ordered-map'
   at '../../main/xquery/modules/ordered-map.xqm';
 
+import module namespace pair = 'http://www.woerteler.de/xquery/modules/pair'
+  at '../../main/xquery/modules/pair.xqm';
+
+declare namespace map = 'http://www.w3.org/2005/xpath-functions/map';
+
 declare function local:insert($maps, $key, $i) {
-  prof:dump($key, 'insert'),
   let $tree := $maps('tree'),
       $map := $maps('map')
-  return {
-    'tree' : ordered-map:insert($tree, $key, $i),
-    'map' : map:new(($map, { $key : $i }))
-  }
+  return map:new((
+    map:entry('tree', ordered-map:insert($tree, $key, $i)),
+    map:entry('map', map:new(($map, map:entry($key, $i))))
+  ))
 };
 
 declare function local:lookup($maps, $key, $i) {
-  prof:dump($key, 'lookup'),
   let $tree := $maps('tree'),
       $map := $maps('map')
   return ordered-map:lookup(
@@ -31,13 +35,12 @@ declare function local:lookup($maps, $key, $i) {
 };
 
 declare function local:delete($maps, $key, $i) {
-  prof:dump($key, 'delete'),
   let $tree := $maps('tree'),
       $map := $maps('map')
-  return {
-    'tree' : ordered-map:delete($tree, $key),
-    'map' : map:remove($map, $key)
-  }
+  return map:new((
+    map:entry('tree', ordered-map:delete($tree, $key)),
+    map:entry('map', map:remove($map, $key))
+  ))
 };
 
 ordered-map:to-xml(
@@ -45,14 +48,15 @@ ordered-map:to-xml(
     for-each-pair(
       random:seeded-integer(42, 100000, 30000),
       1 to 100000,
-      function($r, $i) { function($f) { $f($r, $i) } }
+      pair:new#2
     ),
-    {
-      'tree' : ordered-map:new(function($a, $b) { $a < $b }),
-      'map' : { }
-    },
-    function($maps, $rnd) {
-      $rnd(
+    map:new((
+      map:entry('tree', ordered-map:new(function($a, $b) { $a < $b })),
+      map:entry('map', map:new())
+    )),
+    function($maps, $pair) {
+      pair:deconstruct(
+        $pair,
         function($r, $i) {
           let $op := $r mod 3,
               $key := $r idiv 3

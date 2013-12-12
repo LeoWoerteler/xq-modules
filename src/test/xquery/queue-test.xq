@@ -1,3 +1,5 @@
+xquery version "3.0";
+
 import module namespace queue = 'http://www.woerteler.de/xquery/modules/queue'
     at '../../main/xquery/modules/queue.xqm';
 

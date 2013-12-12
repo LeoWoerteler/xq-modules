@@ -1,3 +1,4 @@
+xquery version "3.0";
 
 import module namespace ordered-map = 'http://www.woerteler.de/xquery/modules/ordered-map'
   at '../../main/xquery/modules/ordered-map.xqm';
@@ -5,18 +6,26 @@ import module namespace ordered-map = 'http://www.woerteler.de/xquery/modules/or
 import module namespace pair = 'http://www.woerteler.de/xquery/modules/pair'
   at '../../main/xquery/modules/pair.xqm';
 
+declare namespace map = 'http://www.w3.org/2005/xpath-functions/map';
+
 declare function local:insert($maps, $key, $i) {
   let $tree := $maps('tree'),
       $map := $maps('map')
-  return {
-    'tree' : ordered-map:check(
-               ordered-map:insert($tree, $key, $i),
-               -1,
-               100000,
-               xs:string($i)
-             ),
-    'map'  : map:new(($map, { $key : $i }))
-  }
+  return map:new((
+    map:entry(
+      'tree',
+      ordered-map:check(
+        ordered-map:insert($tree, $key, $i),
+        -1,
+        100000,
+        xs:string($i)
+      )
+    ),
+    map:entry(
+      'map',
+       map:new(($map, map:entry($key, $i)))
+    )
+  ))
 };
 
 declare function local:lookup($maps, $key, $i) {
@@ -39,15 +48,21 @@ declare function local:lookup($maps, $key, $i) {
 declare function local:delete($maps, $key, $i) {
   let $tree := $maps('tree'),
       $map := $maps('map')
-  return {
-    'tree' : ordered-map:check(
-               ordered-map:delete($tree, $key),
-               -1,
-               100000,
-               xs:string($i)
-             ),
-    'map'  : map:remove($map, $key)
-  }
+  return map:new((
+    map:entry(
+      'tree',
+      ordered-map:check(
+        ordered-map:delete($tree, $key),
+        -1,
+        100000,
+        xs:string($i)
+      )
+    ),
+    map:entry(
+      'map',
+      map:remove($map, $key)
+    )
+  ))
 };
 
 ordered-map:to-xml(
@@ -57,10 +72,10 @@ ordered-map:to-xml(
       1 to 100000,
       pair:new#2
     ),
-    {
-      'tree' : ordered-map:new(function($a, $b) { $a < $b }),
-      'map' : { }
-    },
+    map:new((
+      map:entry('tree', ordered-map:new(function($a, $b) { $a < $b })),
+      map:entry('map',  map:new())
+    )),
     function($maps, $pair) {
       pair:deconstruct(
         $pair,

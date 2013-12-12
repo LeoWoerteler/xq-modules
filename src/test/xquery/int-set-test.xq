@@ -1,3 +1,4 @@
+xquery version "3.0";
 
 import module namespace int-set = "http://www.woerteler.de/xquery/modules/int-set"
     at '../../main/xquery/modules/int-set.xqm';

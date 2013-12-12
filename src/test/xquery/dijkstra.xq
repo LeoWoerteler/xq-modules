@@ -1,3 +1,4 @@
+xquery version "3.0";
 
 import module namespace heap = 'http://www.woerteler.de/xquery/modules/heap'
     at '../../main/xquery/modules/heap.xqm';

@@ -1,3 +1,5 @@
+xquery version "3.0";
+
 import module namespace rng = 'http://www.woerteler.de/xquery/modules/rng'
     at '../../main/xquery/modules/rng.xqm';
 
