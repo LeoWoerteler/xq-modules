@@ -121,6 +121,7 @@ declare %private function rbtree:ins($lt, $tree, $x, $y) {
  : @param $root root node of the tree
  : @param $k key to delete
  : @return tree where the entry of <code>$k</code> was deleted
+ : @see http://matt.might.net/articles/red-black-delete/
  :)
 declare %public function rbtree:delete($lt, $root, $k) {
   rbtree:recolor(rbtree:del($lt, $root, $k), $rbtree:BLACK)
