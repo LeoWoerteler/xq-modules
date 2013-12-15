@@ -8,41 +8,6 @@ import module namespace pair = 'http://www.woerteler.de/xquery/modules/pair'
 
 declare namespace map = 'http://www.w3.org/2005/xpath-functions/map';
 
-declare function local:insert($maps, $key, $i) {
-  let $tree := $maps('tree'),
-      $map := $maps('map')
-  return map:new((
-    map:entry('tree', ordered-map:insert($tree, $key, $i)),
-    map:entry('map', map:new(($map, map:entry($key, $i))))
-  ))
-};
-
-declare function local:lookup($maps, $key, $i) {
-  let $tree := $maps('tree'),
-      $map := $maps('map')
-  return ordered-map:lookup(
-    $tree,
-    $key,
-    function($val) {
-      if($map($key) eq $val) then $maps
-      else error(QName('test', 'asdf'), xs:string($i))
-    },
-    function() {
-      if(empty($map($key))) then $maps
-      else error(QName('test', 'asdf'), xs:string($i))
-    }
-  )
-};
-
-declare function local:delete($maps, $key, $i) {
-  let $tree := $maps('tree'),
-      $map := $maps('map')
-  return map:new((
-    map:entry('tree', ordered-map:delete($tree, $key)),
-    map:entry('map', map:remove($map, $key))
-  ))
-};
-
 ordered-map:to-xml(
   fold-left(
     for-each-pair(
@@ -50,21 +15,22 @@ ordered-map:to-xml(
       1 to 100000,
       pair:new#2
     ),
-    map:new((
-      map:entry('tree', ordered-map:new(function($a, $b) { $a < $b })),
-      map:entry('map', map:new())
-    )),
-    function($maps, $pair) {
+    ordered-map:new(function($a, $b) { $a < $b }),
+    function($tree, $pair) {
       pair:deconstruct(
         $pair,
         function($r, $i) {
           let $op := $r mod 3,
               $key := $r idiv 3
-          return if($op eq 0) then local:insert($maps, $key, $i)
-          else if($op eq 1) then local:delete($maps, $key, $i)
-          else local:lookup($maps, $key, $i)
+          return if($op eq 0) then (
+            ordered-map:insert($tree, $key, $i)
+          ) else if($op eq 1) then  (
+            ordered-map:delete($tree, $key)
+          ) else (
+            $tree
+          )
         }
       )
     }
-  )('tree')
+  )
 )
