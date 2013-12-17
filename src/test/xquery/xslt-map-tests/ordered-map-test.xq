@@ -10,11 +10,8 @@ declare namespace map = 'http://www.w3.org/2005/xpath-functions/map';
 
 ordered-map:to-xml(
   fold-left(
-    for-each-pair(
-      random:seeded-integer(42, 100000, 30000),
-      1 to 100000,
-      pair:new#2
-    ),
+    for $r at $i in random:seeded-integer(42, 100000, 30000)
+    return pair:new($r, $i),
     (
       ordered-map:new(function($a, $b) { $a < $b }),
       map:new()

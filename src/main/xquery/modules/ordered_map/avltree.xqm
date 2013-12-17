@@ -24,39 +24,44 @@ declare %public function avltree:empty() {
 };
 
 (:~
+ : Creates a branch node.
+ :
+ : @param $left left sub-tree
+ : @param $b balance of the branch node
+ : @param $k key of the branch node
+ : @param $v value of the branch node
+ : @param $right right sub-tree
+ : @return branch node
+ :)
+declare %private function avltree:branch($left, $b, $k, $v, $right) {
+  function($empty, $branch) {
+    $branch($left, $b, $k, $v, $right)
+  }
+};
+
+(:~
  : Finds the given key in the given AVL Tree.
  :
  : @param $lt less-than predicate
  : @param $tree AVL Tree
  : @param $x key to look for
  : @param $found callback taking the bound value when the key was found
- : @param $notFound zero-argument callback for when the key was not found
+ : @param $not-found zero-argument callback for when the key was not found
  : @return result of the callback
  :)
-declare %public function avltree:lookup($lt, $tree, $x, $found, $notFound) {
-  $tree(
-    function() { $notFound() },
-    function($l, $_, $k, $v, $r) {
-      if($lt($x, $k)) then avltree:lookup($lt, $l, $x, $found, $notFound)
-      else if($lt($k, $x)) then avltree:lookup($lt, $r, $x, $found, $notFound)
-      else $found($v)
+declare %public function avltree:lookup($lt, $tree, $x, $found, $not-found) {
+  let $go :=
+    function($go, $node) {
+      $node(
+        $not-found,
+        function($l, $_, $k, $v, $r) {
+          if($lt($x, $k)) then $go($go, $l)
+          else if($lt($k, $x)) then $go($go, $r)
+          else $found($v)
+        }
+      )
     }
-  )
-};
-
-(:~
- : Calculates the number of entries in the given AVL Tree.
- :
- : @param $tree AVL Tree
- : @return number of entries in the tree
- :)
-declare %public function avltree:size($tree) {
-  $tree(
-    function() { 0 },
-    function($l, $h, $k, $v, $r) {
-      avltree:size($l) + 1 + avltree:size($r)
-    }
-  )
+  return $go($go, $tree)
 };
 
 (:~
@@ -67,17 +72,41 @@ declare %public function avltree:size($tree) {
  : @param $k key of the entry to insert
  : @param $v value of the entry to insert
  : @return tree where the entry was inserted
+           and the amount of its height increase
  :)
-declare %public function avltree:insert($lt, $tree, $x, $y) {
+declare %public function avltree:insert($lt, $tree, $k, $v) {
+  avltree:ins($lt, $tree, $k, $v)[1]
+};
+
+(:~
+ : Recursively inserts the given entry into the given AVL Tree.
+ :
+ : @param $lt less-than predicate
+ : @param $tree tree to insert into
+ : @param $k key to insert
+ : @param $y vlue to insert
+ : @return two-element sequence of the tree where the entry was inserted
+           and a boolean indicating if the tree's height changed
+ :)
+declare %private function avltree:ins($lt, $tree, $x, $y) {
   $tree(
-    function() { avltree:branch(avltree:empty(), $x, $y, avltree:empty()) },
-    function($l, $h, $k, $v, $r) {
-      if($lt($x, $k)) then
-        avltree:re-balance(avltree:insert($lt, $l, $x, $y), $k, $v, $r)
-      else if($lt($k, $x)) then
-        avltree:re-balance($l, $k, $v, avltree:insert($lt, $r, $x, $y))
-      else
-        avltree:branch($l, $x, $y, $r)
+    function() {
+      avltree:branch(avltree:empty(), 0, $x, $y, avltree:empty()),
+      true()
+    },
+    function($l, $b, $k, $v, $r) {
+      if($lt($x, $k)) then (
+        let $res := avltree:ins($lt, $l, $x, $y)
+        return if($res[2]) then avltree:balance-left($res[1], $b, $k, $v, $r)
+        else (avltree:branch($res[1], $b, $k, $v, $r), false())
+      ) else if($lt($k, $x)) then (
+        let $res := avltree:ins($lt, $r, $x, $y)
+        return if($res[2]) then avltree:balance-right($l, $b, $k, $v, $res[1])
+        else (avltree:branch($l, $b, $k, $v, $res[1]), false())
+      ) else (
+        avltree:branch($l, $b, $x, $y, $r),
+        false()
+      )
     }
   )
 };
@@ -91,48 +120,205 @@ declare %public function avltree:insert($lt, $tree, $x, $y) {
  : @return tree where the entry of <code>$x</code> was deleted
  :)
 declare %public function avltree:delete($lt, $tree, $x) {
+  let $res := avltree:del($lt, $tree, $x)
+  return if(empty($res)) then $tree else $res[1]
+};
+
+(:~
+ : Recursively deletes the entry with the given key from the given Red-Black Tree.
+ :
+ : @param $lt less-than predicate
+ : @param $tree tree to delete from
+ : @param $x key to delete
+ : @return an empty sequence if the tree does not contain the key,
+ :         the tree where the key was deleted
+ :         and a boolean indicating if the height changed otherwise
+ :)
+declare %private function avltree:del($lt, $tree, $x) {
   $tree(
-    function() { $tree },
-    function($l, $h, $k, $v, $r) {
-      if($lt($x, $k)) then
-        avltree:re-balance(avltree:delete($lt, $l, $x), $k, $v, $r)
-      else if($lt($k, $x)) then
-        avltree:re-balance($l, $k, $v, avltree:delete($lt, $r, $x))
-      else
+    function() { () },
+    function($l, $b, $k, $v, $r) {
+      if($lt($x, $k)) then (
+        let $res := avltree:del($lt, $l, $x)
+        return if(empty($res)) then ()
+        else if($res[2]) then (
+          let $res2 := avltree:balance-right($res[1], $b, $k, $v, $r)
+          return ($res2[1], not($res2[2]))
+        ) else (
+          avltree:branch($res[1], $b, $k, $v, $r),
+          false()
+        )
+      ) else if($lt($k, $x)) then (
+        let $res := avltree:del($lt, $r, $x)
+        return if(empty($res)) then ()
+        else if($res[2]) then (
+          let $res2 := avltree:balance-left($l, $b, $k, $v, $res[1])
+          return ($res2[1], not($res2[2]))
+        ) else (
+          avltree:branch($l, $b, $k, $v, $res[1]),
+          false()
+        )
+      ) else (
         $r(
-          function() { $l },
-          function($rl, $rh, $rk, $rv, $rr) {
-            let $res := avltree:split-leftmost($rl, $rk, $rv, $rr)
-            return
-              pair:deconstruct(
-                $res[1],
-                function($k2, $v2) {
-                  avltree:re-balance($l, $k2, $v2, $res[2])
-                }
-              )
+          function() { $l, true() },
+          function($rl, $rb, $rk, $rv, $rr) {
+            let $res := avltree:split-leftmost($rl, $rb, $rk, $rv, $rr)
+            return pair:deconstruct(
+              $res[1],
+              function($k2, $v2) {
+                if($res[3]) then (
+                  let $res2 := avltree:balance-left($l, $b, $k2, $v2, $res[2])
+                  return ($res2[1], not($res2[2]))
+                ) else (
+                  avltree:branch($l, $b, $k2, $v2, $res[2]),
+                  false()
+                )
+              }
+            )
           }
         )
+      )
     }
   )
 };
 
 (:~
- : Returns an XML representation of the given tree's inner structure.
+ : Deletes the leftmost (smallest) entry from the given tree and returns it
+ : together with the tree where it is removed.
  :
- : @param $tree tree to show the structure of
- : @return the tree's structure
+ : @param $l left sub-tree
+ : @param $b balance of the root node
+ : @param $k key of the root node
+ : @param $v value of the root node
+ : @param $r right sub-tree
+ : @return three-element sequence vontaining a pair of the key and value of the removed entry,
+           the tree where it was removed and a boolean indicating if its height changed
  :)
-declare function avltree:to-xml($tree) {
-  $tree(
-    function() { <N/> },
-    function($l, $h, $k, $v, $r) {
-      <N height="{$h}">{
-        avltree:to-xml($l),
-        <entry key="{$k}" value="{$v}" />,
-        avltree:to-xml($r)
-      }</N>
+declare %private function avltree:split-leftmost($l, $b, $k, $v, $r) {
+  $l(
+    function() { pair:new($k, $v), $r, true() },
+    function($ll, $lb, $lk, $lv, $lr) {
+      let $res := avltree:split-leftmost($ll, $lb, $lk, $lv, $lr)
+      return (
+        $res[1],
+        if($res[3]) then (
+          let $res2 := avltree:balance-right($res[2], $b, $k, $v, $r)
+          return ($res2[1], not($res2[2]))
+        ) else (
+          avltree:branch($res[2], $b, $k, $v, $r),
+          false()
+        )
+      )
     }
   )
+};
+
+(:~
+ : Rebalances the given tree after its balance value decreased.
+ :
+ : @param $l left sub-tree
+ : @param $b old balance
+ : @param $k key of the root node
+ : @param $v value of the root node
+ : @param $r right sub-tree
+ : @return the balanced tree and a boolean indicating if the height increased
+ :)
+declare %private function avltree:balance-left($l, $b, $k, $v, $r) {
+  if($b eq -1) then (
+    $l(
+      error#0,
+      function($ll, $lb, $lk, $lv, $lr) {
+        if($lb le 0) then (
+          avltree:branch(
+            $ll,
+            $lb + 1,
+            $lk, $lv,
+            avltree:branch($lr, -$lb - 1, $k, $v, $r)
+          )
+        ) else $lr(
+          error#0,
+          function($lrl, $lrb, $lrk, $lrv, $lrr) {
+            avltree:branch(
+              avltree:branch($ll, min((-$lrb, 0)), $lk, $lv, $lrl),
+              0,
+              $lrk, $lrv,
+              avltree:branch($lrr, max((-$lrb, 0)), $k, $v, $r)
+            )
+          }
+        ),
+        $lb eq 0
+      }
+    )
+  ) else (
+    avltree:branch($l, $b - 1, $k, $v, $r),
+    $b eq 0
+  )
+};
+
+(:~
+ : Rebalances the given tree after its balance value increased.
+ :
+ : @param $l left sub-tree
+ : @param $b old balance
+ : @param $k key of the root node
+ : @param $v value of the root node
+ : @param $r right sub-tree
+ : @return the balanced tree and a boolean indicating if the height increased
+ :)
+declare %private function avltree:balance-right($l, $b, $k, $v, $r) {
+  if($b eq 1) then (
+    $r(
+      error#0,
+      function($rl, $rb, $rk, $rv, $rr) {
+        if($rb ge 0) then (
+          avltree:branch(
+            avltree:branch($l, -$rb + 1, $k, $v, $rl),
+            $rb - 1,
+            $rk, $rv,
+            $rr
+          )
+        ) else $rl(
+          error#0,
+          function($rll, $rlb, $rlk, $rlv, $rlr) {
+            avltree:branch(
+              avltree:branch($l, min((-$rlb, 0)), $k, $v, $rll),
+              0,
+              $rlk, $rlv,
+              avltree:branch($rlr, max((-$rlb, 0)), $rk, $rv, $rr)
+            )
+          }
+        ),
+        $rb eq 0
+      }
+    )
+  ) else (
+    avltree:branch($l, $b + 1, $k, $v, $r),
+    $b eq 0
+  )
+};
+
+(:~
+ : Folds all entries of the given tree into one value in ascending order.
+ :
+ : @param $root root of the tree to fold
+ : @param $acc accumulator
+ : @param $f combining function
+ : @return folded value
+ :)
+declare %public function avltree:fold($root, $acc, $f) {
+  let $go :=
+    function($go, $acc1, $tree) {
+      $tree(
+        function() { $acc1 },
+        function($l, $_, $k, $v, $r) {
+          let $acc2 := $go($go, $acc1, $l),
+              $acc3 := $f($acc2, $k, $v),
+              $acc4 := $go($go, $acc3, $r)
+          return $acc4
+        }
+      )
+    }
+  return $go($go, $acc, $root)
 };
 
 (:~
@@ -150,175 +336,42 @@ declare function avltree:to-xml($tree) {
  :)
 declare %public function avltree:check($lt, $tree, $min, $max, $msg) {
   $tree(
-    function() { () },
-    function($l, $h, $k, $v, $r) {
-      if(not($lt($min, $k))) then (
-        error(xs:QName('tree:AVLT0001'), $msg)
-      ) else if(not($lt($k, $max))) then (
-        error(xs:QName('tree:AVLT0002'), $msg)
-      ) else if(abs(avltree:balance($l, $r)) > 1) then (
-        error(xs:QName('tree:AVLT0003'), $msg)
-      ) else (
-        avltree:check($lt, $l, $min, $k, $msg),
-        avltree:check($lt, $r, $k, $max, $msg)
-      )
-    }
-  )
-};
-
-(:~
- : Folds all entries of the given tree into one value in ascending order.
- :
- : @param $node current tree node
- : @param $acc1 accumulator
- : @param $f combining function
- : @return folded value
- :)
-declare %public function avltree:fold($tree, $acc1, $f) {
-  $tree(
-    function() { $acc1 },
-    function($l, $_, $k, $v, $r) {
-      let $acc2 := avltree:fold($l, $acc1, $f),
-          $acc3 := $f($acc2, $k, $v),
-          $acc4 := avltree:fold($r, $acc3, $f)
-      return $acc4
-    }
-  )
-};
-
-(:::::::::::::::::::::::::::: private functions ::::::::::::::::::::::::::::)
-
-(:~
- : Creates a branch node.
- :
- : @param $left left sub-tree
- : @param $k key of the branch node
- : @param $v value of the branch node
- : @param $right right sub-tree
- : @return branch node
- :)
-declare %private function avltree:branch($left, $k, $v, $right) {
-  let $h := max((avltree:height($left), avltree:height($right))) + 1
-  return function($empty, $branch) {
-    $branch($left, $h, $k, $v, $right)
-  }
-};
-
-(:~
- : Returns the height of the given node.
- :
- : @param $tree node
- : @return the node's height
- :)
-declare %private function avltree:height($tree) {
-  $tree(
     function() { 0 },
-    function($l, $h, $k, $v, $r) { $h }
-  )
-};
-
-(:~
- : Finds the leftmost (smallest) entry in the given tree and returns it
- : and the tree where the entry was deleted.
- :
- : @param $l left sub-tree
- : @param $k key of the root node
- : @param $v value of the root node
- : @param $r right sub-tree
- : @return two-element sequence containing the removed entry as a pair
- :         and the tree with the entry deleted
- :)
-declare %private function avltree:split-leftmost($l, $k, $v, $r) {
-  $l(
-    function() { (pair:new($k, $v), $r) },
-    function($ll, $lh, $lk, $lv, $lr) {
-      let $res := avltree:split-leftmost($ll, $lk, $lv, $lr)
-      return ($res[1], avltree:re-balance($res[2], $k, $v, $r))
-    }
-  )
-};
-
-(:~
- : Returns the balance (between -2 and 2) between the two given sub-trees.
- :
- : @param $left left sub-tree
- : @param $right right sub-tree
- : @return the balance, i.e. the difference between the left and right height
- :)
-declare %private function avltree:balance($left, $right) {
-  avltree:height($right) - avltree:height($left)
-};
-
-(:~
- : Rebalances the given branch node.
- :
- : @param $l left sub-tree
- : @param $k key of the branch node
- : @param $v value of the branch node
- : @param $r right sub-tree
- : @return balanced branch node
- :)
-declare %private function avltree:re-balance($l, $k, $v, $r) {
-  switch(avltree:balance($l, $r))
-    case  2 return avltree:rotate-left($l, $k, $v, $r)
-    case -2 return avltree:rotate-right($l, $k, $v, $r)
-    default return avltree:branch($l, $k, $v, $r)
-};
-
-(:~
- : Rotates the given branch node to the left.
- :
- : @param $l left sub-tree
- : @param $k key of the branch node
- : @param $v value of the branch node
- : @param $r right sub-tree
- : @return rotated branch node
- :)
-declare %private function avltree:rotate-left($l, $k, $v, $r) {
-  $r(
-    error#0,
-    function($rl, $rh, $rk, $rv, $rr) {
-      if(avltree:balance($rl, $rr) >= 0)
-      then avltree:branch(avltree:branch($l, $k, $v, $rl), $rk, $rv, $rr)
-      else $rl(
-        error#0,
-        function($rll, $rlh, $rlk, $rlv, $rlr) {
-          avltree:branch(
-            avltree:branch($l, $k, $v, $rll),
-            $rlk, $rlv,
-            avltree:branch($rlr, $rk, $rv, $rr)
-          )
-        }
+    function($l, $b, $k, $v, $r) {
+      if(not($lt($min, $k))) then (
+        error(xs:QName('avltree:AVLT0001'), $msg)
+      ) else if(not($lt($k, $max))) then (
+        error(xs:QName('avltree:AVLT0002'), $msg)
+      ) else if(not($b = (-1, 0, 1))) then (
+        error(xs:QName('avltree:AVLT0003'), $msg)
+      ) else (
+        let $h1 := avltree:check($lt, $l, $min, $k, $msg),
+            $h2 := avltree:check($lt, $r, $k, $max, $msg)
+        return if(($h2 - $h1) ne $b) then (
+          error(xs:QName('avltree:AVLT0004'), $msg)
+        ) else (
+          max(($h1, $h2)) + 1
+        )
       )
     }
   )
 };
 
 (:~
- : Rotates the given branch node to the right.
+ : Returns an XML representation of the given tree's inner structure.
  :
- : @param $l left sub-tree
- : @param $k key of the branch node
- : @param $v value of the branch node
- : @param $r right sub-tree
- : @return rotated branch node
+ : @param $tree tree to show the structure of
+ : @return the tree's structure
  :)
-declare %private function avltree:rotate-right($l, $k, $v, $r) {
-  $l(
-    error#0,
-    function($ll, $lh, $lk, $lv, $lr) {
-      if(avltree:balance($ll, $lr) <= 0)
-      then avltree:branch($ll, $lk, $lv, avltree:branch($lr, $k, $v, $r))
-      else $lr(
-        error#0,
-        function($lrl, $lrh, $lrk, $lrv, $lrr) {
-          avltree:branch(
-            avltree:branch($ll, $lk, $lv, $lrl),
-            $lrk, $lrv,
-            avltree:branch($lrr, $k, $v, $r)
-          )
-        }
-      )
+declare function avltree:to-xml($tree) {
+  $tree(
+    function() { <_/> },
+    function($l, $b, $k, $v, $r) {
+      element { exactly-one(('L', 'B', 'R')[$b + 2]) } {
+        avltree:to-xml($l),
+        <E key="{$k}">{$v}</E>,
+        avltree:to-xml($r)
+      }
     }
   )
 };

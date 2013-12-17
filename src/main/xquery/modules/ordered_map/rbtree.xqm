@@ -13,11 +13,100 @@ import module namespace pair = 'http://www.woerteler.de/xquery/modules/pair'
   at '../pair.xqm';
 
 (:~
- : The empty Red-Black Tree, which is a black leaf.
+ : The empty Red-Black Tree.
  : @return the empty tree
  :)
 declare %public function rbtree:empty() {
-  rbtree:leaf()
+  function($leaf, $branch) {
+    $leaf()
+  }
+};
+
+(:~
+ : Creates a branch node.
+ :
+ : @param $c color of the branch node
+ : @param $l left sub-tree
+ : @param $k key of the branch node
+ : @param $v value of the branch node
+ : @param $r right sub-tree
+ : @return branch node
+ :)
+declare %private function rbtree:branch($c, $l, $k, $v, $r) {
+  function($leaf, $branch) {
+    $branch($c, $l, $k, $v, $r)
+  }
+};
+
+(:~
+ : Returns the color of the given node.
+ :
+ : @param $tree node to find the color of
+ : @return the node's color
+ :)
+declare %private function rbtree:is-red($tree) {
+  $tree(
+    function() { false() },
+    function($c, $l, $k, $v, $r) { not($c) }
+  )
+};
+
+(:~
+ : Creates a red branch node.
+ :
+ : @param $l left sub-tree
+ : @param $k key of the branch node
+ : @param $v value of the branch node
+ : @param $r right sub-tree
+ : @return branch node
+ :)
+declare %private function rbtree:red-branch($l, $k, $v, $r) {
+  rbtree:branch(fn:false(), $l, $k, $v, $r)
+};
+
+(:~
+ : Creates a black branch node.
+ :
+ : @param $l left sub-tree
+ : @param $k key of the branch node
+ : @param $v value of the branch node
+ : @param $r right sub-tree
+ : @return branch node
+ :)
+declare %private function rbtree:black-branch($l, $k, $v, $r) {
+  rbtree:branch(fn:true(), $l, $k, $v, $r)
+};
+
+(:~
+ : Returns an instance of the given node that is red.
+ :
+ : @param $tree tree to create a red version of
+ : @return red version of <code>$tree</code>
+ :)
+declare %private function rbtree:make-red($tree) {
+  $tree(
+    error#0,
+    function($c, $l, $k, $v, $r) {
+      if($c) then rbtree:red-branch($l, $k, $v, $r)
+      else $tree
+    }
+  )
+};
+
+(:~
+ : Returns an instance of the given node that is black.
+ :
+ : @param $tree tree to create a black version of
+ : @return black version of <code>$tree</code>
+ :)
+declare %private function rbtree:make-black($tree) {
+  $tree(
+    function() { $tree },
+    function($c, $l, $k, $v, $r) {
+      if($c) then $tree
+      else rbtree:black-branch($l, $k, $v, $r)
+    }
+  )
 };
 
 (:~
@@ -46,16 +135,6 @@ declare %public function rbtree:lookup($lt, $tree, $x, $found, $notFound) {
 };
 
 (:~
- : Calculates the number of entries in the given Red-Black Tree.
- :
- : @param $tree Red-Black Tree
- : @return number of entries in the tree
- :)
-declare %public function rbtree:size($tree) {
-  rbtree:fold($tree, 0, function($size, $k, $v) { $size + 1 })
-};
-
-(:~
  : Inserts the given entry into the given Read-Black Tree.
  :
  : @param $lt less-than predicate
@@ -81,7 +160,7 @@ declare %public function rbtree:insert($lt, $root, $k, $v) as item()* {
 declare %private function rbtree:ins($lt, $tree, $x, $y) {
   $tree(
     function() {
-      rbtree:red-branch(rbtree:leaf(), $x, $y, rbtree:leaf())
+      rbtree:red-branch(rbtree:empty(), $x, $y, rbtree:empty())
     },
     function($c, $l, $k, $v, $r) {
       if($lt($x, $k)) then (
@@ -109,8 +188,7 @@ declare %private function rbtree:ins($lt, $tree, $x, $y) {
  :)
 declare %public function rbtree:delete($lt, $root, $k) {
   let $res := rbtree:del($lt, $root, $k)
-  return if(empty($res)) then $root
-  else rbtree:make-black($res[1])
+  return if(empty($res)) then $root else rbtree:make-black($res[1])
 };
 
 (:~
@@ -127,24 +205,20 @@ declare %private function rbtree:del($lt, $tree, $x) {
     function() { () },
     function($c, $l, $k, $v, $r) {
       if($lt($x, $k)) then (
-        let $res := rbtree:del($lt, $l, $x),
-            $l2  := $res[1],
-            $bb  := $res[2]
+        let $res := rbtree:del($lt, $l, $x)
         return if(empty($res)) then ()
-        else if($bb) then rbtree:bubble-left($c, $l2, $k, $v, $r)
-        else (rbtree:branch($c, $l2, $k, $v, $r), false())
+        else if($res[2]) then rbtree:bubble-left($c, $res[1], $k, $v, $r)
+        else (rbtree:branch($c, $res[1], $k, $v, $r), false())
       ) else if($lt($k, $x)) then (
-        let $res := rbtree:del($lt, $r, $x),
-            $r2  := $res[1],
-            $bb  := $res[2]
+        let $res := rbtree:del($lt, $r, $x)
         return if(empty($res)) then ()
-        else if($bb) then rbtree:bubble-right($c, $l, $k, $v, $r2)
-        else (rbtree:branch($c, $l, $k, $v, $r2), false())
+        else if($res[2]) then rbtree:bubble-right($c, $l, $k, $v, $res[1])
+        else (rbtree:branch($c, $l, $k, $v, $res[1]), false())
       ) else (
         $l(
           function() {
             $r(
-              function() { rbtree:leaf(), $c },
+              function() { rbtree:empty(), $c },
               function($rc, $rl, $rk, $rv, $rr) {
                 rbtree:black-branch($rl, $rk, $rv, $rr),
                 false()
@@ -158,15 +232,12 @@ declare %private function rbtree:del($lt, $tree, $x) {
                 false()
               },
               function($rc, $rl, $rk, $rv, $rr) {
-                let $res := rbtree:split-leftmost($rc, $rl, $rk, $rv, $rr),
-                    $kv  := $res[1],
-                    $r2  := $res[2],
-                    $bb  := $res[3]
+                let $res := rbtree:split-leftmost($rc, $rl, $rk, $rv, $rr)
                 return pair:deconstruct(
-                  $kv,
+                  $res[1],
                   function($k2, $v2) {
-                    if($bb) then rbtree:bubble-right($c, $l, $k2, $v2, $r2)
-                    else (rbtree:branch($c, $l, $k2, $v2, $r2), false())
+                    if($res[3]) then rbtree:bubble-right($c, $l, $k2, $v2, $res[2])
+                    else (rbtree:branch($c, $l, $k2, $v2, $res[2]), false())
                   }
                 )
               }
@@ -196,7 +267,7 @@ declare %private function rbtree:split-leftmost($c, $l, $k, $v, $r) {
     function() {
       pair:new($k, $v), 
       $r(
-        function() { rbtree:leaf(), $c },
+        function() { rbtree:empty(), $c },
         function($rc, $rl, $rk, $rv, $rr) {
           rbtree:black-branch($rl, $rk, $rv, $rr),
           false()
@@ -204,12 +275,12 @@ declare %private function rbtree:split-leftmost($c, $l, $k, $v, $r) {
       )
     },
     function($lc, $ll, $lk, $lv, $lr) {
-      let $res := rbtree:split-leftmost($lc, $ll, $lk, $lv, $lr),
-          $kv  := $res[1],
-          $l2  := $res[2],
-          $bb  := $res[3]
-      return if($bb) then ($kv, rbtree:bubble-left($c, $l2, $k, $v, $r))
-      else ($kv, rbtree:branch($c, $l2, $k, $v, $r), false())
+      let $res := rbtree:split-leftmost($lc, $ll, $lk, $lv, $lr)
+      return (
+        $res[1],
+        if($res[3]) then rbtree:bubble-left($c, $res[2], $k, $v, $r)
+        else (rbtree:branch($c, $res[2], $k, $v, $r), false())
+      )
     }
   )
 };
@@ -384,103 +455,24 @@ declare %private function rbtree:balance-right($bb, $l, $k, $v, $r) {
 };
 
 (:~
- : Creates a leaf node.
+ : Folds all entries of the given tree into one value in ascending order.
  :
- : @return leaf node
+ : @param $node current tree node
+ : @param $acc1 accumulator
+ : @param $f combining function
+ : @return folded value
  :)
-declare %private function rbtree:leaf() {
-  function($leaf, $branch) {
-    $leaf()
-  }
-};
-
-(:~
- : Creates a branch node.
- :
- : @param $c color of the branch node
- : @param $l left sub-tree
- : @param $k key of the branch node
- : @param $v value of the branch node
- : @param $r right sub-tree
- : @return branch node
- :)
-declare %private function rbtree:branch($c, $l, $k, $v, $r) {
-  function($leaf, $branch) {
-    $branch($c, $l, $k, $v, $r)
-  }
-};
-
-(:~
- : Returns the color of the given node.
- :
- : @param $tree node to find the color of
- : @return the node's color
- :)
-declare %private function rbtree:is-red($tree) {
-  $tree(
-    function() { false() },
-    function($c, $l, $k, $v, $r) { not($c) }
-  )
-};
-
-(:~
- : Creates a red branch node.
- :
- : @param $l left sub-tree
- : @param $k key of the branch node
- : @param $v value of the branch node
- : @param $r right sub-tree
- : @return branch node
- :)
-declare %private function rbtree:red-branch($l, $k, $v, $r) {
-  rbtree:branch(fn:false(), $l, $k, $v, $r)
-};
-
-(:~
- : Creates a black branch node.
- :
- : @param $l left sub-tree
- : @param $k key of the branch node
- : @param $v value of the branch node
- : @param $r right sub-tree
- : @return branch node
- :)
-declare %private function rbtree:black-branch($l, $k, $v, $r) {
-  rbtree:branch(fn:true(), $l, $k, $v, $r)
-};
-
-(:~
- : Returns an instance of the given node that is red.
- :
- : @param $tree tree to create a red version of
- : @return red version of <code>$tree</code>
- :)
-declare %private function rbtree:make-red($tree) {
-  $tree(
-    error#0,
-    function($c, $l, $k, $v, $r) {
-      if($c) then rbtree:red-branch($l, $k, $v, $r)
-      else $tree
+declare %public function rbtree:fold($node, $acc1, $f) {
+  $node(
+    function() { $acc1 },
+    function($_, $l, $k, $v, $r) {
+      let $acc2 := rbtree:fold($l, $acc1, $f),
+          $acc3 := $f($acc2, $k, $v),
+          $acc4 := rbtree:fold($r, $acc3, $f)
+      return $acc4
     }
   )
 };
-
-(:~
- : Returns an instance of the given node that is black.
- :
- : @param $tree tree to create a black version of
- : @return black version of <code>$tree</code>
- :)
-declare %private function rbtree:make-black($tree) {
-  $tree(
-    function() { $tree },
-    function($c, $l, $k, $v, $r) {
-      if($c) then $tree
-      else rbtree:black-branch($l, $k, $v, $r)
-    }
-  )
-};
-
 
 (:~
  : Checks the given tree node for invariant violations.
@@ -527,33 +519,13 @@ declare %public function rbtree:check($lt, $tree, $min, $max, $msg) {
  :)
 declare %public function rbtree:to-xml($tree) {
   $tree(
-    function() { <L/> },
+    function() { <_/> },
     function($c, $l, $k, $v, $r) {
       element { if($c) then 'B' else 'R' } {
         rbtree:to-xml($l),
         <E key='{$k}'>{$v}</E>,
         rbtree:to-xml($r)
       }
-    }
-  )
-};
-
-(:~
- : Folds all entries of the given tree into one value in ascending order.
- :
- : @param $node current tree node
- : @param $acc1 accumulator
- : @param $f combining function
- : @return folded value
- :)
-declare %public function rbtree:fold($node, $acc1, $f) {
-  $node(
-    function() { $acc1 },
-    function($_, $l, $k, $v, $r) {
-      let $acc2 := rbtree:fold($l, $acc1, $f),
-          $acc3 := $f($acc2, $k, $v),
-          $acc4 := rbtree:fold($r, $acc3, $f)
-      return $acc4
     }
   )
 };

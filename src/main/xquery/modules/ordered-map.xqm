@@ -21,7 +21,6 @@ import module namespace pair = 'http://www.woerteler.de/xquery/modules/pair' at 
  :         searches for the given key and calls <code>$found($val)</code>
  :         if the map contains the entry <code>($key, $val)</code>
  :         and <code>$notFound()</code> otherwise</li>
- :   <li><code>size($root) as xs:integer</code> returns the number of entries in the tree</li>
  :   <li><code>insert($lt, $root, $key, $val) as item()*</code>
  :         inserts the entry <code>($key, $val)</code> into <code>$root</code>
  :         and returns the resulting map</li>
@@ -29,11 +28,12 @@ import module namespace pair = 'http://www.woerteler.de/xquery/modules/pair' at 
  :         deletes the entry with key <code>$key</code> from <code>$root</code>
  :         and returns the resulting map</li>
  :   <li><code>check($lt, $root, $min, $max, $msg) as item()*</code></li>
+ :   <li><code>fold($node, $acc, $f) as item()*</code></li>
  :   <li><code>to-xml($root) as element()</code></li>
  : </ul>
  :)
-import module namespace impl = 'http://www.woerteler.de/xquery/modules/ordered-map/rbtree'
-  at 'ordered_map/rbtree.xqm';
+import module namespace impl = 'http://www.woerteler.de/xquery/modules/ordered-map/avltree'
+  at 'ordered_map/avltree.xqm';
 
 (:~
  : Creates a new map with the given less-than predicate.
@@ -114,7 +114,11 @@ declare %public function ordered-map:get(
 declare %public function ordered-map:size(
   $m as function(*)
 ) as xs:integer {
-  impl:size(pair:second($m))
+  impl:fold(
+    pair:second($m),
+    0,
+    function($size, $k, $v) { $size + 1 }
+  )
 };
 
 (:~
