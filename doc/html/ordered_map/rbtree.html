@@ -153,13 +153,7 @@
         <td>
           <b>Error:</b>
         </td>
-        <td>rbtree:CHCK0004 if a node is double-black or negative black</td>
-      </tr>
-      <tr>
-        <td>
-          <b>Error:</b>
-        </td>
-        <td>rbtree:CHCK0005 if the two sub-trees have different black heights</td>
+        <td>rbtree:CHCK0004 if the two sub-trees have different black heights</td>
       </tr>
     </table>
     <h3>delete($lt, $root, $k)</h3>
@@ -271,7 +265,7 @@
         <td>
           <b>Description:</b>
         </td>
-        <td>The empty Red-Black Tree, which is a black leaf.</td>
+        <td>The empty Red-Black Tree.</td>
       </tr>
     </table>
     <h3>fold($node, $acc1, $f)</h3>
@@ -521,62 +515,6 @@
           <b>Description:</b>
         </td>
         <td>Searches for the given key in the given Red-Black Tree.</td>
-      </tr>
-    </table>
-    <h3>size($tree)</h3>
-    <table>
-      <tr>
-        <td>
-          <b>Arguments:</b>
-        </td>
-        <td>
-          <table>
-            <tr>
-              <td>
-                <code>$tree</code>
-              </td>
-              <td>
-                <code>item()*</code>
-              </td>
-              <td>Red-Black Tree</td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <b>Returns:</b>
-        </td>
-        <td>
-          <table>
-            <tr>
-              <td>
-                <code>item()*</code>
-              </td>
-              <td>number of entries in the tree</td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <b>Annotations:</b>
-        </td>
-        <td>
-          <table>
-            <tr>
-              <td>
-                <code>%public</code>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <b>Description:</b>
-        </td>
-        <td>Calculates the number of entries in the given Red-Black Tree.</td>
       </tr>
     </table>
     <h3>to-xml($tree)</h3>

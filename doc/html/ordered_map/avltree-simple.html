@@ -6,21 +6,21 @@
     <link rel="stylesheet" type="text/css" href="../style.css" />
   </head>
   <body>
-    <h2>Library Module: ordered_map/avltree.xqm</h2>
+    <h2>Library Module: ordered_map/avltree-simple.xqm</h2>
     <table>
       <tr>
         <td>
           <b>URI:</b>
         </td>
         <td>
-          <code>http://www.woerteler.de/xquery/modules/ordered-map/avltree</code>
+          <code>http://www.woerteler.de/xquery/modules/ordered-map/avltree-simple</code>
         </td>
       </tr>
       <tr>
         <td>
           <b>Description:</b>
         </td>
-        <td>Implementation of an ordered map based on an AVL Tree.</td>
+        <td>Simple implementation of an ordered map based on an AVL Tree.</td>
       </tr>
       <tr>
         <td>
@@ -262,7 +262,7 @@
         <td>Returns the empty AVL Tree.</td>
       </tr>
     </table>
-    <h3>fold($root, $acc, $f)</h3>
+    <h3>fold($tree, $acc1, $f)</h3>
     <table>
       <tr>
         <td>
@@ -272,16 +272,16 @@
           <table>
             <tr>
               <td>
-                <code>$root</code>
+                <code>$tree</code>
               </td>
               <td>
                 <code>item()*</code>
               </td>
-              <td>root of the tree to fold</td>
+              <td></td>
             </tr>
             <tr>
               <td>
-                <code>$acc</code>
+                <code>$acc1</code>
               </td>
               <td>
                 <code>item()*</code>
@@ -336,7 +336,7 @@
         <td>Folds all entries of the given tree into one value in ascending order.</td>
       </tr>
     </table>
-    <h3>insert($lt, $tree, $k, $v)</h3>
+    <h3>insert($lt, $tree, $x, $y)</h3>
     <table>
       <tr>
         <td>
@@ -364,21 +364,21 @@
             </tr>
             <tr>
               <td>
-                <code>$k</code>
+                <code>$x</code>
               </td>
               <td>
                 <code>item()*</code>
               </td>
-              <td>key of the entry to insert</td>
+              <td></td>
             </tr>
             <tr>
               <td>
-                <code>$v</code>
+                <code>$y</code>
               </td>
               <td>
                 <code>item()*</code>
               </td>
-              <td>value of the entry to insert</td>
+              <td></td>
             </tr>
           </table>
         </td>
@@ -393,8 +393,7 @@
               <td>
                 <code>item()*</code>
               </td>
-              <td>tree where the entry was inserted
-           and the amount of its height increase</td>
+              <td>tree where the entry was inserted</td>
             </tr>
           </table>
         </td>
@@ -420,7 +419,7 @@
         <td>Inserts the given entry into the given AVL Tree.</td>
       </tr>
     </table>
-    <h3>lookup($lt, $tree, $x, $found, $not-found)</h3>
+    <h3>lookup($lt, $tree, $x, $found, $notFound)</h3>
     <table>
       <tr>
         <td>
@@ -466,7 +465,7 @@
             </tr>
             <tr>
               <td>
-                <code>$not-found</code>
+                <code>$notFound</code>
               </td>
               <td>
                 <code>item()*</code>

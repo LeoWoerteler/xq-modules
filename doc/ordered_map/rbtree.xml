@@ -1,6 +1,6 @@
 <xqdoc:xqdoc xmlns:xqdoc="http://www.xqdoc.org/1.0">
   <xqdoc:control>
-    <xqdoc:date>2013-12-12T20:57:37.817+01:00</xqdoc:date>
+    <xqdoc:date>2013-12-17T12:14:38.372+01:00</xqdoc:date>
     <xqdoc:version>1.1</xqdoc:version>
   </xqdoc:control>
   <xqdoc:module type="library">
@@ -22,52 +22,11 @@
       <xqdoc:uri>http://www.woerteler.de/xquery/modules/pair</xqdoc:uri>
     </xqdoc:import>
   </xqdoc:imports>
-  <xqdoc:variables>
-    <xqdoc:variable>
-      <xqdoc:name>rbtree:NEG_BLACK</xqdoc:name>
-      <xqdoc:comment>
-        <xqdoc:description>Negative-black node color, only occurs while relabancing.</xqdoc:description>
-      </xqdoc:comment>
-      <xqdoc:annotations>
-        <xqdoc:annotation name="private"/>
-      </xqdoc:annotations>
-      <xqdoc:type>xs:integer</xqdoc:type>
-    </xqdoc:variable>
-    <xqdoc:variable>
-      <xqdoc:name>rbtree:RED</xqdoc:name>
-      <xqdoc:comment>
-        <xqdoc:description>Red node color.</xqdoc:description>
-      </xqdoc:comment>
-      <xqdoc:annotations>
-        <xqdoc:annotation name="private"/>
-      </xqdoc:annotations>
-      <xqdoc:type>xs:integer</xqdoc:type>
-    </xqdoc:variable>
-    <xqdoc:variable>
-      <xqdoc:name>rbtree:BLACK</xqdoc:name>
-      <xqdoc:comment>
-        <xqdoc:description>Black node color.</xqdoc:description>
-      </xqdoc:comment>
-      <xqdoc:annotations>
-        <xqdoc:annotation name="private"/>
-      </xqdoc:annotations>
-      <xqdoc:type>xs:integer</xqdoc:type>
-    </xqdoc:variable>
-    <xqdoc:variable>
-      <xqdoc:name>rbtree:DBL_BLACK</xqdoc:name>
-      <xqdoc:comment>
-        <xqdoc:description>Doble-black node color, only occurs while relabancing.</xqdoc:description>
-      </xqdoc:comment>
-      <xqdoc:annotations>
-        <xqdoc:annotation name="private"/>
-      </xqdoc:annotations>
-      <xqdoc:type>xs:integer</xqdoc:type>
-    </xqdoc:variable>
-  </xqdoc:variables>
+  <xqdoc:variables/>
   <xqdoc:functions>
     <xqdoc:function arity="0">
       <xqdoc:comment>
-        <xqdoc:description>The empty Red-Black Tree, which is a black leaf.</xqdoc:description>
+        <xqdoc:description>The empty Red-Black Tree.</xqdoc:description>
         <xqdoc:return>the empty tree</xqdoc:return>
       </xqdoc:comment>
       <xqdoc:name>rbtree:empty</xqdoc:name>
@@ -75,6 +34,184 @@
         <xqdoc:annotation name="public"/>
       </xqdoc:annotations>
       <xqdoc:signature>declare %public function rbtree:empty() as item()*</xqdoc:signature>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="5">
+      <xqdoc:comment>
+        <xqdoc:description>Creates a branch node.</xqdoc:description>
+        <xqdoc:param>$c color of the branch node</xqdoc:param>
+        <xqdoc:param>$l left sub-tree</xqdoc:param>
+        <xqdoc:param>$k key of the branch node</xqdoc:param>
+        <xqdoc:param>$v value of the branch node</xqdoc:param>
+        <xqdoc:param>$r right sub-tree</xqdoc:param>
+        <xqdoc:return>branch node</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>rbtree:branch</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="private"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %private function rbtree:branch($c as item()*, $l as item()*, $k as item()*, $v as item()*, $r as item()*) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>c</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>l</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>k</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>v</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>r</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="1">
+      <xqdoc:comment>
+        <xqdoc:description>Returns the color of the given node.</xqdoc:description>
+        <xqdoc:param>$tree node to find the color of</xqdoc:param>
+        <xqdoc:return>the node's color</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>rbtree:is-red</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="private"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %private function rbtree:is-red($tree as item()*) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>tree</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="4">
+      <xqdoc:comment>
+        <xqdoc:description>Creates a red branch node.</xqdoc:description>
+        <xqdoc:param>$l left sub-tree</xqdoc:param>
+        <xqdoc:param>$k key of the branch node</xqdoc:param>
+        <xqdoc:param>$v value of the branch node</xqdoc:param>
+        <xqdoc:param>$r right sub-tree</xqdoc:param>
+        <xqdoc:return>branch node</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>rbtree:red-branch</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="private"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %private function rbtree:red-branch($l as item()*, $k as item()*, $v as item()*, $r as item()*) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>l</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>k</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>v</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>r</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="4">
+      <xqdoc:comment>
+        <xqdoc:description>Creates a black branch node.</xqdoc:description>
+        <xqdoc:param>$l left sub-tree</xqdoc:param>
+        <xqdoc:param>$k key of the branch node</xqdoc:param>
+        <xqdoc:param>$v value of the branch node</xqdoc:param>
+        <xqdoc:param>$r right sub-tree</xqdoc:param>
+        <xqdoc:return>branch node</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>rbtree:black-branch</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="private"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %private function rbtree:black-branch($l as item()*, $k as item()*, $v as item()*, $r as item()*) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>l</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>k</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>v</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>r</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="1">
+      <xqdoc:comment>
+        <xqdoc:description>Returns an instance of the given node that is red.</xqdoc:description>
+        <xqdoc:param>$tree tree to create a red version of</xqdoc:param>
+        <xqdoc:return>red version of <code>$tree</code>
+        </xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>rbtree:make-red</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="private"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %private function rbtree:make-red($tree as item()*) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>tree</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="1">
+      <xqdoc:comment>
+        <xqdoc:description>Returns an instance of the given node that is black.</xqdoc:description>
+        <xqdoc:param>$tree tree to create a black version of</xqdoc:param>
+        <xqdoc:return>black version of <code>$tree</code>
+        </xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>rbtree:make-black</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="private"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %private function rbtree:make-black($tree as item()*) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>tree</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
       <xqdoc:return>
         <xqdoc:type occurrence="*">item()</xqdoc:type>
       </xqdoc:return>
@@ -113,27 +250,6 @@
         </xqdoc:parameter>
         <xqdoc:parameter>
           <xqdoc:name>notFound</xqdoc:name>
-          <xqdoc:type occurrence="*">item()</xqdoc:type>
-        </xqdoc:parameter>
-      </xqdoc:parameters>
-      <xqdoc:return>
-        <xqdoc:type occurrence="*">item()</xqdoc:type>
-      </xqdoc:return>
-    </xqdoc:function>
-    <xqdoc:function arity="1">
-      <xqdoc:comment>
-        <xqdoc:description>Calculates the number of entries in the given Red-Black Tree.</xqdoc:description>
-        <xqdoc:param>$tree Red-Black Tree</xqdoc:param>
-        <xqdoc:return>number of entries in the tree</xqdoc:return>
-      </xqdoc:comment>
-      <xqdoc:name>rbtree:size</xqdoc:name>
-      <xqdoc:annotations>
-        <xqdoc:annotation name="public"/>
-      </xqdoc:annotations>
-      <xqdoc:signature>declare %public function rbtree:size($tree as item()*) as item()*</xqdoc:signature>
-      <xqdoc:parameters>
-        <xqdoc:parameter>
-          <xqdoc:name>tree</xqdoc:name>
           <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
       </xqdoc:parameters>
@@ -250,7 +366,8 @@
         <xqdoc:param>$lt less-than predicate</xqdoc:param>
         <xqdoc:param>$tree tree node</xqdoc:param>
         <xqdoc:param>$x key to delete</xqdoc:param>
-        <xqdoc:return>node where the key was deleted</xqdoc:return>
+        <xqdoc:return>node where the key was deleted
+        and a boolean indicating if it is double-black</xqdoc:return>
       </xqdoc:comment>
       <xqdoc:name>rbtree:del</xqdoc:name>
       <xqdoc:annotations>
@@ -284,8 +401,9 @@ and the tree where the entry was deleted.</xqdoc:description>
         <xqdoc:param>$k key of the root node</xqdoc:param>
         <xqdoc:param>$v value of the root node</xqdoc:param>
         <xqdoc:param>$r right sub-tree</xqdoc:param>
-        <xqdoc:return>two-element sequence containing the removed entry as a pair
-        and the tree with the entry deleted</xqdoc:return>
+        <xqdoc:return>three-element sequence containing the removed entry as a pair,
+        the tree with the entry deleted and a boolean indicating
+        if it is double-black</xqdoc:return>
       </xqdoc:comment>
       <xqdoc:name>rbtree:split-leftmost</xqdoc:name>
       <xqdoc:annotations>
@@ -320,26 +438,26 @@ and the tree where the entry was deleted.</xqdoc:description>
     </xqdoc:function>
     <xqdoc:function arity="5">
       <xqdoc:comment>
-        <xqdoc:description>Propagates a double-black node upwards in the tree.</xqdoc:description>
-        <xqdoc:param>$c color of the root node</xqdoc:param>
-        <xqdoc:param>$l left sub-tree</xqdoc:param>
+        <xqdoc:description>Propagates a double black node color upwards in the tree.</xqdoc:description>
+        <xqdoc:param>$c boolean indicating if the root node is black</xqdoc:param>
+        <xqdoc:param>$bbl double-black left child</xqdoc:param>
         <xqdoc:param>$k key of the root node</xqdoc:param>
         <xqdoc:param>$v value of the root node</xqdoc:param>
-        <xqdoc:param>$r right sub-tree</xqdoc:param>
-        <xqdoc:return>tree where none of the sub-trees is double-black</xqdoc:return>
+        <xqdoc:param>$r right child</xqdoc:param>
+        <xqdoc:return>pair of the reconstructed tree and a boolean indicating if it is double-black</xqdoc:return>
       </xqdoc:comment>
-      <xqdoc:name>rbtree:bubble</xqdoc:name>
+      <xqdoc:name>rbtree:bubble-left</xqdoc:name>
       <xqdoc:annotations>
         <xqdoc:annotation name="private"/>
       </xqdoc:annotations>
-      <xqdoc:signature>declare %private function rbtree:bubble($c as item()*, $l as item()*, $k as item()*, $v as item()*, $r as item()*) as item()*</xqdoc:signature>
+      <xqdoc:signature>declare %private function rbtree:bubble-left($c as item()*, $bbl as item()*, $k as item()*, $v as item()*, $r as item()*) as item()*</xqdoc:signature>
       <xqdoc:parameters>
         <xqdoc:parameter>
           <xqdoc:name>c</xqdoc:name>
           <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
         <xqdoc:parameter>
-          <xqdoc:name>l</xqdoc:name>
+          <xqdoc:name>bbl</xqdoc:name>
           <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
         <xqdoc:parameter>
@@ -361,22 +479,63 @@ and the tree where the entry was deleted.</xqdoc:description>
     </xqdoc:function>
     <xqdoc:function arity="5">
       <xqdoc:comment>
+        <xqdoc:description>Propagates a double black node color upwards in the tree.</xqdoc:description>
+        <xqdoc:param>$c boolean indicating if the root node is black</xqdoc:param>
+        <xqdoc:param>$l left child</xqdoc:param>
+        <xqdoc:param>$k key of the root node</xqdoc:param>
+        <xqdoc:param>$v value of the root node</xqdoc:param>
+        <xqdoc:param>$bbr double-black right child</xqdoc:param>
+        <xqdoc:return>pair of the reconstructed tree and a boolean indicating if it is double-black</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>rbtree:bubble-right</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="private"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %private function rbtree:bubble-right($c as item()*, $l as item()*, $k as item()*, $v as item()*, $bbr as item()*) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>c</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>l</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>k</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>v</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>bbr</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="5">
+      <xqdoc:comment>
         <xqdoc:description>Rebalances the given node after a modification in the left sub-tree.</xqdoc:description>
-        <xqdoc:param>$c color of the root node</xqdoc:param>
+        <xqdoc:param>$bb flag indicating if the root node is double-black</xqdoc:param>
         <xqdoc:param>$l left sub-tree</xqdoc:param>
         <xqdoc:param>$k key of the root node</xqdoc:param>
         <xqdoc:param>$v value of the root node</xqdoc:param>
         <xqdoc:param>$r right sub-tree</xqdoc:param>
-        <xqdoc:return>rebalanced tree</xqdoc:return>
+        <xqdoc:return>rebalanced tree and a boolean indicating if it is double-black</xqdoc:return>
       </xqdoc:comment>
-      <xqdoc:name>rbtree:balance-l</xqdoc:name>
+      <xqdoc:name>rbtree:balance-left</xqdoc:name>
       <xqdoc:annotations>
         <xqdoc:annotation name="private"/>
       </xqdoc:annotations>
-      <xqdoc:signature>declare %private function rbtree:balance-l($c as item()*, $l as item()*, $k as item()*, $v as item()*, $r as item()*) as item()*</xqdoc:signature>
+      <xqdoc:signature>declare %private function rbtree:balance-left($bb as item()*, $l as item()*, $k as item()*, $v as item()*, $r as item()*) as item()*</xqdoc:signature>
       <xqdoc:parameters>
         <xqdoc:parameter>
-          <xqdoc:name>c</xqdoc:name>
+          <xqdoc:name>bb</xqdoc:name>
           <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
         <xqdoc:parameter>
@@ -403,21 +562,21 @@ and the tree where the entry was deleted.</xqdoc:description>
     <xqdoc:function arity="5">
       <xqdoc:comment>
         <xqdoc:description>Rebalances the given node after a modification in the right sub-tree.</xqdoc:description>
-        <xqdoc:param>$c color of the root node</xqdoc:param>
+        <xqdoc:param>$bb flag indicating if the root node is double-black</xqdoc:param>
         <xqdoc:param>$l left sub-tree</xqdoc:param>
         <xqdoc:param>$k key of the root node</xqdoc:param>
         <xqdoc:param>$v value of the root node</xqdoc:param>
         <xqdoc:param>$r right sub-tree</xqdoc:param>
-        <xqdoc:return>rebalanced tree</xqdoc:return>
+        <xqdoc:return>rebalanced tree and a boolean indicating if it is double-black</xqdoc:return>
       </xqdoc:comment>
-      <xqdoc:name>rbtree:balance-r</xqdoc:name>
+      <xqdoc:name>rbtree:balance-right</xqdoc:name>
       <xqdoc:annotations>
         <xqdoc:annotation name="private"/>
       </xqdoc:annotations>
-      <xqdoc:signature>declare %private function rbtree:balance-r($c as item()*, $l as item()*, $k as item()*, $v as item()*, $r as item()*) as item()*</xqdoc:signature>
+      <xqdoc:signature>declare %private function rbtree:balance-right($bb as item()*, $l as item()*, $k as item()*, $v as item()*, $r as item()*) as item()*</xqdoc:signature>
       <xqdoc:parameters>
         <xqdoc:parameter>
-          <xqdoc:name>c</xqdoc:name>
+          <xqdoc:name>bb</xqdoc:name>
           <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
         <xqdoc:parameter>
@@ -441,150 +600,30 @@ and the tree where the entry was deleted.</xqdoc:description>
         <xqdoc:type occurrence="*">item()</xqdoc:type>
       </xqdoc:return>
     </xqdoc:function>
-    <xqdoc:function arity="1">
+    <xqdoc:function arity="3">
       <xqdoc:comment>
-        <xqdoc:description>Creates a leaf node with the given color.</xqdoc:description>
-        <xqdoc:param>$c color of the leaf node</xqdoc:param>
-        <xqdoc:return>leaf node with the given color</xqdoc:return>
+        <xqdoc:description>Folds all entries of the given tree into one value in ascending order.</xqdoc:description>
+        <xqdoc:param>$node current tree node</xqdoc:param>
+        <xqdoc:param>$acc1 accumulator</xqdoc:param>
+        <xqdoc:param>$f combining function</xqdoc:param>
+        <xqdoc:return>folded value</xqdoc:return>
       </xqdoc:comment>
-      <xqdoc:name>rbtree:leaf</xqdoc:name>
+      <xqdoc:name>rbtree:fold</xqdoc:name>
       <xqdoc:annotations>
-        <xqdoc:annotation name="private"/>
+        <xqdoc:annotation name="public"/>
       </xqdoc:annotations>
-      <xqdoc:signature>declare %private function rbtree:leaf($c as item()*) as item()*</xqdoc:signature>
+      <xqdoc:signature>declare %public function rbtree:fold($node as item()*, $acc1 as item()*, $f as item()*) as item()*</xqdoc:signature>
       <xqdoc:parameters>
         <xqdoc:parameter>
-          <xqdoc:name>c</xqdoc:name>
-          <xqdoc:type occurrence="*">item()</xqdoc:type>
-        </xqdoc:parameter>
-      </xqdoc:parameters>
-      <xqdoc:return>
-        <xqdoc:type occurrence="*">item()</xqdoc:type>
-      </xqdoc:return>
-    </xqdoc:function>
-    <xqdoc:function arity="5">
-      <xqdoc:comment>
-        <xqdoc:description>Creates a branch node.</xqdoc:description>
-        <xqdoc:param>$c color of the branch node</xqdoc:param>
-        <xqdoc:param>$l left sub-tree</xqdoc:param>
-        <xqdoc:param>$k key of the branch node</xqdoc:param>
-        <xqdoc:param>$v value of the branch node</xqdoc:param>
-        <xqdoc:param>$r right sub-tree</xqdoc:param>
-        <xqdoc:return>branch node</xqdoc:return>
-      </xqdoc:comment>
-      <xqdoc:name>rbtree:branch</xqdoc:name>
-      <xqdoc:annotations>
-        <xqdoc:annotation name="private"/>
-      </xqdoc:annotations>
-      <xqdoc:signature>declare %private function rbtree:branch($c as item()*, $l as item()*, $k as item()*, $v as item()*, $r as item()*) as item()*</xqdoc:signature>
-      <xqdoc:parameters>
-        <xqdoc:parameter>
-          <xqdoc:name>c</xqdoc:name>
+          <xqdoc:name>node</xqdoc:name>
           <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
         <xqdoc:parameter>
-          <xqdoc:name>l</xqdoc:name>
+          <xqdoc:name>acc1</xqdoc:name>
           <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
         <xqdoc:parameter>
-          <xqdoc:name>k</xqdoc:name>
-          <xqdoc:type occurrence="*">item()</xqdoc:type>
-        </xqdoc:parameter>
-        <xqdoc:parameter>
-          <xqdoc:name>v</xqdoc:name>
-          <xqdoc:type occurrence="*">item()</xqdoc:type>
-        </xqdoc:parameter>
-        <xqdoc:parameter>
-          <xqdoc:name>r</xqdoc:name>
-          <xqdoc:type occurrence="*">item()</xqdoc:type>
-        </xqdoc:parameter>
-      </xqdoc:parameters>
-      <xqdoc:return>
-        <xqdoc:type occurrence="*">item()</xqdoc:type>
-      </xqdoc:return>
-    </xqdoc:function>
-    <xqdoc:function arity="1">
-      <xqdoc:comment>
-        <xqdoc:description>Returns the color of the given node.</xqdoc:description>
-        <xqdoc:param>$tree node to find the color of</xqdoc:param>
-        <xqdoc:return>the node's color</xqdoc:return>
-      </xqdoc:comment>
-      <xqdoc:name>rbtree:color</xqdoc:name>
-      <xqdoc:annotations>
-        <xqdoc:annotation name="private"/>
-      </xqdoc:annotations>
-      <xqdoc:signature>declare %private function rbtree:color($tree as item()*) as item()*</xqdoc:signature>
-      <xqdoc:parameters>
-        <xqdoc:parameter>
-          <xqdoc:name>tree</xqdoc:name>
-          <xqdoc:type occurrence="*">item()</xqdoc:type>
-        </xqdoc:parameter>
-      </xqdoc:parameters>
-      <xqdoc:return>
-        <xqdoc:type occurrence="*">item()</xqdoc:type>
-      </xqdoc:return>
-    </xqdoc:function>
-    <xqdoc:function arity="1">
-      <xqdoc:comment>
-        <xqdoc:description>Subtracts one black unit from the given node color.</xqdoc:description>
-        <xqdoc:param>$c initial color</xqdoc:param>
-        <xqdoc:return>previous color</xqdoc:return>
-      </xqdoc:comment>
-      <xqdoc:name>rbtree:prev</xqdoc:name>
-      <xqdoc:annotations>
-        <xqdoc:annotation name="private"/>
-      </xqdoc:annotations>
-      <xqdoc:signature>declare %private function rbtree:prev($c as item()*) as item()*</xqdoc:signature>
-      <xqdoc:parameters>
-        <xqdoc:parameter>
-          <xqdoc:name>c</xqdoc:name>
-          <xqdoc:type occurrence="*">item()</xqdoc:type>
-        </xqdoc:parameter>
-      </xqdoc:parameters>
-      <xqdoc:return>
-        <xqdoc:type occurrence="*">item()</xqdoc:type>
-      </xqdoc:return>
-    </xqdoc:function>
-    <xqdoc:function arity="1">
-      <xqdoc:comment>
-        <xqdoc:description>Adds one black unit to the given node color.</xqdoc:description>
-        <xqdoc:param>$c initial color</xqdoc:param>
-        <xqdoc:return>next color</xqdoc:return>
-      </xqdoc:comment>
-      <xqdoc:name>rbtree:next</xqdoc:name>
-      <xqdoc:annotations>
-        <xqdoc:annotation name="private"/>
-      </xqdoc:annotations>
-      <xqdoc:signature>declare %private function rbtree:next($c as item()*) as item()*</xqdoc:signature>
-      <xqdoc:parameters>
-        <xqdoc:parameter>
-          <xqdoc:name>c</xqdoc:name>
-          <xqdoc:type occurrence="*">item()</xqdoc:type>
-        </xqdoc:parameter>
-      </xqdoc:parameters>
-      <xqdoc:return>
-        <xqdoc:type occurrence="*">item()</xqdoc:type>
-      </xqdoc:return>
-    </xqdoc:function>
-    <xqdoc:function arity="2">
-      <xqdoc:comment>
-        <xqdoc:description>Returns a recolored version of the given node.</xqdoc:description>
-        <xqdoc:param>$tree node to recolor</xqdoc:param>
-        <xqdoc:param>$col new color of the node</xqdoc:param>
-        <xqdoc:return>recolored node</xqdoc:return>
-      </xqdoc:comment>
-      <xqdoc:name>rbtree:recolor</xqdoc:name>
-      <xqdoc:annotations>
-        <xqdoc:annotation name="private"/>
-      </xqdoc:annotations>
-      <xqdoc:signature>declare %private function rbtree:recolor($tree as item()*, $col as item()*) as item()*</xqdoc:signature>
-      <xqdoc:parameters>
-        <xqdoc:parameter>
-          <xqdoc:name>tree</xqdoc:name>
-          <xqdoc:type occurrence="*">item()</xqdoc:type>
-        </xqdoc:parameter>
-        <xqdoc:parameter>
-          <xqdoc:name>col</xqdoc:name>
+          <xqdoc:name>f</xqdoc:name>
           <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
       </xqdoc:parameters>
@@ -608,8 +647,7 @@ and the tree where the entry was deleted.</xqdoc:description>
         <xqdoc:error>rbtree:CHCK0002 if a key is greater than <code>$max</code>
         </xqdoc:error>
         <xqdoc:error>rbtree:CHCK0003 if a red node has a red child</xqdoc:error>
-        <xqdoc:error>rbtree:CHCK0004 if a node is double-black or negative black</xqdoc:error>
-        <xqdoc:error>rbtree:CHCK0005 if the two sub-trees have different black heights</xqdoc:error>
+        <xqdoc:error>rbtree:CHCK0004 if the two sub-trees have different black heights</xqdoc:error>
       </xqdoc:comment>
       <xqdoc:name>rbtree:check</xqdoc:name>
       <xqdoc:annotations>
@@ -656,37 +694,6 @@ and the tree where the entry was deleted.</xqdoc:description>
       <xqdoc:parameters>
         <xqdoc:parameter>
           <xqdoc:name>tree</xqdoc:name>
-          <xqdoc:type occurrence="*">item()</xqdoc:type>
-        </xqdoc:parameter>
-      </xqdoc:parameters>
-      <xqdoc:return>
-        <xqdoc:type occurrence="*">item()</xqdoc:type>
-      </xqdoc:return>
-    </xqdoc:function>
-    <xqdoc:function arity="3">
-      <xqdoc:comment>
-        <xqdoc:description>Folds all entries of the given tree into one value in ascending order.</xqdoc:description>
-        <xqdoc:param>$node current tree node</xqdoc:param>
-        <xqdoc:param>$acc1 accumulator</xqdoc:param>
-        <xqdoc:param>$f combining function</xqdoc:param>
-        <xqdoc:return>folded value</xqdoc:return>
-      </xqdoc:comment>
-      <xqdoc:name>rbtree:fold</xqdoc:name>
-      <xqdoc:annotations>
-        <xqdoc:annotation name="public"/>
-      </xqdoc:annotations>
-      <xqdoc:signature>declare %public function rbtree:fold($node as item()*, $acc1 as item()*, $f as item()*) as item()*</xqdoc:signature>
-      <xqdoc:parameters>
-        <xqdoc:parameter>
-          <xqdoc:name>node</xqdoc:name>
-          <xqdoc:type occurrence="*">item()</xqdoc:type>
-        </xqdoc:parameter>
-        <xqdoc:parameter>
-          <xqdoc:name>acc1</xqdoc:name>
-          <xqdoc:type occurrence="*">item()</xqdoc:type>
-        </xqdoc:parameter>
-        <xqdoc:parameter>
-          <xqdoc:name>f</xqdoc:name>
           <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
       </xqdoc:parameters>

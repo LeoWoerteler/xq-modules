@@ -53,13 +53,13 @@ declare %public function queue:enqueue(
  : or non-empty queue.
  : @param $queue queue to match on
  : @param $empty no-argument callback for the empty queue
- : @param $nonEmpty callback for the non-empty queue that takes the first element
+ : @param $non-empty callback for the non-empty queue that takes the first element
                     and the tai of the queue
  :)
 declare %public function queue:match(
   $queue as function(*),
   $empty as function() as item()*,
-  $nonEmpty as function(item()*, function(*)) as item()*
+  $non-empty as function(item()*, function(*)) as item()*
 ) as item()* {
   pair:deconstruct(
     $queue,
@@ -68,7 +68,7 @@ declare %public function queue:match(
         $xs,
         $empty,
         function($x, $xss) {
-          $nonEmpty(
+          $non-empty(
             $x,
             list:match(
               $xss,
@@ -86,7 +86,7 @@ declare %public function queue:match(
  : Returns the tail of the queue.
  :
  : @return tail of the queue
- : @throws queue:EMPTYQUE when the queue is empty
+ : @error queue:EMPTYQUE when the queue is empty
  :)
 declare %public function queue:tail(
   $queue as function(*)
@@ -102,7 +102,7 @@ declare %public function queue:tail(
  : Returns the head of the queue.
  :
  : @return value at the head of the queue
- : @throws queue:EMPTYQUE when the queue is empty
+ : @error queue:EMPTYQUE when the queue is empty
  :)
 declare %public function queue:peek(
   $queue as function(*)

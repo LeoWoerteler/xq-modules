@@ -1,6 +1,6 @@
 <xqdoc:xqdoc xmlns:xqdoc="http://www.xqdoc.org/1.0">
   <xqdoc:control>
-    <xqdoc:date>2013-12-12T20:57:37.817+01:00</xqdoc:date>
+    <xqdoc:date>2013-12-17T12:14:38.372+01:00</xqdoc:date>
     <xqdoc:version>1.1</xqdoc:version>
   </xqdoc:control>
   <xqdoc:module type="library">
@@ -16,14 +16,14 @@
   <xqdoc:namespaces>
     <xqdoc:namespace prefix="ordered-map" uri="http://www.woerteler.de/xquery/modules/ordered-map"/>
     <xqdoc:namespace prefix="pair" uri="http://www.woerteler.de/xquery/modules/pair"/>
-    <xqdoc:namespace prefix="impl" uri="http://www.woerteler.de/xquery/modules/ordered-map/rbtree"/>
+    <xqdoc:namespace prefix="impl" uri="http://www.woerteler.de/xquery/modules/ordered-map/avltree"/>
   </xqdoc:namespaces>
   <xqdoc:imports>
     <xqdoc:import type="library">
       <xqdoc:uri>http://www.woerteler.de/xquery/modules/pair</xqdoc:uri>
     </xqdoc:import>
     <xqdoc:import type="library">
-      <xqdoc:uri>http://www.woerteler.de/xquery/modules/ordered-map/rbtree</xqdoc:uri>
+      <xqdoc:uri>http://www.woerteler.de/xquery/modules/ordered-map/avltree</xqdoc:uri>
     </xqdoc:import>
   </xqdoc:imports>
   <xqdoc:variables/>

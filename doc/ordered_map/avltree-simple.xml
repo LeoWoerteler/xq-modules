@@ -4,17 +4,17 @@
     <xqdoc:version>1.1</xqdoc:version>
   </xqdoc:control>
   <xqdoc:module type="library">
-    <xqdoc:uri>http://www.woerteler.de/xquery/modules/ordered-map/avltree</xqdoc:uri>
-    <xqdoc:name>avltree.xqm</xqdoc:name>
+    <xqdoc:uri>http://www.woerteler.de/xquery/modules/ordered-map/avltree-simple</xqdoc:uri>
+    <xqdoc:name>avltree-simple.xqm</xqdoc:name>
     <xqdoc:comment>
-      <xqdoc:description>Implementation of an ordered map based on an AVL Tree.</xqdoc:description>
+      <xqdoc:description>Simple implementation of an ordered map based on an AVL Tree.</xqdoc:description>
       <xqdoc:author>Leo Woerteler &lt;leo@woerteler.de&gt;</xqdoc:author>
       <xqdoc:version>0.1</xqdoc:version>
       <xqdoc:custom tag="license">BSD 2-Clause License</xqdoc:custom>
     </xqdoc:comment>
   </xqdoc:module>
   <xqdoc:namespaces>
-    <xqdoc:namespace prefix="avltree" uri="http://www.woerteler.de/xquery/modules/ordered-map/avltree"/>
+    <xqdoc:namespace prefix="avltree" uri="http://www.woerteler.de/xquery/modules/ordered-map/avltree-simple"/>
     <xqdoc:namespace prefix="pair" uri="http://www.woerteler.de/xquery/modules/pair"/>
   </xqdoc:namespaces>
   <xqdoc:imports>
@@ -38,11 +38,10 @@
         <xqdoc:type occurrence="*">item()</xqdoc:type>
       </xqdoc:return>
     </xqdoc:function>
-    <xqdoc:function arity="5">
+    <xqdoc:function arity="4">
       <xqdoc:comment>
         <xqdoc:description>Creates a branch node.</xqdoc:description>
         <xqdoc:param>$left left sub-tree</xqdoc:param>
-        <xqdoc:param>$b balance of the branch node</xqdoc:param>
         <xqdoc:param>$k key of the branch node</xqdoc:param>
         <xqdoc:param>$v value of the branch node</xqdoc:param>
         <xqdoc:param>$right right sub-tree</xqdoc:param>
@@ -52,14 +51,10 @@
       <xqdoc:annotations>
         <xqdoc:annotation name="private"/>
       </xqdoc:annotations>
-      <xqdoc:signature>declare %private function avltree:branch($left as item()*, $b as item()*, $k as item()*, $v as item()*, $right as item()*) as item()*</xqdoc:signature>
+      <xqdoc:signature>declare %private function avltree:branch($left as item()*, $k as item()*, $v as item()*, $right as item()*) as item()*</xqdoc:signature>
       <xqdoc:parameters>
         <xqdoc:parameter>
           <xqdoc:name>left</xqdoc:name>
-          <xqdoc:type occurrence="*">item()</xqdoc:type>
-        </xqdoc:parameter>
-        <xqdoc:parameter>
-          <xqdoc:name>b</xqdoc:name>
           <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
         <xqdoc:parameter>
@@ -79,6 +74,53 @@
         <xqdoc:type occurrence="*">item()</xqdoc:type>
       </xqdoc:return>
     </xqdoc:function>
+    <xqdoc:function arity="1">
+      <xqdoc:comment>
+        <xqdoc:description>Returns the height of the given node.</xqdoc:description>
+        <xqdoc:param>$tree node</xqdoc:param>
+        <xqdoc:return>the node's height</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>avltree:height</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="private"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %private function avltree:height($tree as item()*) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>tree</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="2">
+      <xqdoc:comment>
+        <xqdoc:description>Returns the balance (between -2 and 2) between the two given sub-trees.</xqdoc:description>
+        <xqdoc:param>$left left sub-tree</xqdoc:param>
+        <xqdoc:param>$right right sub-tree</xqdoc:param>
+        <xqdoc:return>the balance, i.e. the difference between the left and right height</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>avltree:balance</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="private"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %private function avltree:balance($left as item()*, $right as item()*) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>left</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>right</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="?">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
     <xqdoc:function arity="5">
       <xqdoc:comment>
         <xqdoc:description>Finds the given key in the given AVL Tree.</xqdoc:description>
@@ -86,14 +128,14 @@
         <xqdoc:param>$tree AVL Tree</xqdoc:param>
         <xqdoc:param>$x key to look for</xqdoc:param>
         <xqdoc:param>$found callback taking the bound value when the key was found</xqdoc:param>
-        <xqdoc:param>$not-found zero-argument callback for when the key was not found</xqdoc:param>
+        <xqdoc:param>$notFound zero-argument callback for when the key was not found</xqdoc:param>
         <xqdoc:return>result of the callback</xqdoc:return>
       </xqdoc:comment>
       <xqdoc:name>avltree:lookup</xqdoc:name>
       <xqdoc:annotations>
         <xqdoc:annotation name="public"/>
       </xqdoc:annotations>
-      <xqdoc:signature>declare %public function avltree:lookup($lt as item()*, $tree as item()*, $x as item()*, $found as item()*, $not-found as item()*) as item()*</xqdoc:signature>
+      <xqdoc:signature>declare %public function avltree:lookup($lt as item()*, $tree as item()*, $x as item()*, $found as item()*, $notFound as item()*) as item()*</xqdoc:signature>
       <xqdoc:parameters>
         <xqdoc:parameter>
           <xqdoc:name>lt</xqdoc:name>
@@ -112,7 +154,7 @@
           <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
         <xqdoc:parameter>
-          <xqdoc:name>not-found</xqdoc:name>
+          <xqdoc:name>notFound</xqdoc:name>
           <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
       </xqdoc:parameters>
@@ -127,51 +169,13 @@
         <xqdoc:param>$tree AVL Tree</xqdoc:param>
         <xqdoc:param>$k key of the entry to insert</xqdoc:param>
         <xqdoc:param>$v value of the entry to insert</xqdoc:param>
-        <xqdoc:return>tree where the entry was inserted
-           and the amount of its height increase</xqdoc:return>
+        <xqdoc:return>tree where the entry was inserted</xqdoc:return>
       </xqdoc:comment>
       <xqdoc:name>avltree:insert</xqdoc:name>
       <xqdoc:annotations>
         <xqdoc:annotation name="public"/>
       </xqdoc:annotations>
-      <xqdoc:signature>declare %public function avltree:insert($lt as item()*, $tree as item()*, $k as item()*, $v as item()*) as item()*</xqdoc:signature>
-      <xqdoc:parameters>
-        <xqdoc:parameter>
-          <xqdoc:name>lt</xqdoc:name>
-          <xqdoc:type occurrence="*">item()</xqdoc:type>
-        </xqdoc:parameter>
-        <xqdoc:parameter>
-          <xqdoc:name>tree</xqdoc:name>
-          <xqdoc:type occurrence="*">item()</xqdoc:type>
-        </xqdoc:parameter>
-        <xqdoc:parameter>
-          <xqdoc:name>k</xqdoc:name>
-          <xqdoc:type occurrence="*">item()</xqdoc:type>
-        </xqdoc:parameter>
-        <xqdoc:parameter>
-          <xqdoc:name>v</xqdoc:name>
-          <xqdoc:type occurrence="*">item()</xqdoc:type>
-        </xqdoc:parameter>
-      </xqdoc:parameters>
-      <xqdoc:return>
-        <xqdoc:type occurrence="*">item()</xqdoc:type>
-      </xqdoc:return>
-    </xqdoc:function>
-    <xqdoc:function arity="4">
-      <xqdoc:comment>
-        <xqdoc:description>Recursively inserts the given entry into the given AVL Tree.</xqdoc:description>
-        <xqdoc:param>$lt less-than predicate</xqdoc:param>
-        <xqdoc:param>$tree tree to insert into</xqdoc:param>
-        <xqdoc:param>$k key to insert</xqdoc:param>
-        <xqdoc:param>$y vlue to insert</xqdoc:param>
-        <xqdoc:return>two-element sequence of the tree where the entry was inserted
-           and a boolean indicating if the tree's height changed</xqdoc:return>
-      </xqdoc:comment>
-      <xqdoc:name>avltree:ins</xqdoc:name>
-      <xqdoc:annotations>
-        <xqdoc:annotation name="private"/>
-      </xqdoc:annotations>
-      <xqdoc:signature>declare %private function avltree:ins($lt as item()*, $tree as item()*, $x as item()*, $y as item()*) as item()*</xqdoc:signature>
+      <xqdoc:signature>declare %public function avltree:insert($lt as item()*, $tree as item()*, $x as item()*, $y as item()*) as item()*</xqdoc:signature>
       <xqdoc:parameters>
         <xqdoc:parameter>
           <xqdoc:name>lt</xqdoc:name>
@@ -225,63 +229,25 @@
         <xqdoc:type occurrence="*">item()</xqdoc:type>
       </xqdoc:return>
     </xqdoc:function>
-    <xqdoc:function arity="3">
+    <xqdoc:function arity="4">
       <xqdoc:comment>
-        <xqdoc:description>Recursively deletes the entry with the given key from the given Red-Black Tree.</xqdoc:description>
-        <xqdoc:param>$lt less-than predicate</xqdoc:param>
-        <xqdoc:param>$tree tree to delete from</xqdoc:param>
-        <xqdoc:param>$x key to delete</xqdoc:param>
-        <xqdoc:return>an empty sequence if the tree does not contain the key,
-        the tree where the key was deleted
-        and a boolean indicating if the height changed otherwise</xqdoc:return>
-      </xqdoc:comment>
-      <xqdoc:name>avltree:del</xqdoc:name>
-      <xqdoc:annotations>
-        <xqdoc:annotation name="private"/>
-      </xqdoc:annotations>
-      <xqdoc:signature>declare %private function avltree:del($lt as item()*, $tree as item()*, $x as item()*) as item()*</xqdoc:signature>
-      <xqdoc:parameters>
-        <xqdoc:parameter>
-          <xqdoc:name>lt</xqdoc:name>
-          <xqdoc:type occurrence="*">item()</xqdoc:type>
-        </xqdoc:parameter>
-        <xqdoc:parameter>
-          <xqdoc:name>tree</xqdoc:name>
-          <xqdoc:type occurrence="*">item()</xqdoc:type>
-        </xqdoc:parameter>
-        <xqdoc:parameter>
-          <xqdoc:name>x</xqdoc:name>
-          <xqdoc:type occurrence="*">item()</xqdoc:type>
-        </xqdoc:parameter>
-      </xqdoc:parameters>
-      <xqdoc:return>
-        <xqdoc:type occurrence="*">item()</xqdoc:type>
-      </xqdoc:return>
-    </xqdoc:function>
-    <xqdoc:function arity="5">
-      <xqdoc:comment>
-        <xqdoc:description>Deletes the leftmost (smallest) entry from the given tree and returns it
-together with the tree where it is removed.</xqdoc:description>
+        <xqdoc:description>Finds the leftmost (smallest) entry in the given tree and returns it
+and the tree where the entry was deleted.</xqdoc:description>
         <xqdoc:param>$l left sub-tree</xqdoc:param>
-        <xqdoc:param>$b balance of the root node</xqdoc:param>
         <xqdoc:param>$k key of the root node</xqdoc:param>
         <xqdoc:param>$v value of the root node</xqdoc:param>
         <xqdoc:param>$r right sub-tree</xqdoc:param>
-        <xqdoc:return>three-element sequence vontaining a pair of the key and value of the removed entry,
-           the tree where it was removed and a boolean indicating if its height changed</xqdoc:return>
+        <xqdoc:return>two-element sequence containing the removed entry as a pair
+        and the tree with the entry deleted</xqdoc:return>
       </xqdoc:comment>
       <xqdoc:name>avltree:split-leftmost</xqdoc:name>
       <xqdoc:annotations>
         <xqdoc:annotation name="private"/>
       </xqdoc:annotations>
-      <xqdoc:signature>declare %private function avltree:split-leftmost($l as item()*, $b as item()*, $k as item()*, $v as item()*, $r as item()*) as item()*</xqdoc:signature>
+      <xqdoc:signature>declare %private function avltree:split-leftmost($l as item()*, $k as item()*, $v as item()*, $r as item()*) as item()*</xqdoc:signature>
       <xqdoc:parameters>
         <xqdoc:parameter>
           <xqdoc:name>l</xqdoc:name>
-          <xqdoc:type occurrence="*">item()</xqdoc:type>
-        </xqdoc:parameter>
-        <xqdoc:parameter>
-          <xqdoc:name>b</xqdoc:name>
           <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
         <xqdoc:parameter>
@@ -301,28 +267,23 @@ together with the tree where it is removed.</xqdoc:description>
         <xqdoc:type occurrence="*">item()</xqdoc:type>
       </xqdoc:return>
     </xqdoc:function>
-    <xqdoc:function arity="5">
+    <xqdoc:function arity="4">
       <xqdoc:comment>
-        <xqdoc:description>Rebalances the given tree after its balance value decreased.</xqdoc:description>
+        <xqdoc:description>Rebalances the given branch node.</xqdoc:description>
         <xqdoc:param>$l left sub-tree</xqdoc:param>
-        <xqdoc:param>$b old balance</xqdoc:param>
-        <xqdoc:param>$k key of the root node</xqdoc:param>
-        <xqdoc:param>$v value of the root node</xqdoc:param>
+        <xqdoc:param>$k key of the branch node</xqdoc:param>
+        <xqdoc:param>$v value of the branch node</xqdoc:param>
         <xqdoc:param>$r right sub-tree</xqdoc:param>
-        <xqdoc:return>the balanced tree and a boolean indicating if the height increased</xqdoc:return>
+        <xqdoc:return>balanced branch node</xqdoc:return>
       </xqdoc:comment>
-      <xqdoc:name>avltree:balance-left</xqdoc:name>
+      <xqdoc:name>avltree:re-balance</xqdoc:name>
       <xqdoc:annotations>
         <xqdoc:annotation name="private"/>
       </xqdoc:annotations>
-      <xqdoc:signature>declare %private function avltree:balance-left($l as item()*, $b as item()*, $k as item()*, $v as item()*, $r as item()*) as item()*</xqdoc:signature>
+      <xqdoc:signature>declare %private function avltree:re-balance($l as item()*, $k as item()*, $v as item()*, $r as item()*) as item()*</xqdoc:signature>
       <xqdoc:parameters>
         <xqdoc:parameter>
           <xqdoc:name>l</xqdoc:name>
-          <xqdoc:type occurrence="*">item()</xqdoc:type>
-        </xqdoc:parameter>
-        <xqdoc:parameter>
-          <xqdoc:name>b</xqdoc:name>
           <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
         <xqdoc:parameter>
@@ -342,28 +303,59 @@ together with the tree where it is removed.</xqdoc:description>
         <xqdoc:type occurrence="*">item()</xqdoc:type>
       </xqdoc:return>
     </xqdoc:function>
-    <xqdoc:function arity="5">
+    <xqdoc:function arity="4">
       <xqdoc:comment>
-        <xqdoc:description>Rebalances the given tree after its balance value increased.</xqdoc:description>
+        <xqdoc:description>Rotates the given branch node to the left.</xqdoc:description>
         <xqdoc:param>$l left sub-tree</xqdoc:param>
-        <xqdoc:param>$b old balance</xqdoc:param>
-        <xqdoc:param>$k key of the root node</xqdoc:param>
-        <xqdoc:param>$v value of the root node</xqdoc:param>
+        <xqdoc:param>$k key of the branch node</xqdoc:param>
+        <xqdoc:param>$v value of the branch node</xqdoc:param>
         <xqdoc:param>$r right sub-tree</xqdoc:param>
-        <xqdoc:return>the balanced tree and a boolean indicating if the height increased</xqdoc:return>
+        <xqdoc:return>rotated branch node</xqdoc:return>
       </xqdoc:comment>
-      <xqdoc:name>avltree:balance-right</xqdoc:name>
+      <xqdoc:name>avltree:rotate-left</xqdoc:name>
       <xqdoc:annotations>
         <xqdoc:annotation name="private"/>
       </xqdoc:annotations>
-      <xqdoc:signature>declare %private function avltree:balance-right($l as item()*, $b as item()*, $k as item()*, $v as item()*, $r as item()*) as item()*</xqdoc:signature>
+      <xqdoc:signature>declare %private function avltree:rotate-left($l as item()*, $k as item()*, $v as item()*, $r as item()*) as item()*</xqdoc:signature>
       <xqdoc:parameters>
         <xqdoc:parameter>
           <xqdoc:name>l</xqdoc:name>
           <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
         <xqdoc:parameter>
-          <xqdoc:name>b</xqdoc:name>
+          <xqdoc:name>k</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>v</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
+        </xqdoc:parameter>
+        <xqdoc:parameter>
+          <xqdoc:name>r</xqdoc:name>
+          <xqdoc:type occurrence="*">item()</xqdoc:type>
+        </xqdoc:parameter>
+      </xqdoc:parameters>
+      <xqdoc:return>
+        <xqdoc:type occurrence="*">item()</xqdoc:type>
+      </xqdoc:return>
+    </xqdoc:function>
+    <xqdoc:function arity="4">
+      <xqdoc:comment>
+        <xqdoc:description>Rotates the given branch node to the right.</xqdoc:description>
+        <xqdoc:param>$l left sub-tree</xqdoc:param>
+        <xqdoc:param>$k key of the branch node</xqdoc:param>
+        <xqdoc:param>$v value of the branch node</xqdoc:param>
+        <xqdoc:param>$r right sub-tree</xqdoc:param>
+        <xqdoc:return>rotated branch node</xqdoc:return>
+      </xqdoc:comment>
+      <xqdoc:name>avltree:rotate-right</xqdoc:name>
+      <xqdoc:annotations>
+        <xqdoc:annotation name="private"/>
+      </xqdoc:annotations>
+      <xqdoc:signature>declare %private function avltree:rotate-right($l as item()*, $k as item()*, $v as item()*, $r as item()*) as item()*</xqdoc:signature>
+      <xqdoc:parameters>
+        <xqdoc:parameter>
+          <xqdoc:name>l</xqdoc:name>
           <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
         <xqdoc:parameter>
@@ -386,8 +378,8 @@ together with the tree where it is removed.</xqdoc:description>
     <xqdoc:function arity="3">
       <xqdoc:comment>
         <xqdoc:description>Folds all entries of the given tree into one value in ascending order.</xqdoc:description>
-        <xqdoc:param>$root root of the tree to fold</xqdoc:param>
-        <xqdoc:param>$acc accumulator</xqdoc:param>
+        <xqdoc:param>$node current tree node</xqdoc:param>
+        <xqdoc:param>$acc1 accumulator</xqdoc:param>
         <xqdoc:param>$f combining function</xqdoc:param>
         <xqdoc:return>folded value</xqdoc:return>
       </xqdoc:comment>
@@ -395,14 +387,14 @@ together with the tree where it is removed.</xqdoc:description>
       <xqdoc:annotations>
         <xqdoc:annotation name="public"/>
       </xqdoc:annotations>
-      <xqdoc:signature>declare %public function avltree:fold($root as item()*, $acc as item()*, $f as item()*) as item()*</xqdoc:signature>
+      <xqdoc:signature>declare %public function avltree:fold($tree as item()*, $acc1 as item()*, $f as item()*) as item()*</xqdoc:signature>
       <xqdoc:parameters>
         <xqdoc:parameter>
-          <xqdoc:name>root</xqdoc:name>
+          <xqdoc:name>tree</xqdoc:name>
           <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
         <xqdoc:parameter>
-          <xqdoc:name>acc</xqdoc:name>
+          <xqdoc:name>acc1</xqdoc:name>
           <xqdoc:type occurrence="*">item()</xqdoc:type>
         </xqdoc:parameter>
         <xqdoc:parameter>
